@@ -25,13 +25,14 @@ int main(){
             AtualizaRodada(&jogo);
             if (ColisaoFood(&jogo)){
                 IniciaFood(&jogo);
+                AumentaSnake(&jogo);
             }
             if (ColisaoBordas(&jogo)){
                 gameOver=0;
             }
         } else {
-            DrawText("Agora é a sua vez!", 150, 200, 40, WHITE);
-            DrawText("Continue", 265, 400, 30, WHITE);
+            DrawText("FIM DE JOGO", 200, 200, 40, WHITE);
+            DrawText("Para reiniciar aperte Enter", 110, 400, 30, WHITE);
             if (IsKeyPressed(KEY_ENTER)){
                 IniciaJogo(&jogo);
                 gameOver = 1;
@@ -42,4 +43,3 @@ int main(){
     CloseWindow();
     return 0;
 }
-
