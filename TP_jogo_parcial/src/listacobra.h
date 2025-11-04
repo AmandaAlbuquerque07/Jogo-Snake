@@ -63,6 +63,6 @@ void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaRodada(Jogo *j);
 int ColisaoFood(Jogo *j);
 int ColisaoBordas(Jogo *j);
-
+int ColisaoSnake(Jogo *j);
 
 #endif
