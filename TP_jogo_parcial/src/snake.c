@@ -11,7 +11,7 @@ int main(){
 
     //Cria a janela;
     InitWindow(LARGURA, ALTURA, "Snake Game");
-    Texture2D imagem = LoadTexture("maça.png");
+    //Texture2D imagem = LoadTexture("maça.png");
     SetTargetFPS(50);
     srand(time(NULL));
     
@@ -28,6 +28,9 @@ int main(){
                 AumentaSnake(&jogo);
             }
             if (ColisaoBordas(&jogo)){
+                gameOver=0;
+            }
+            if (ColisaoSnake(&jogo)){
                 gameOver=0;
             }
         } else {
