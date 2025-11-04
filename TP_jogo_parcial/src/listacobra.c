@@ -5,7 +5,8 @@
 #include <time.h>
 #include "listacobra.h"
 
-void FSVazia(ListaSnake *Snake){
+void FSVazia(
+    ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     Snake->Cauda = Snake->Cabeca;
     Snake->Cabeca->Prox = NULL;
@@ -26,7 +27,11 @@ void IniciaSnake(Jogo *j){
     j->snake.Cabeca->body.color = SNAKE_COLOR;
 
     //Cauda (logo após a cabeça)
-    j->snake.Cauda->body.pos = (Rectangle){LARGURA/2 - STD_SIZE_X, ALTURA/2, STD_SIZE_X, STD_SIZE_Y};
+    // j->snake.Cauda->body.pos = (Rectangle){LARGURA/2 - STD_SIZE_X, ALTURA/2, STD_SIZE_X, STD_SIZE_Y};
+
+    //Cauda (logo atrás da cabeça)
+    j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
+
     j->snake.Cauda->body.direcao = 0;
     j->snake.Cauda->body.color = SNAKE_COLOR;
 
@@ -61,9 +66,28 @@ void IniciaBordas(Jogo *j){
 }
 
 void IniciaFood(Jogo *j){
-    j->food.pos = (Rectangle) {(float)(rand() % ((ALTURA - 20) / STD_SIZE_Y) * STD_SIZE_Y + 10), (float)(rand() % ((ALTURA - 20) / STD_SIZE_Y) * STD_SIZE_Y + 10), STD_SIZE_X, STD_SIZE_Y};
+    int colisao;
+    do {
+        colisao = 0; // assume que não há colisão
+        j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
+        j->food.pos.y = (float)((rand() % ((ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
+        j->food.pos.width = STD_SIZE_X;
+        j->food.pos.height = STD_SIZE_Y;
+
+        // Verifica se a nova posição colide com a cobra
+        SnakeApontador aux = j->snake.Cabeca;
+        while(aux != NULL){
+            if(CheckCollisionRecs(j->food.pos, aux->body.pos)){
+                colisao = 1; // houve colisão, precisa gerar outra posição
+                break;
+            }
+            aux = aux->Prox;
+        }
+    } while(colisao); // repete até não colidir
+
     j->food.color = FOOD_COLOR;
 }
+
 
 void IniciaJogo(Jogo *j){
     IniciaBordas(j);
@@ -184,3 +208,19 @@ int ColisaoBordas(Jogo *j){
         return 0;
     }
 }
+
+int ColisaoSnake(Jogo *j){
+    SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
+    float headX = j->snake.Cabeca->body.pos.x;
+    float headY = j->snake.Cabeca->body.pos.y;
+
+    while(aux != NULL){
+        if(aux->body.pos.x == headX && aux->body.pos.y == headY){
+            return 1; // Colidiu com o corpo
+        }
+        aux = aux->Prox;
+    }
+    return 0; // sem colisão
+}
+
+
