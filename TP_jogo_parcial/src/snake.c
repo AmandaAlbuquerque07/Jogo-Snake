@@ -9,19 +9,23 @@ int main(){
     Jogo jogo;
     int gameOver = 10;
 
+
     //Cria a janela;
     InitWindow(LARGURA, ALTURA, "Snake Game");
     //Texture2D imagem = LoadTexture("maça.png");
     SetTargetFPS(50);
     srand(time(NULL));
-    
+
+    Texture2D maca = LoadTexture("maca.png"); // carrega a textura
+
     IniciaJogo(&jogo);
+
     while (!WindowShouldClose()){ //fecha se a tecla esc for precionada
         BeginDrawing();
         ClearBackground(BLACK);
         
         if (gameOver){
-            DesenhaJogo(&jogo);
+            DesenhaJogo(&jogo, maca);
             AtualizaRodada(&jogo);
             if (ColisaoFood(&jogo)){
                 IniciaFood(&jogo);
@@ -43,6 +47,9 @@ int main(){
         }
         EndDrawing();
     }
+
+
+    UnloadTexture(maca); // libera a textura
     CloseWindow();
     return 0;
 }
