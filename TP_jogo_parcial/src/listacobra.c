@@ -104,8 +104,16 @@ void DesenhaSnake(Jogo *j) {
     }
 }
 
-void DesenhaFood(Jogo *j){
-    DrawRectangleRec(j->food.pos, j->food.color);
+void DesenhaFood(Jogo *j, Texture2D img){
+    // Desenha a comida usando a textura redimensionada para STD_SIZE_X e STD_SIZE_Y
+    DrawTexturePro(
+        img,
+        (Rectangle){0, 0, img.width, img.height},                   // Fonte (toda a textura)
+        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
 }
 
 void DesenhaBordas(Jogo *j){
@@ -115,10 +123,10 @@ void DesenhaBordas(Jogo *j){
     }
 }
 
-void DesenhaJogo(Jogo *j){
+void DesenhaJogo(Jogo *j, Texture2D maca){
     DesenhaBordas(j);
     DesenhaSnake(j);
-    DesenhaFood(j);
+    DesenhaFood(j, maca);
 }
 
 void AtualizaDirecao(Jogo *j){
@@ -222,5 +230,3 @@ int ColisaoSnake(Jogo *j){
     }
     return 0; // sem colisão
 }
-
-
