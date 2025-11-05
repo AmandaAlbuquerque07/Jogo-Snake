@@ -230,3 +230,5 @@ int ColisaoSnake(Jogo *j){
     }
     return 0; // sem colisão
 }
+
+
