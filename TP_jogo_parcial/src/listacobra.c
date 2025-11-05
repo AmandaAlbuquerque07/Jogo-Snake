@@ -5,8 +5,7 @@
 #include <time.h>
 #include "listacobra.h"
 
-void FSVazia(
-    ListaSnake *Snake){
+void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     Snake->Cauda = Snake->Cabeca;
     Snake->Cabeca->Prox = NULL;
@@ -23,11 +22,9 @@ void IniciaSnake(Jogo *j){
 
     //Cabeça:
     j->snake.Cabeca->body.pos = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -10, STD_SIZE_X, STD_SIZE_Y};
+    //posição do código base para início
     j->snake.Cabeca->body.direcao = 0;
     j->snake.Cabeca->body.color = SNAKE_COLOR;
-
-    //Cauda (logo após a cabeça)
-    // j->snake.Cauda->body.pos = (Rectangle){LARGURA/2 - STD_SIZE_X, ALTURA/2, STD_SIZE_X, STD_SIZE_Y};
 
     //Cauda (logo atrás da cabeça)
     j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
@@ -71,6 +68,7 @@ void IniciaFood(Jogo *j){
         colisao = 0; // assume que não há colisão
         j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
         j->food.pos.y = (float)((rand() % ((ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
+        //STD size é o tamanho do quadradinho
         j->food.pos.width = STD_SIZE_X;
         j->food.pos.height = STD_SIZE_Y;
 
@@ -100,12 +98,13 @@ void DesenhaSnake(Jogo *j) {
     SnakeApontador aux = j->snake.Cabeca;
     while(aux != NULL) {
         DrawRectangleRec(aux->body.pos, aux->body.color);
+        //função da raylib
         aux = aux->Prox;
     }
 }
 
 void DesenhaFood(Jogo *j, Texture2D img){
-    // Desenha a comida usando a textura redimensionada para STD_SIZE_X e STD_SIZE_Y
+    // Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
     DrawTexturePro(
         img,
         (Rectangle){0, 0, img.width, img.height},                   // Fonte (toda a textura)
@@ -119,7 +118,7 @@ void DesenhaFood(Jogo *j, Texture2D img){
 void DesenhaBordas(Jogo *j){
     //Desenha as barreiras nas bordas
     for (int i = 0; i < 4; i++){
-        DrawRectangleRec(j->bordas[i].pos, LIGHTGRAY);
+        DrawRectangleRec(j->bordas[i].pos, DARKGREEN);
     }
 }
 
@@ -230,5 +229,3 @@ int ColisaoSnake(Jogo *j){
     }
     return 0; // sem colisão
 }
-
-
