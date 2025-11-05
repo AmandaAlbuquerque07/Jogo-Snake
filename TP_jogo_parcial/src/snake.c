@@ -10,13 +10,12 @@ int main(){
     int gameOver = 10;
 
 
-    //Cria a janela;
+    //Cria a janela do jogo;
     InitWindow(LARGURA, ALTURA, "Snake Game");
-    //Texture2D imagem = LoadTexture("maça.png");
     SetTargetFPS(50);
     srand(time(NULL));
 
-    Texture2D maca = LoadTexture("maca.png"); // carrega a textura
+    Texture2D maca = LoadTexture("maça.png"); // carrega a imagem
 
     IniciaJogo(&jogo);
 
