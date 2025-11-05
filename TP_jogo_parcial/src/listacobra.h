@@ -55,13 +55,13 @@ void IniciaBordas(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
-void DesenhaFood(Jogo *j); //Desenha uma comida em uma posição aleatória
+void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
-void DesenhaJogo(Jogo *j);
+void DesenhaJogo(Jogo *j, Texture2D maca);
 void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaRodada(Jogo *j);
-int ColisaoFood(Jogo *j);
+void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoBordas(Jogo *j);
 int ColisaoSnake(Jogo *j);
 
