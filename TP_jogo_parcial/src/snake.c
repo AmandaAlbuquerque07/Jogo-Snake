@@ -16,13 +16,14 @@ int main(){
     srand(time(NULL));
 
     Texture2D maca = LoadTexture("maça.png"); // carrega a imagem
+    Texture2D fundo = LoadTexture("GramaFundo.jpeg");
 
     IniciaJogo(&jogo);
 
     while (!WindowShouldClose()){ //fecha se a tecla esc for precionada
         BeginDrawing();
-        ClearBackground(BLACK);
-        
+        ClearBackground(RAYWHITE);
+        DrawTexture(fundo, 0, 0, WHITE);
         if (gameOver){
             DesenhaJogo(&jogo, maca);
             AtualizaRodada(&jogo);
