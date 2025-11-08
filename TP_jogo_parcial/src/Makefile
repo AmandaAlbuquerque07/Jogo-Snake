@@ -4,5 +4,8 @@ snake.o: snake.c listacobra.h
 	gcc -g -c snake.c
 listacobra.o: listacobra.h listacobra.c
 	gcc -g -c listacobra.c
+run: snake
+	./snake
 clean:
 	rm -f *.o
+
