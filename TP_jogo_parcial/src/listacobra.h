@@ -65,5 +65,7 @@ void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
 int ColisaoBordas(Jogo *j);
 int ColisaoSnake(Jogo *j);
+void FreeLista(ListaSnake *Snake);
 
 #endif
+
