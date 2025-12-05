@@ -50,6 +50,7 @@ int main(){
 
 
     UnloadTexture(maca); // libera a textura
+    FreeLista(&jogo.snake); //ADICIONARR
     CloseWindow();
     return 0;
 }
