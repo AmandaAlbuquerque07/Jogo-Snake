@@ -72,6 +72,15 @@ int main(){
                         if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
                             gameOver = 0;
                         }
+                    }else{
+                         atualizarRanking("ranking.txt", Nome, Pontos);
+                        DrawText("FIM DE JOGO", 200, 200, 40, RED);
+                        DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                        if (IsKeyPressed(KEY_ENTER)) {                                      
+                            estado = MENU;
+                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                            tamanhoNome = 0;
+                        }
                     } 
 
                 }else if(Pontos > 2){
@@ -95,9 +104,7 @@ int main(){
                             gameOver = 0;
                         }
                     } 
-                }
-                
-                else { //quando o jogador perde:
+
                     atualizarRanking("ranking.txt", Nome, Pontos);
                     DrawText("FIM DE JOGO", 200, 200, 40, RED);
                     DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
