@@ -53,6 +53,11 @@ int main(){
     Texture2D fundo2 = LoadTexture("Assets/espaco.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
 
+    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
+    Texture2D corpo = LoadTexture("Assets/corpo.png");
+    Texture2D rabo = LoadTexture("Assets/rabo.png");
+
+
     Estado estado= MENU;
         while (!WindowShouldClose()) {
         UpdateMusicStream(musmenu);  
@@ -110,7 +115,7 @@ int main(){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
                         DesenhaBarreiras1(&jogo);
                         AtualizaRodada(&jogo);
 
@@ -150,7 +155,7 @@ int main(){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -188,7 +193,7 @@ int main(){
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
                         DesenhaBarreiras3(&jogo);
                         AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
@@ -249,6 +254,10 @@ int main(){
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
+
+    UnloadTexture(cabeca);
+    UnloadTexture(corpo);
+    UnloadTexture(rabo);
 
     FreeLista(&jogo.snake); 
 
