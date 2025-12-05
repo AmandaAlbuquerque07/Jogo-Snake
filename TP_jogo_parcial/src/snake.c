@@ -184,6 +184,8 @@ int main(){
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
+                        DesenhaBarreiras3(&jogo);
+                        AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
