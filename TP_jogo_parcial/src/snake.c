@@ -114,7 +114,7 @@ int main(){
                 SetMusicVolume(trilha3, 0.0f);
 
                     DrawTexture(fundo1, 0, 0, WHITE);
-                    IniciaBarreiras1(&jogo);
+                    IniciaBarreiras1(&jogo, pedras, pedras1, pedras2);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
                         DesenhaBarreiras1(&jogo, pedras, pedras1, pedras2);
