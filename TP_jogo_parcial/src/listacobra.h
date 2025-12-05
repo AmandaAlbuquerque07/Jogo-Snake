@@ -5,9 +5,9 @@
 #define ALTURA 660
 #define STD_SIZE_X 40
 #define STD_SIZE_Y 40
-#define TEMPO 0.2
+#define TEMPO 0.16
 #define COOLDOWN 0.2
-#define SNAKE_COLOR GREEN
+#define SNAKE_COLOR VIOLET
 #define FOOD_COLOR RED
 
 typedef struct Bordas{
@@ -23,7 +23,7 @@ typedef struct Food{
 
 typedef struct Body{
     Rectangle pos;
-    Color color;
+    Texture2D color;
     int direcao;
 }Body; //TipoItem
 
