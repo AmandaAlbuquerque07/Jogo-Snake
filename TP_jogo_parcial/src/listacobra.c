@@ -7,7 +7,6 @@
 #define TAMANHO_CELULA 40
 
 
-
 void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     Snake->Cauda = Snake->Cabeca;
@@ -70,6 +69,7 @@ void IniciaBordas(Jogo *j){
     j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
 }
 
+
 void IniciaFood(Jogo *j){
     int colisao;
     do {
@@ -89,6 +89,14 @@ void IniciaFood(Jogo *j){
             }
             aux = aux->Prox;
         }
+        if(colisao == 0){
+            for(int i=0; i<10; i++){
+                if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
+                    colisao = 1; // houve colisão, precisa gerar outra posição
+                    break;
+                }
+            }
+        }    
     } while(colisao); // repete até não colidir
 
     j->food.color = FOOD_COLOR;
@@ -102,8 +110,15 @@ void IniciaJogo(Jogo *j){
     j->tempo = GetTime();
 }
 
+void IniciaBarreiras1(Jogo *j){
+    //Borda de cima
+    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 240};
+    //Borda da direita
+    j->barreiras[1].pos = (Rectangle) {LARGURA - 130, ALTURA-490, 40, 240};
+}
 
 void DesenhaSnake(Jogo *j) {
+
     SnakeApontador k = j->snake.Cabeca;
     Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
@@ -157,15 +172,14 @@ void DesenhaFood(Jogo *j, Texture2D img){
     );
 }
 
-void DesenhaBordas(Jogo *j){
+void DesenhaBarreiras1(Jogo *j){
     //Desenha as barreiras nas bordas
-    for (int i = 0; i < 4; i++){
-        DrawRectangleRec(j->bordas[i].pos, DARKGREEN);
+    for (int i = 0; i < 2; i++){
+        DrawRectangleRec(j->barreiras[i].pos, WHITE);
     }
 }
 
 void DesenhaJogo(Jogo *j, Texture2D maca){
-    DesenhaBordas(j);
     DesenhaSnake(j);
     DesenhaFood(j, maca);
 }
@@ -244,6 +258,16 @@ int ColisaoFood(Jogo *j){
     return 0;
 }
 
+int ColisaoBarreiras1(Jogo *j){
+    if (CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[0].pos)){
+        return 1;
+    }else if(CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[1].pos)){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
 void ColisaoBordas(Jogo *j) {
     // Se sair pela esquerda, reaparece na direita
     if (j->snake.Cabeca->body.pos.x < 0) {
@@ -263,8 +287,6 @@ void ColisaoBordas(Jogo *j) {
         j->snake.Cabeca->body.pos.y = 0;
     }
 }
-
-
 
 int ColisaoSnake(Jogo *j){
     SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
