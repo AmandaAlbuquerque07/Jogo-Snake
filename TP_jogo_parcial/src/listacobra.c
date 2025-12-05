@@ -69,6 +69,10 @@ void IniciaBordas(Jogo *j){
     j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
 }
 
+void IniciaBarreiras1(Jogo *j){
+    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 240};
+    j->barreiras[1].pos = (Rectangle) {LARGURA - 130, ALTURA-490, 40, 240};
+}
 
 void IniciaFood(Jogo *j){
     int colisao;
@@ -110,12 +114,6 @@ void IniciaJogo(Jogo *j){
     j->tempo = GetTime();
 }
 
-void IniciaBarreiras1(Jogo *j){
-    //Borda de cima
-    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 240};
-    //Borda da direita
-    j->barreiras[1].pos = (Rectangle) {LARGURA - 130, ALTURA-490, 40, 240};
-}
 
 void DesenhaSnake(Jogo *j) {
 
@@ -173,6 +171,13 @@ void DesenhaFood(Jogo *j, Texture2D img){
 }
 
 void DesenhaBarreiras1(Jogo *j){
+    //Desenha as barreiras nas bordas
+    for (int i = 0; i < 2; i++){
+        DrawRectangleRec(j->barreiras[i].pos, WHITE);
+    }
+}
+
+void DesenhaBarreiras3(Jogo *j){
     //Desenha as barreiras nas bordas
     for (int i = 0; i < 2; i++){
         DrawRectangleRec(j->barreiras[i].pos, WHITE);
@@ -240,6 +245,38 @@ void AtualizaPosSnake(Jogo *j) {
         prevY = tempY;
 
         atual = atual->Prox;
+    }
+}
+
+void AtualizaBarreiras3(Jogo *j){
+    static int iniciado = 0;
+
+    // Inicializa apenas uma vez
+    if (!iniciado){
+        // Barreira 0: direita → esquerda
+        j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 570, 160, 80};
+        j->barreiras[0].velocidade = -3;
+
+        // Barreira 1: esquerda → direita
+        j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 290, 160, 80};
+        j->barreiras[1].velocidade = 3;
+
+        iniciado = 1;
+    }
+
+    // Movimento das barreiras
+    for (int i = 0; i < 2; i++) {
+        j->barreiras[i].pos.x += j->barreiras[i].velocidade;
+
+        // Se sair pela direita, volta da esquerda
+        if (j->barreiras[i].pos.x > LARGURA) {
+            j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
+        }
+
+        // Se sair pela esquerda, volta da direita
+        if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
+            j->barreiras[i].pos.x = LARGURA;
+        }
     }
 }
 
