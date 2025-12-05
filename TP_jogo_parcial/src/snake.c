@@ -41,7 +41,6 @@ int main(){
     Texture2D fundo2 = LoadTexture("Assets/espaco.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
 
-    //a partir daqui tudo novo:
     Estado estado= MENU;
         while (!WindowShouldClose()) {
         UpdateMusicStream(trilha);
@@ -80,8 +79,10 @@ int main(){
                 if(Pontos <= 2){
 
                     DrawTexture(fundo1, 0, 0, WHITE);
+                    IniciaBarreiras1(&jogo);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
+                        DesenhaBarreiras1(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -96,7 +97,7 @@ int main(){
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
                         ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)) {
+                        if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
                             PlaySound(somMorrer1);
                             gameOver = 0;
                         }
