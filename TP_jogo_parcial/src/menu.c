@@ -21,7 +21,7 @@ void desenhaTelaNome(char *nomeJogador, int *tamanho) {
     //desenha na tela o "digite seu nomme" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
 
     DrawText("Digite seu nome:", 215, 100, 30, BLACK);
-    DrawText(nomeJogador, 250, 150, 30, BLUE);
+    DrawText(nomeJogador, 250, 150, 30, VIOLET);
 
     //Isso aqui é o loop de coleta das letras a partir da pressão nas teclas:
     int tecla = GetCharPressed();
@@ -76,4 +76,5 @@ void desenhaTelaRanking() {
 
     DrawText("Pressione ENTER para voltar", 200, 550, 20, GRAY);
 }
+
 
