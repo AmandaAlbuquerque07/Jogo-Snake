@@ -24,12 +24,13 @@ int main(){
     SetTargetFPS(50);
     srand(time(NULL));
 
-    Texture2D maca = LoadTexture("assets/maca.png"); // carrega as imagens
-    Texture2D fundo = LoadTexture("assets/GramaFundo.jpeg");
+    Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
+    Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
+    Texture2D fundo2 = LoadTexture("Assets/Fundo2.jpeg");
 
     //a partir daqui tudo novo:
     Estado estado= MENU;
-     while (!WindowShouldClose()) {
+    while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -52,25 +53,49 @@ int main(){
                 break;
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
-                DrawTexture(fundo, 0, 0, WHITE);
-                if (gameOver) {
-                    DesenhaJogo(&jogo, maca);
-                    AtualizaRodada(&jogo);
+                if(Pontos <= 2){
+                    DrawTexture(fundo1, 0, 0, WHITE);
+                    if (gameOver) {
+                        DesenhaJogo(&jogo, maca);
+                        AtualizaRodada(&jogo);
 
-                    if (ColisaoFood(&jogo)) {
-                        IniciaFood(&jogo);
-                        AumentaSnake(&jogo);
-                        Pontos++; //atualiza pontuação
-                    }
+                        if (ColisaoFood(&jogo)) {
+                            IniciaFood(&jogo);
+                            AumentaSnake(&jogo);
+                            Pontos++; //atualiza pontuação
+                        }
 
-                    //mostra pontuação:
-                    sprintf(PontoNaTela, "Score: %d", Pontos);
-                    DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                        //mostra pontuação:
+                        sprintf(PontoNaTela, "Score: %d", Pontos);
+                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                    if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
-                        gameOver = 0;
-                    }
-                } 
+                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                            gameOver = 0;
+                        }
+                    } 
+
+                }else if(Pontos > 2){
+
+                    DrawTexture(fundo2, 0, 0, WHITE);
+                    if (gameOver) {
+                        DesenhaJogo(&jogo, maca);
+                        AtualizaRodada(&jogo);
+
+                        if (ColisaoFood(&jogo)) {
+                            IniciaFood(&jogo);
+                            AumentaSnake(&jogo);
+                            Pontos++; //atualiza pontuação
+                        }
+
+                        //mostra pontuação:
+                        sprintf(PontoNaTela, "Score: %d", Pontos);
+                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
+
+                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                            gameOver = 0;
+                        }
+                    } 
+                }
                 
                 else { //quando o jogador perde:
                     atualizarRanking("ranking.txt", Nome, Pontos);
@@ -95,7 +120,8 @@ int main(){
 
 
     UnloadTexture(maca); // libera as texturas
-    UnloadTexture(fundo);
+    UnloadTexture(fundo1);
+    UnloadTexture(fundo2);
     FreeLista(&jogo.snake); 
     CloseWindow();
     return 0;
