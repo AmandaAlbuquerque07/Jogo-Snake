@@ -50,13 +50,11 @@ int main(){
 
     Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
-    Texture2D fundo2 = LoadTexture("Assets/espaco.png");
+    Texture2D fundo2 = LoadTexture("Assets/espaco1.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
-
-    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
-    Texture2D corpo = LoadTexture("Assets/corpo.png");
-    Texture2D rabo = LoadTexture("Assets/rabo.png");
-
+    Texture2D pedras = LoadTexture("Assets/pedras.png");
+    Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
+    Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
 
     Estado estado= MENU;
         while (!WindowShouldClose()) {
@@ -115,8 +113,8 @@ int main(){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
-                        DesenhaBarreiras1(&jogo);
+                        DesenhaJogo(&jogo, maca);
+                        DesenhaBarreiras1(&jogo, pedras, pedras1, pedras2);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -155,7 +153,7 @@ int main(){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo, maca);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -193,7 +191,7 @@ int main(){
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo, maca);
                         DesenhaBarreiras3(&jogo);
                         AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
@@ -254,10 +252,6 @@ int main(){
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
-
-    UnloadTexture(cabeca);
-    UnloadTexture(corpo);
-    UnloadTexture(rabo);
 
     FreeLista(&jogo.snake); 
 
