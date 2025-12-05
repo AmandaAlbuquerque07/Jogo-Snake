@@ -6,12 +6,6 @@
 #include "listacobra.h"
 #define TAMANHO_CELULA 40
 
-#define CIMA    0
-#define DIREITA 1
-#define BAIXO   2
-#define ESQUERDA 3
-
-
 
 void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -75,10 +69,6 @@ void IniciaBordas(Jogo *j){
     j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
 }
 
-void IniciaBarreiras1(Jogo *j){
-    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 240};
-    j->barreiras[1].pos = (Rectangle) {LARGURA - 130, ALTURA-490, 40, 240};
-}
 
 void IniciaFood(Jogo *j){
     int colisao;
@@ -98,7 +88,7 @@ void IniciaFood(Jogo *j){
                 break;
             }
             aux = aux->Prox;
-        }
+        } 
         if(colisao == 0){
             for(int i=0; i<10; i++){
                 if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
@@ -122,6 +112,7 @@ void IniciaJogo(Jogo *j){
 
 
 void DesenhaSnake(Jogo *j) {
+
     SnakeApontador k = j->snake.Cabeca;
     Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
@@ -175,61 +166,77 @@ void DesenhaFood(Jogo *j, Texture2D img){
     );
 }
 
-void DesenhaBarreiras1(Jogo *j){
+void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2){
     //Desenha as barreiras nas bordas
     for (int i = 0; i < 2; i++){
         DrawRectangleRec(j->barreiras[i].pos, WHITE);
     }
 }
 
-void DesenhaBarreiras3(Jogo *j){
-    //Desenha as barreiras nas bordas
-    for (int i = 0; i < 2; i++){
-        DrawRectangleRec(j->barreiras[i].pos, WHITE);
-    }
+
+
+void DesenhaBarreiras3(Jogo *j) {
+
+    Texture2D tubaraoD = LoadTexture("Assets/tubarao2.png");
+    Texture2D tubaraoE = LoadTexture("Assets/tubarao1.png");
+
+        DrawTexturePro(
+            tubaraoD,
+            (Rectangle){
+                0,
+                0,
+                tubaraoD.width,
+                tubaraoD.height
+            }, // imagem inteira
+
+            (Rectangle){
+                j->barreiras[0].pos.x,
+                j->barreiras[0].pos.y,
+                160,      
+                80
+            }, // onde desenhar
+
+            (Vector2){0, 0},   // origem
+            0.0f,              // rotação
+            WHITE
+        );
+        DrawTexturePro(
+            tubaraoE,
+            (Rectangle){
+                0,
+                0,
+                tubaraoE.width,
+                tubaraoE.height
+            }, // imagem inteira
+
+            (Rectangle){
+                j->barreiras[1].pos.x,
+                j->barreiras[1].pos.y,
+                160,      
+                80
+            }, // onde desenhar
+
+            (Vector2){0, 0},   // origem
+            0.0f,              // rotação
+            WHITE
+        );
+        /*Parte da Amanda:
+        void DesenhaBarreiras3(Jogo *j){
+        //Desenha as barreiras nas bordas:
+            for (int i = 0; i < 2; i++){
+            DrawRectangleRec(j->barreiras[i].pos, WHITE);
+            }
+        }   
+        */
+    
 }
 
-// Direção -> ângulo (ajuste se seu sprite "olha" para outro eixo por padrão)
-float DirecaoParaAngulo(int direcao) {
-    switch (direcao) {
-        case CIMA:     return 0.0f;
-        case DIREITA:  return 90.0f;
-        case BAIXO:    return 180.0f;
-        case ESQUERDA: return 270.0f;
-        default:       return 0.0f;
-    }
-}
 
-void DesenhaJogo(Jogo *j, Texture2D maca,Texture2D texCabeca, Texture2D texCorpo, Texture2D texRabo) {
+
+void DesenhaJogo(Jogo *j, Texture2D maca){
+    //DesenhaBordas(j);
+    DesenhaSnake(j);
     DesenhaFood(j, maca);
-
-    // percorre a cobra e desenha cada quadradinho
-    CelulaSnake *atual = j->snake.Cabeca;
-    while (atual != NULL) {
-        Rectangle src;
-        Rectangle destino = atual->body.pos;
-        Vector2 origem = { destino.width / 2.0f, destino.height / 2.0f };
-
-        if (atual == j->snake.Cabeca) {
-            // CABEÇA: roda conforme a direção da setinha pressionada
-            float anguloCabeca = DirecaoParaAngulo(atual->body.direcao);
-            src = (Rectangle){ 0, 0, (float)texCabeca.width, (float)texCabeca.height };
-            DrawTexturePro(texCabeca, src, destino, origem, anguloCabeca, WHITE);
-
-        } else if (atual->Prox == NULL) {
-            // RABO: roda para o sentido oposto da cabeça!
-            float anguloCabeca = DirecaoParaAngulo(j->snake.Cabeca->body.direcao);
-            float anguloRabo = fmod(anguloCabeca + 180.0f, 360.0f); // oposto
-            src = (Rectangle){ 0, 0, (float)texRabo.width, (float)texRabo.height };
-            DrawTexturePro(texRabo, src, destino, origem, anguloRabo, WHITE);
-
-        } else {
-            // CORPO: não roda, desenha fixo, colocamos ele quadrado :(
-            src = (Rectangle){ 0, 0, (float)texCorpo.width, (float)texCorpo.height };
-            DrawTexturePro(texCorpo, src, destino, origem, 0.0f, WHITE);
-        }
-        atual = atual->Prox;
-    }
 }
 
 void AtualizaDirecao(Jogo *j){
@@ -297,9 +304,11 @@ void AtualizaBarreiras3(Jogo *j){
     if (!iniciado){
         // Barreira 0: direita → esquerda
         j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 530, 160, 80};
+        j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 530, 160, 80};
         j->barreiras[0].velocidade = -3;
 
         // Barreira 1: esquerda → direita
+        j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 250, 160, 80};
         j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 250, 160, 80};
         j->barreiras[1].velocidade = 3;
 
@@ -323,14 +332,6 @@ void AtualizaBarreiras3(Jogo *j){
 }
 
 void AtualizaRodada(Jogo *j){
-
-    if (IsKeyPressed(KEY_UP))    j->snake.Cabeca->body.direcao = CIMA;
-    if (IsKeyPressed(KEY_DOWN))  j->snake.Cabeca->body.direcao = BAIXO;
-    if (IsKeyPressed(KEY_LEFT))  j->snake.Cabeca->body.direcao = ESQUERDA;
-    if (IsKeyPressed(KEY_RIGHT)) j->snake.Cabeca->body.direcao = DIREITA;
-
-   
-
     AtualizaDirecao(j);
     if (GetTime() - j->tempo > TEMPO){
         AtualizaPosSnake(j);
@@ -355,6 +356,23 @@ int ColisaoBarreiras1(Jogo *j){
         return 0;
     }
 }
+
+int ColisaoBarreiras3(Jogo *j){
+    SnakeApontador aux = j->snake.Cabeca;
+
+    // Passa por TODOS os segmentos da cobra
+    while (aux != NULL){
+        for (int i = 0; i < 2; i++){    // suas 2 barreiras móveis
+            if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
+                return 1;   // bateu → morre
+            }
+        }
+        aux = aux->Prox;
+    }
+
+    return 0; // Não colidiu
+}
+
 
 void ColisaoBordas(Jogo *j) {
     // Se sair pela esquerda, reaparece na direita
