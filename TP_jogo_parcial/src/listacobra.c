@@ -5,6 +5,8 @@
 #include <time.h>
 #include "listacobra.h"
 
+
+
 void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     Snake->Cauda = Snake->Cabeca;
@@ -14,6 +16,9 @@ void FSVazia(ListaSnake *Snake){
 
 void IniciaSnake(Jogo *j){
     FSVazia(&j->snake); //Cria uma lista vazia.
+
+    Texture2D cabeca = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/cabeca.png");
+    Texture2D rabo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/rabo.png");
     
     //Cria a cauda:
     j->snake.Cabeca->Prox = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -22,15 +27,16 @@ void IniciaSnake(Jogo *j){
 
     //Cabeça:
     j->snake.Cabeca->body.pos = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -10, STD_SIZE_X, STD_SIZE_Y};
-    //posição do código base para início
+    //posição inicial
     j->snake.Cabeca->body.direcao = 0;
-    j->snake.Cabeca->body.color = SNAKE_COLOR;
+    j->snake.Cabeca->body.color = cabeca;
+
 
     //Cauda (logo atrás da cabeça)
     j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
 
     j->snake.Cauda->body.direcao = 0;
-    j->snake.Cauda->body.color = SNAKE_COLOR;
+    j->snake.Cauda->body.color = rabo;
 
     j->snake.dirX = 0;
     j->snake.dirY = -1; // começa subindo
@@ -38,11 +44,12 @@ void IniciaSnake(Jogo *j){
 }
 
 void AumentaSnake(Jogo *j){
+    Texture2D corpo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/corpo.png");
     SnakeApontador novo = (SnakeApontador)malloc(sizeof(CelulaSnake));
 
     novo->body.pos = j->snake.Cabeca->Prox->body.pos; 
     novo->body.direcao = j->snake.Cabeca->Prox->body.direcao;
-    novo->body.color = SNAKE_COLOR;
+    novo->body.color = corpo;
 
     //Insere na Lista na primeira posição logo após a cabeça:
     novo->Prox = j->snake.Cabeca->Prox;
@@ -94,13 +101,48 @@ void IniciaJogo(Jogo *j){
     j->tempo = GetTime();
 }
 
+
 void DesenhaSnake(Jogo *j) {
-    SnakeApontador aux = j->snake.Cabeca;
-    while(aux != NULL) {
-        DrawRectangleRec(aux->body.pos, aux->body.color);
+
+    SnakeApontador k = j->snake.Cabeca;
+    Texture2D cabeca = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/cabeca.png");
+    DrawTexturePro(
+        cabeca,
+        (Rectangle){0, 0, k->body.color.width, k->body.color.height}, //imagem
+        (Rectangle){k->body.pos.x, k->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
+        (Vector2){0, 0}, //origem
+        0.0f, //rotação?
+        WHITE
+        );
+
+    SnakeApontador aux = j->snake.Cabeca->Prox;
+    Texture2D corpo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/corpo.png");
+    aux->body.color=corpo;
+
+    while(aux->Prox != NULL) {
+        DrawTexturePro(
+        aux->body.color,
+        (Rectangle){0, 0, aux->body.color.width, aux->body.color.height}, //imagem
+        (Rectangle){aux->body.pos.x, aux->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
+        (Vector2){0, 0}, //origem
+        0.0f, //rotação?
+        WHITE
+        );
         //função da raylib
+
         aux = aux->Prox;
     }
+
+    SnakeApontador i = j->snake.Cauda;
+    Texture2D rabo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/rabo.png");
+    DrawTexturePro(
+        rabo,
+        (Rectangle){0, 0, i->body.color.width, i->body.color.height}, //imagem
+        (Rectangle){i->body.pos.x, i->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
+        (Vector2){0, 0}, //origem
+        0.0f, //rotação?
+        WHITE
+        );
 }
 
 void DesenhaFood(Jogo *j, Texture2D img){
