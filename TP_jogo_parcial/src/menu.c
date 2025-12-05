@@ -17,6 +17,7 @@ void desenhaMenuPrincipal() {
 
 
 void desenhaTelaNome(char *nomeJogador, int *tamanho) {
+    ClearBackground(SKYBLUE);
     //desenha na tela o "digite seu nomme" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
 
     DrawText("Digite seu nome:", 215, 100, 30, BLACK);
@@ -48,6 +49,7 @@ void desenhaTelaNome(char *nomeJogador, int *tamanho) {
 
 
 void desenhaTelaRanking() {
+    ClearBackground(SKYBLUE);
     DrawText("RANKING", 250, 50, 40, BLACK);
 
     //abre pra ler:
@@ -74,3 +76,4 @@ void desenhaTelaRanking() {
 
     DrawText("Pressione ENTER para voltar", 200, 550, 20, GRAY);
 }
+
