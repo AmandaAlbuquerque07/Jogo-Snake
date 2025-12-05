@@ -5,9 +5,18 @@
 #include <time.h>
 #include "listacobra.h"
 
+#include "ranking.h"
+#include "menu.h"
+
+int Pontos;
+char Nome[50];
+
 int main(){
     Jogo jogo;
-    int gameOver = 10;
+    int gameOver = 1;
+    Pontos=0;
+    char PontoNaTela[20];
+    int tamanhoNome=0;
 
 
     //Cria a janela do jogo;
@@ -15,42 +24,79 @@ int main(){
     SetTargetFPS(50);
     srand(time(NULL));
 
-    Texture2D maca = LoadTexture("maça.png"); // carrega a imagem
-    Texture2D fundo = LoadTexture("GramaFundo.jpeg");
+    Texture2D maca = LoadTexture("assets/maca.png"); // carrega as imagens
+    Texture2D fundo = LoadTexture("assets/GramaFundo.jpeg");
 
-    IniciaJogo(&jogo);
-
-    while (!WindowShouldClose()){ //fecha se a tecla esc for precionada
+    //a partir daqui tudo novo:
+    Estado estado= MENU;
+     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawTexture(fundo, 0, 0, WHITE);
-        if (gameOver){
-            DesenhaJogo(&jogo, maca);
-            AtualizaRodada(&jogo);
-            if (ColisaoFood(&jogo)){
-                IniciaFood(&jogo);
-                AumentaSnake(&jogo);
-            }
-            if (ColisaoBordas(&jogo)){
-                gameOver=0;
-            }
-            if (ColisaoSnake(&jogo)){
-                gameOver=0;
-            }
-        } else {
-            DrawText("FIM DE JOGO", 200, 200, 40, WHITE);
-            DrawText("Para reiniciar aperte Enter", 110, 400, 30, WHITE);
-            if (IsKeyPressed(KEY_ENTER)){
-                IniciaJogo(&jogo);
-                gameOver = 1;
-            }
+
+        switch (estado) { //determina o que fazer em cada estado do jogo:
+            case MENU:
+                desenhaMenuPrincipal();
+                if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
+                if (IsKeyPressed(KEY_TWO)) estado = NOME; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
+                if (IsKeyPressed(KEY_ESCAPE)) CloseWindow();//fecha a tela com esc;
+                break;
+
+            case NOME:
+                desenhaTelaNome(Nome, &tamanhoNome); //recebe o nome.
+                if (IsKeyPressed(KEY_ENTER) && tamanhoNome > 0) { //começa o jogo!
+                    IniciaJogo(&jogo);
+                    Pontos = 0;
+                    gameOver = 1;
+                    estado = JOGO;
+                }
+                break;
+
+            case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
+                DrawTexture(fundo, 0, 0, WHITE);
+                if (gameOver) {
+                    DesenhaJogo(&jogo, maca);
+                    AtualizaRodada(&jogo);
+
+                    if (ColisaoFood(&jogo)) {
+                        IniciaFood(&jogo);
+                        AumentaSnake(&jogo);
+                        Pontos++; //atualiza pontuação
+                    }
+
+                    //mostra pontuação:
+                    sprintf(PontoNaTela, "Score: %d", Pontos);
+                    DrawText(PontoNaTela, 10, 10, 30, WHITE);
+
+                    if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                        gameOver = 0;
+                    }
+                } 
+                
+                else { //quando o jogador perde:
+                    atualizarRanking("ranking.txt", Nome, Pontos);
+                    DrawText("FIM DE JOGO", 200, 200, 40, RED);
+                    DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    if (IsKeyPressed(KEY_ENTER)) {                                      
+                        estado = MENU;
+                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                        tamanhoNome = 0;
+                    }
+                }
+                break;
+
+            case RANKING:
+                desenhaTelaRanking();
+                if (IsKeyPressed(KEY_ESCAPE)) estado = MENU;
+                break;
         }
+
         EndDrawing();
     }
 
 
-    UnloadTexture(maca); // libera a textura
-    FreeLista(&jogo.snake); //ADICIONARR
+    UnloadTexture(maca); // libera as texturas
+    UnloadTexture(fundo);
+    FreeLista(&jogo.snake); 
     CloseWindow();
     return 0;
 }
