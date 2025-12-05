@@ -17,7 +17,8 @@ int main(){
     Pontos=0;
     char PontoNaTela[20];
     int tamanhoNome=0;
-
+    jogo.barreiras[0].inicia = 0;
+    jogo.barreiras[1].inicia = 0;
 
     //Cria a janela do jogo;
     InitWindow(LARGURA, ALTURA, "Snake Game");
@@ -52,9 +53,11 @@ int main(){
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/espaco1.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
+
     Texture2D pedras = LoadTexture("Assets/pedras.png");
     Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
     Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
+
 
     Estado estado= MENU;
         while (!WindowShouldClose()) {
@@ -104,7 +107,7 @@ int main(){
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
 
-                if(Pontos <= 2){
+                if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -145,7 +148,7 @@ int main(){
                         }
                     } 
 
-                }else if(Pontos > 2 && Pontos < 5){
+                }else if(Pontos > 1 && Pontos < 3){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -184,7 +187,7 @@ int main(){
                         }
                     }
                 
-                }else if(Pontos >= 5){
+                }else if(Pontos >= 3){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -208,7 +211,7 @@ int main(){
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
                         ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)) {
+                        if (ColisaoSnake(&jogo) || ColisaoBarreiras3(&jogo)) {
                             PlaySound(somMorrer3);
                             gameOver = 0;
                         }
@@ -221,6 +224,8 @@ int main(){
                             estado = MENU;
                             Nome[0] = '\0'; // limpa o nome pra próxima partida!
                             tamanhoNome = 0;
+                            jogo.barreiras[0].inicia = 0;
+                            jogo.barreiras[1].inicia = 0;
                         }
                     } 
                 }
@@ -252,6 +257,10 @@ int main(){
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
+
+    UnloadTexture(pedras);
+    UnloadTexture(pedras1);
+    UnloadTexture(pedras2);
 
     FreeLista(&jogo.snake); 
 
