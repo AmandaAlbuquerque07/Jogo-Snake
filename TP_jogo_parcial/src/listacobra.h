@@ -67,8 +67,9 @@ void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição
 void DesenhaBordas(Jogo *j);
 void DesenhaBarreiras1(Jogo *j);
 void DesenhaBarreiras3(Jogo *j);
-void DesenhaJogo(Jogo *j, Texture2D maca);
+void DesenhaJogo(Jogo *j, Texture2D maca, Texture2D texCabeca, Texture2D texCorpo, Texture2D texRabo);
 void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
+float DirecaoParaAngulo(int direcao);
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
@@ -80,4 +81,3 @@ int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 
 #endif
-
