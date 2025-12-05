@@ -28,6 +28,7 @@ int main(){
     Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/espaco.png");
+    Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
 
     //a partir daqui tudo novo:
     Estado estado= MENU;
@@ -94,7 +95,7 @@ int main(){
                         }
                     } 
 
-                }else if(Pontos > 2){
+                }else if(Pontos > 2 && Pontos < 5){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
@@ -115,15 +116,47 @@ int main(){
                             gameOver = 0;
                         }
                     }else { //quando o jogador perde:
-                    DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                    DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
-                    if (IsKeyPressed(KEY_ENTER)) {
-                        atualizarRanking("ranking.txt", Nome, Pontos);                                      
-                        estado = MENU;
-                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                        tamanhoNome = 0;
+                        DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                        DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            atualizarRanking("ranking.txt", Nome, Pontos);                                      
+                            estado = MENU;
+                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                            tamanhoNome = 0;
+                        }
                     }
-                }
+                
+                }else if(Pontos >= 5){
+
+                    DrawTexture(fundo3, 0, 0, WHITE);
+                    if (gameOver) {
+                        DesenhaJogo(&jogo, maca);
+                        AtualizaRodada(&jogo);
+
+                        if (ColisaoFood(&jogo)) {
+                            IniciaFood(&jogo);
+                            AumentaSnake(&jogo);
+                            Pontos++; //atualiza pontuação
+                        }
+
+                        //mostra pontuação:
+                        sprintf(PontoNaTela, "Score: %d", Pontos);
+                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
+
+                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                            gameOver = 0;
+                        }
+
+                        }else{
+                        DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                        DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                        if (IsKeyPressed(KEY_ENTER)) { 
+                            atualizarRanking("ranking.txt", Nome, Pontos);                                     
+                            estado = MENU;
+                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                            tamanhoNome = 0;
+                        }
+                    } 
                 }
                 break;
                 
@@ -144,6 +177,7 @@ int main(){
     UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
+    UnloadTexture(fundo3);
     FreeLista(&jogo.snake); 
     CloseWindow();
     return 0;
