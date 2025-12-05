@@ -8,6 +8,7 @@
 #define MAX_TAM 50
 
 void desenhaMenuPrincipal() {
+    ClearBackground(SKYBLUE);
     DrawText("MENU PRINCIPAL", 165, 200, 40, BLACK);
     DrawText("1 - Ranking", 225, 300, 30, RED);
     DrawText("2 - Jogar", 225, 350, 30, VIOLET);
@@ -71,5 +72,5 @@ void desenhaTelaRanking() {
         DrawText("Ranking vazio!", 250, 150, 30, RED);
     }
 
-    DrawText("Pressione ESC para voltar", 200, 550, 20, GRAY);
+    DrawText("Pressione ENTER para voltar", 200, 550, 20, GRAY);
 }
