@@ -271,3 +271,16 @@ int ColisaoSnake(Jogo *j){
     }
     return 0; // sem colisão
 }
+
+void FreeLista(ListaSnake *Snake){
+    SnakeApontador atual = Snake->Cabeca;
+    SnakeApontador aux;
+    while(atual != NULL){
+        aux = atual;
+        atual = atual->Prox;
+        UnloadTexture(aux->body.color);
+        free(aux);
+        
+    }
+    Snake->Comprimento = 0;
+}
