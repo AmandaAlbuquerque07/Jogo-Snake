@@ -21,9 +21,20 @@ int main(){
 
     //Cria a janela do jogo;
     InitWindow(LARGURA, ALTURA, "Snake Game");
+
+    InitAudioDevice();   // inicializa o sistema de som
+    Music trilha = LoadMusicStream("Assets/trilha2.mp3");
+    SetMusicVolume(trilha, 0.5f);
+    PlayMusicStream(trilha);
+
     SetExitKey(KEY_NULL);//pra não dar o bug do esc sempre fechar o jogo.
     SetTargetFPS(50);
     srand(time(NULL));
+
+    Sound somComer = LoadSound("Assets/somComer.mp3");
+    Sound somMorrer1 = LoadSound("Assets/somMorrer1.mp3");
+    Sound somMorrer2 = LoadSound("Assets/somMorrer2.mp3");
+    Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
     Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
@@ -33,6 +44,8 @@ int main(){
     //a partir daqui tudo novo:
     Estado estado= MENU;
         while (!WindowShouldClose()) {
+        UpdateMusicStream(trilha);
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -65,12 +78,14 @@ int main(){
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
 
                 if(Pontos <= 2){
+
                     DrawTexture(fundo1, 0, 0, WHITE);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
+                            PlaySound(somComer);
                             IniciaFood(&jogo);
                             AumentaSnake(&jogo);
                             Pontos++; //atualiza pontuação
@@ -80,7 +95,9 @@ int main(){
                         sprintf(PontoNaTela, "Score: %d", Pontos);
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                        ColisaoBordas(&jogo);
+                        if (ColisaoSnake(&jogo)) {
+                            PlaySound(somMorrer1);
                             gameOver = 0;
                         }
 
@@ -103,6 +120,7 @@ int main(){
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
+                            PlaySound(somComer);
                             IniciaFood(&jogo);
                             AumentaSnake(&jogo);
                             Pontos++; //atualiza pontuação
@@ -112,9 +130,12 @@ int main(){
                         sprintf(PontoNaTela, "Score: %d", Pontos);
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                        ColisaoBordas(&jogo);
+                        if (ColisaoSnake(&jogo)) {
+                            PlaySound(somMorrer2);
                             gameOver = 0;
                         }
+
                     }else { //quando o jogador perde:
                         DrawText("FIM DE JOGO", 150, 200, 60, RED);
                         DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
@@ -134,6 +155,7 @@ int main(){
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
+                            PlaySound(somComer);
                             IniciaFood(&jogo);
                             AumentaSnake(&jogo);
                             Pontos++; //atualiza pontuação
@@ -143,7 +165,9 @@ int main(){
                         sprintf(PontoNaTela, "Score: %d", Pontos);
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                        if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
+                        ColisaoBordas(&jogo);
+                        if (ColisaoSnake(&jogo)) {
+                            PlaySound(somMorrer3);
                             gameOver = 0;
                         }
 
@@ -160,7 +184,6 @@ int main(){
                 }
                 break;
                 
-                
 
             case RANKING:
                 desenhaTelaRanking();
@@ -173,12 +196,21 @@ int main(){
         EndDrawing();
     }
 
+    UnloadSound(somComer);//libera audios
+    UnloadSound(somMorrer1);
+    UnloadSound(somMorrer2);
+    UnloadSound(somMorrer3);
 
     UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
+
     FreeLista(&jogo.snake); 
+
+    UnloadMusicStream(trilha);
+    CloseAudioDevice();
+
     CloseWindow();
     return 0;
 }
