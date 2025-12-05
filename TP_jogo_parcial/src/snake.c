@@ -23,9 +23,16 @@ int main(){
     InitWindow(LARGURA, ALTURA, "Snake Game");
 
     InitAudioDevice();   // inicializa o sistema de som
-    Music trilha = LoadMusicStream("Assets/trilha2.mp3");
-    SetMusicVolume(trilha, 0.5f);
-    PlayMusicStream(trilha);
+    Music musmenu = LoadMusicStream("Assets/musmenu.mp3");
+    Music trilha1 = LoadMusicStream("Assets/trilha1.mp3");
+    Music trilha2 = LoadMusicStream("Assets/trilha2.mp3");
+    Music trilha3 = LoadMusicStream("Assets/trilha3.mp3");
+
+    SetMusicVolume(musmenu, 0.5f);
+    SetMusicVolume(trilha1, 0.5f);
+    SetMusicVolume(trilha2, 0.5f);
+    SetMusicVolume(trilha3, 0.5f);
+
 
     SetExitKey(KEY_NULL);//pra não dar o bug do esc sempre fechar o jogo.
     SetTargetFPS(50);
@@ -43,13 +50,21 @@ int main(){
 
     Estado estado= MENU;
         while (!WindowShouldClose()) {
-        UpdateMusicStream(trilha);
+        UpdateMusicStream(musmenu);  
+        UpdateMusicStream(trilha1);
+        UpdateMusicStream(trilha2);
+        UpdateMusicStream(trilha3);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
         switch (estado) { //determina o que fazer em cada estado do jogo:
             case MENU:
+                PlayMusicStream(musmenu);
+                StopMusicStream(trilha1);
+                StopMusicStream(trilha2);
+                StopMusicStream(trilha3);
+
                 desenhaMenuPrincipal();
                 if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
                 if (IsKeyPressed(KEY_TWO)) estado = NOME; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
@@ -59,6 +74,11 @@ int main(){
                 break;
 
             case NOME:
+                PlayMusicStream(musmenu);
+                StopMusicStream(trilha1);
+                StopMusicStream(trilha2);
+                StopMusicStream(trilha3);
+
                 desenhaTelaNome(Nome, &tamanhoNome); //recebe o nome.
                 if (IsKeyPressed(KEY_ENTER) && tamanhoNome > 0) { //começa o jogo!
                     IniciaJogo(&jogo);
@@ -77,6 +97,10 @@ int main(){
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
 
                 if(Pontos <= 2){
+                    StopMusicStream(musmenu);
+                    PlayMusicStream(trilha1);
+                    StopMusicStream(trilha2);
+                    StopMusicStream(trilha3);
 
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
@@ -114,6 +138,10 @@ int main(){
                     } 
 
                 }else if(Pontos > 2 && Pontos < 5){
+                    StopMusicStream(musmenu);
+                    StopMusicStream(trilha1);
+                    PlayMusicStream(trilha2);
+                    StopMusicStream(trilha3);
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
@@ -149,7 +177,10 @@ int main(){
                     }
                 
                 }else if(Pontos >= 5){
-
+                    StopMusicStream(musmenu);
+                    StopMusicStream(trilha1);
+                    StopMusicStream(trilha2);
+                    PlayMusicStream(trilha3);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
@@ -187,6 +218,11 @@ int main(){
                 
 
             case RANKING:
+                StopMusicStream(musmenu);
+                PlayMusicStream(trilha1);
+                StopMusicStream(trilha2);
+                StopMusicStream(trilha3);
+
                 desenhaTelaRanking();
                 if (IsKeyPressed(KEY_ESCAPE)){
                     estado = MENU;
@@ -209,7 +245,10 @@ int main(){
 
     FreeLista(&jogo.snake); 
 
-    UnloadMusicStream(trilha);
+    UnloadMusicStream(musmenu);
+    UnloadMusicStream(trilha1);
+    UnloadMusicStream(trilha2);
+    UnloadMusicStream(trilha3);
     CloseAudioDevice();
 
     CloseWindow();
