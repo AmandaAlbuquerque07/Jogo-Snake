@@ -17,8 +17,8 @@ void FSVazia(ListaSnake *Snake){
 void IniciaSnake(Jogo *j){
     FSVazia(&j->snake); //Cria uma lista vazia.
 
-    Texture2D cabeca = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/cabeca.png");
-    Texture2D rabo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/rabo.png");
+    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
+    Texture2D rabo = LoadTexture("Assets/rabo.png");
     
     //Cria a cauda:
     j->snake.Cabeca->Prox = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -44,7 +44,7 @@ void IniciaSnake(Jogo *j){
 }
 
 void AumentaSnake(Jogo *j){
-    Texture2D corpo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/corpo.png");
+    Texture2D corpo = LoadTexture("Assets/corpo.png");
     SnakeApontador novo = (SnakeApontador)malloc(sizeof(CelulaSnake));
 
     novo->body.pos = j->snake.Cabeca->Prox->body.pos; 
@@ -105,7 +105,7 @@ void IniciaJogo(Jogo *j){
 void DesenhaSnake(Jogo *j) {
 
     SnakeApontador k = j->snake.Cabeca;
-    Texture2D cabeca = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/cabeca.png");
+    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
         cabeca,
         (Rectangle){0, 0, k->body.color.width, k->body.color.height}, //imagem
@@ -116,7 +116,7 @@ void DesenhaSnake(Jogo *j) {
         );
 
     SnakeApontador aux = j->snake.Cabeca->Prox;
-    Texture2D corpo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/corpo.png");
+    Texture2D corpo = LoadTexture("Assets/corpo.png");
     aux->body.color=corpo;
 
     while(aux->Prox != NULL) {
@@ -134,7 +134,7 @@ void DesenhaSnake(Jogo *j) {
     }
 
     SnakeApontador i = j->snake.Cauda;
-    Texture2D rabo = LoadTexture("C:/Users/menez/OneDrive/Documentos/2025-2/Lab II/Jogo/tp_jogo_parcial/assets/rabo.png");
+    Texture2D rabo = LoadTexture("Assets/rabo.png");
     DrawTexturePro(
         rabo,
         (Rectangle){0, 0, i->body.color.width, i->body.color.height}, //imagem
@@ -284,3 +284,4 @@ void FreeLista(ListaSnake *Snake){
     }
     Snake->Comprimento = 0;
 }
+
