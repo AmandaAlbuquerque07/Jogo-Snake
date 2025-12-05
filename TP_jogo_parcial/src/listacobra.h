@@ -19,6 +19,11 @@ typedef struct Food{
     Color color;
 }Food;
 
+typedef struct Barreiras{
+    Rectangle pos;
+    Color color;
+}Barreiras;
+
 //Início da Implementação da lista:
 
 typedef struct Body{
@@ -44,6 +49,7 @@ typedef struct Jogo{
     ListaSnake snake;
     Food food;
     Bordas bordas[4];
+    Barreiras barreiras[10];
     double tempo;
     double cooldown;
 }Jogo;
