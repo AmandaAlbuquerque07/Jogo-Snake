@@ -21,6 +21,7 @@ int main(){
 
     //Cria a janela do jogo;
     InitWindow(LARGURA, ALTURA, "Snake Game");
+    SetExitKey(KEY_NULL);//pra não dar o bug do esc sempre fechar o jogo.
     SetTargetFPS(50);
     srand(time(NULL));
 
@@ -30,7 +31,7 @@ int main(){
 
     //a partir daqui tudo novo:
     Estado estado= MENU;
-    while (!WindowShouldClose()) {
+        while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -39,7 +40,9 @@ int main(){
                 desenhaMenuPrincipal();
                 if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
                 if (IsKeyPressed(KEY_TWO)) estado = NOME; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
-                if (IsKeyPressed(KEY_ESCAPE)) CloseWindow();//fecha a tela com esc;
+                if (IsKeyPressed(KEY_ESCAPE)){
+                    CloseWindow();//fecha a tela com esc;
+                } 
                 break;
 
             case NOME:
@@ -50,9 +53,16 @@ int main(){
                     gameOver = 1;
                     estado = JOGO;
                 }
+                if(IsKeyPressed(KEY_ESCAPE)){
+                    estado=MENU;
+                    Nome[0]='\0';
+                    tamanhoNome=0;
+                }
                 break;
+                
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
+
                 if(Pontos <= 2){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     if (gameOver) {
@@ -72,15 +82,17 @@ int main(){
                         if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
                             gameOver = 0;
                         }
-                    }else{
-                         atualizarRanking("ranking.txt", Nome, Pontos);
-                        DrawText("FIM DE JOGO", 200, 200, 40, RED);
+
+                        }else{
+                        atualizarRanking("ranking.txt", Nome, Pontos);
+                        DrawText("FIM DE JOGO", 150, 200, 40, RED);
                         DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
                         if (IsKeyPressed(KEY_ENTER)) {                                      
                             estado = MENU;
                             Nome[0] = '\0'; // limpa o nome pra próxima partida!
                             tamanhoNome = 0;
                         }
+                        break;
                     } 
 
                 }else if(Pontos > 2){
@@ -103,22 +115,26 @@ int main(){
                         if (ColisaoBordas(&jogo) || ColisaoSnake(&jogo)) {
                             gameOver = 0;
                         }
-                    } 
-
+                    }else { //quando o jogador perde:
                     atualizarRanking("ranking.txt", Nome, Pontos);
-                    DrawText("FIM DE JOGO", 200, 200, 40, RED);
-                    DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                    DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
                     if (IsKeyPressed(KEY_ENTER)) {                                      
                         estado = MENU;
                         Nome[0] = '\0'; // limpa o nome pra próxima partida!
                         tamanhoNome = 0;
                     }
                 }
-                break;
+                    break;
+                }
+                
+                
 
             case RANKING:
                 desenhaTelaRanking();
-                if (IsKeyPressed(KEY_ESCAPE)) estado = MENU;
+                if (IsKeyPressed(KEY_ESCAPE)){
+                    estado = MENU;
+                }
                 break;
         }
 
