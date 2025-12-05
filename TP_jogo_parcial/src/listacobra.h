@@ -73,12 +73,12 @@ void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
+void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
 int ColisaoBarreiras1(Jogo *j);
+int ColisaoBarreiras3(Jogo* j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 
 #endif
-
-
