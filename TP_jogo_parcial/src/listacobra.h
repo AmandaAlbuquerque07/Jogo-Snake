@@ -23,6 +23,7 @@ typedef struct Barreiras{
     Rectangle pos;
     Color color;
     int velocidade;
+    int inicia;
 }Barreiras;
 
 //Início da Implementação da lista:
@@ -79,4 +80,5 @@ int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 
 #endif
+
 
