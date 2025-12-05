@@ -22,6 +22,7 @@ typedef struct Food{
 typedef struct Barreiras{
     Rectangle pos;
     Color color;
+    int velocidade;
 }Barreiras;
 
 //Início da Implementação da lista:
@@ -65,9 +66,11 @@ void DesenhaSnake(Jogo *j);
 void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
 void DesenhaBarreiras1(Jogo *j);
+void DesenhaBarreiras3(Jogo *j);
 void DesenhaJogo(Jogo *j, Texture2D maca);
 void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
+void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
 void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
