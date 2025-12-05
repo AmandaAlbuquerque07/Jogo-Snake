@@ -254,11 +254,11 @@ void AtualizaBarreiras3(Jogo *j){
     // Inicializa apenas uma vez
     if (!iniciado){
         // Barreira 0: direita → esquerda
-        j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 570, 160, 80};
+        j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 530, 160, 80};
         j->barreiras[0].velocidade = -3;
 
         // Barreira 1: esquerda → direita
-        j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 290, 160, 80};
+        j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 250, 160, 80};
         j->barreiras[1].velocidade = 3;
 
         iniciado = 1;
@@ -352,3 +352,4 @@ void FreeLista(ListaSnake *Snake){
     }
     Snake->Comprimento = 0;
 }
+
