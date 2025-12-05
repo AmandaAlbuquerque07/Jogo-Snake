@@ -6,6 +6,12 @@
 #include "listacobra.h"
 #define TAMANHO_CELULA 40
 
+#define CIMA    0
+#define DIREITA 1
+#define BAIXO   2
+#define ESQUERDA 3
+
+
 
 void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -116,7 +122,6 @@ void IniciaJogo(Jogo *j){
 
 
 void DesenhaSnake(Jogo *j) {
-
     SnakeApontador k = j->snake.Cabeca;
     Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
@@ -184,10 +189,47 @@ void DesenhaBarreiras3(Jogo *j){
     }
 }
 
-void DesenhaJogo(Jogo *j, Texture2D maca){
-    //DesenhaBordas(j);
-    DesenhaSnake(j);
+// Direção -> ângulo (ajuste se seu sprite "olha" para outro eixo por padrão)
+float DirecaoParaAngulo(int direcao) {
+    switch (direcao) {
+        case CIMA:     return 0.0f;
+        case DIREITA:  return 90.0f;
+        case BAIXO:    return 180.0f;
+        case ESQUERDA: return 270.0f;
+        default:       return 0.0f;
+    }
+}
+
+void DesenhaJogo(Jogo *j, Texture2D maca,Texture2D texCabeca, Texture2D texCorpo, Texture2D texRabo) {
     DesenhaFood(j, maca);
+
+    // percorre a cobra e desenha cada quadradinho
+    CelulaSnake *atual = j->snake.Cabeca;
+    while (atual != NULL) {
+        Rectangle src;
+        Rectangle destino = atual->body.pos;
+        Vector2 origem = { destino.width / 2.0f, destino.height / 2.0f };
+
+        if (atual == j->snake.Cabeca) {
+            // CABEÇA: roda conforme a direção da setinha pressionada
+            float anguloCabeca = DirecaoParaAngulo(atual->body.direcao);
+            src = (Rectangle){ 0, 0, (float)texCabeca.width, (float)texCabeca.height };
+            DrawTexturePro(texCabeca, src, destino, origem, anguloCabeca, WHITE);
+
+        } else if (atual->Prox == NULL) {
+            // RABO: roda para o sentido oposto da cabeça!
+            float anguloCabeca = DirecaoParaAngulo(j->snake.Cabeca->body.direcao);
+            float anguloRabo = fmod(anguloCabeca + 180.0f, 360.0f); // oposto
+            src = (Rectangle){ 0, 0, (float)texRabo.width, (float)texRabo.height };
+            DrawTexturePro(texRabo, src, destino, origem, anguloRabo, WHITE);
+
+        } else {
+            // CORPO: não roda, desenha fixo, colocamos ele quadrado :(
+            src = (Rectangle){ 0, 0, (float)texCorpo.width, (float)texCorpo.height };
+            DrawTexturePro(texCorpo, src, destino, origem, 0.0f, WHITE);
+        }
+        atual = atual->Prox;
+    }
 }
 
 void AtualizaDirecao(Jogo *j){
@@ -281,6 +323,14 @@ void AtualizaBarreiras3(Jogo *j){
 }
 
 void AtualizaRodada(Jogo *j){
+
+    if (IsKeyPressed(KEY_UP))    j->snake.Cabeca->body.direcao = CIMA;
+    if (IsKeyPressed(KEY_DOWN))  j->snake.Cabeca->body.direcao = BAIXO;
+    if (IsKeyPressed(KEY_LEFT))  j->snake.Cabeca->body.direcao = ESQUERDA;
+    if (IsKeyPressed(KEY_RIGHT)) j->snake.Cabeca->body.direcao = DIREITA;
+
+   
+
     AtualizaDirecao(j);
     if (GetTime() - j->tempo > TEMPO){
         AtualizaPosSnake(j);
@@ -352,4 +402,3 @@ void FreeLista(ListaSnake *Snake){
     }
     Snake->Comprimento = 0;
 }
-
