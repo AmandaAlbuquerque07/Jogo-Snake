@@ -27,7 +27,7 @@ int main(){
 
     Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
-    Texture2D fundo2 = LoadTexture("Assets/Fundo2.jpeg");
+    Texture2D fundo2 = LoadTexture("Assets/espaco.png");
 
     //a partir daqui tudo novo:
     Estado estado= MENU;
