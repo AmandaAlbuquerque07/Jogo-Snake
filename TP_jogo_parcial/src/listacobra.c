@@ -180,6 +180,7 @@ void DesenhaBarreiras1(Jogo *j){
 }
 
 void DesenhaJogo(Jogo *j, Texture2D maca){
+    //DesenhaBordas(j);
     DesenhaSnake(j);
     DesenhaFood(j, maca);
 }
