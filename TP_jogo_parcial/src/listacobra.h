@@ -58,11 +58,13 @@ void VSvazia(ListaSnake *snake);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
+void IniciaBarreiras1(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
 void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
+void DesenhaBarreiras1(Jogo *j);
 void DesenhaJogo(Jogo *j, Texture2D maca);
 void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
@@ -70,7 +72,9 @@ void AtualizaRodada(Jogo *j);
 void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
+int ColisaoBarreiras1(Jogo *j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 
 #endif
+
