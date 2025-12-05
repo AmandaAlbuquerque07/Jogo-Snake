@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "listacobra.h"
+#define TAMANHO_CELULA 40
 
 
 
@@ -103,7 +104,6 @@ void IniciaJogo(Jogo *j){
 
 
 void DesenhaSnake(Jogo *j) {
-
     SnakeApontador k = j->snake.Cabeca;
     Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
@@ -244,19 +244,27 @@ int ColisaoFood(Jogo *j){
     return 0;
 }
 
-int ColisaoBordas(Jogo *j){
-    if (CheckCollisionRecs(j->snake.Cabeca->body.pos, j->bordas[0].pos)){
-        return 1;
-    }else if(CheckCollisionRecs(j->snake.Cabeca->body.pos, j->bordas[1].pos)){
-        return 1;
-    }else if(CheckCollisionRecs(j->snake.Cabeca->body.pos, j->bordas[2].pos)){
-        return 1;
-    }else if(CheckCollisionRecs(j->snake.Cabeca->body.pos, j->bordas[3].pos)){
-        return 1;
-    }else{
-        return 0;
+void ColisaoBordas(Jogo *j) {
+    // Se sair pela esquerda, reaparece na direita
+    if (j->snake.Cabeca->body.pos.x < 0) {
+        j->snake.Cabeca->body.pos.x = LARGURA - TAMANHO_CELULA;
+    }
+    // Se sair pela direita, reaparece na esquerda
+    else if (j->snake.Cabeca->body.pos.x >= LARGURA) {
+        j->snake.Cabeca->body.pos.x = 0;
+    }
+
+    // Se sair por cima, reaparece embaixo
+    if (j->snake.Cabeca->body.pos.y < 0) {
+        j->snake.Cabeca->body.pos.y = ALTURA - TAMANHO_CELULA;
+    }
+    // Se sair por baixo, reaparece em cima
+    else if (j->snake.Cabeca->body.pos.y >= ALTURA) {
+        j->snake.Cabeca->body.pos.y = 0;
     }
 }
+
+
 
 int ColisaoSnake(Jogo *j){
     SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
@@ -284,4 +292,3 @@ void FreeLista(ListaSnake *Snake){
     }
     Snake->Comprimento = 0;
 }
-
