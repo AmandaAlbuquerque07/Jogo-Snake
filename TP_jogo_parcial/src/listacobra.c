@@ -34,6 +34,7 @@ void CarregaTexturas(Jogo *j){
     j->tex.Food = LoadTexture("Assets/maca.png");
 }
 
+
 void IniciaSnake(Jogo *j){
     //teste
     printf("Comprimento: %d\n", j->snake.Comprimento);
@@ -119,7 +120,7 @@ void IniciaBarreiras1(Jogo *j){
 
 
 void IniciaFood(Jogo *j){
-    int colisao;
+int colisao;
     do {
         colisao = 0; // assume que não há colisão
         j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
@@ -159,12 +160,14 @@ void IniciaJogo(Jogo *j){
     IniciaBordas(j);
     IniciaFood(j);
 
-    j->pendingDir = CIMA;
+    //j->pendingDir = CIMA;
     j->tempo = GetTime();
 }
 
+
+
 void DesenhaFood(Jogo *j){
-    // Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
+// Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
     DrawTexturePro(
         j->tex.Food,
         (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
@@ -175,22 +178,23 @@ void DesenhaFood(Jogo *j){
     );
 }
 
-void DesenhaBarreiras1(Jogo *j){   
+void DesenhaBarreiras1(Jogo *j){
+   
     //Desenha as barreiras do meio
     for(int i=0; i<2; i++){
         DrawTexturePro(
             j->tex.pedras,
-            (Rectangle){0, 0, j->tex.pedras.width, j->tex.pedras.height},                   
+            (Rectangle){0, 0, j->tex.pedras.width, j->tex.pedras.height},                                
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
             WHITE                                                        
         );
     }
-    //Desenha as barreiras nas bordas
+//Desenha as barreiras nas bordas
     for(int i = 2; i < 6; i++ ){
         DrawTexturePro(
-            j->tex.pedras1,
+             j->tex.pedras1,
             (Rectangle){0, 0, j->tex.pedras1.width, j->tex.pedras1.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
@@ -201,15 +205,14 @@ void DesenhaBarreiras1(Jogo *j){
     for (int i= 6; i<10; i++){
         DrawTexturePro(
             j->tex.pedras2,
-            (Rectangle){0, 0, j->tex.pedras2.width, j->tex.pedras2.height},                   
+            (Rectangle){0, 0, j->tex.pedras2.width, j->tex.pedras2.height},                                     
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
             WHITE                                                        
         );    
-    }
 }
-
+}
 
 void DesenhaBarreiras3(Jogo *j) {
     DrawTexturePro(
@@ -255,14 +258,11 @@ void DesenhaBarreiras3(Jogo *j) {
 }
 
 
-
-
-void DesenhaJogo(Jogo *j, Texture2D cabeca,Texture2D corpo,Texture2D rabo){
+void DesenhaJogo(Jogo *j){
     //DesenhaBordas(j);
-    DesenhaCobra(j, cabeca, corpo, rabo);
+    DesenhaCobra(j, j->tex.Cabeca, j->tex.Corpo, j->tex.Rabo);
     DesenhaFood(j);
 }
-
 
 void AtualizaPosSnake(Jogo *j){
     CelulaSnake *corpo = j->snake.Cabeca;
@@ -339,7 +339,7 @@ return 0;
 
 
 int ColisaoBarreiras1(Jogo *j){
-    for(int i=0; i<10; i++){
+for(int i=0; i<10; i++){
         if (CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[i].pos)){
             return 1;
         }
@@ -348,7 +348,7 @@ int ColisaoBarreiras1(Jogo *j){
 }
 
 int ColisaoBarreiras3(Jogo *j){
-    SnakeApontador aux = j->snake.Cabeca;
+   SnakeApontador aux = j->snake.Cabeca;
 
     // Passa por TODOS os segmentos da cobra
     while (aux != NULL){
@@ -359,8 +359,7 @@ int ColisaoBarreiras3(Jogo *j){
         }
         aux = aux->Prox;
     }
-
-    return 0; // Não colidiu
+return 0; // Não colidiu
 }
 
 void ColisaoBordas(Jogo *j) {
@@ -394,7 +393,6 @@ int ColisaoSnake(Jogo *j){
     SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
     float headX = j->snake.Cabeca->body.pos.x;
     float headY = j->snake.Cabeca->body.pos.y;
-
     while(aux != NULL){
         if(aux->body.pos.x == headX && aux->body.pos.y == headY){
             return 1; // Colidiu com o corpo
@@ -429,5 +427,4 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.tubaraoE);
 
     UnloadTexture(j->tex.Food);
-   
 }
