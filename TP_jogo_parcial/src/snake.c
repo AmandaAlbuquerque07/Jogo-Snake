@@ -51,15 +51,11 @@ int main(){
     Sound somMorrer2 = LoadSound("Assets/somMorrer2.mp3");
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
-    Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/espaco1.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
-
-    Texture2D pedras = LoadTexture("Assets/pedras.png");
-    Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
-    Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
-
+    CarregaTexturas(&jogo);
+    
     Texture2D cabeca = LoadTexture("Assets/cabecanovo4.png");
     Texture2D corpo = LoadTexture("Assets/corponovo4.png");
     Texture2D rabo = LoadTexture("Assets/rabonovo4.png");
@@ -122,8 +118,8 @@ int main(){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
-                        DesenhaBarreiras1(&jogo, pedras, pedras1, pedras2);
+                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
+                        DesenhaBarreiras1(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -162,7 +158,7 @@ int main(){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -200,7 +196,7 @@ int main(){
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
                         DesenhaBarreiras3(&jogo);
                         AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
@@ -259,20 +255,16 @@ int main(){
     UnloadSound(somMorrer2);
     UnloadSound(somMorrer3);
 
-    UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
-
-    UnloadTexture(pedras);
-    UnloadTexture(pedras1);
-    UnloadTexture(pedras2);
 
     UnloadTexture(cabeca);
     UnloadTexture(corpo);
     UnloadTexture(rabo);
 
     FreeLista(&jogo.snake); 
+    LiberaTexturas(&jogo);
 
     UnloadMusicStream(musmenu);
     UnloadMusicStream(trilha1);
