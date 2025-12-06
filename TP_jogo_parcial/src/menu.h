@@ -6,12 +6,14 @@
 typedef enum { 
     MENU,
     NOME,
+    TELAS,
     JOGO,
     RANKING
 } Estado;
 
 // Funções do menu
 void desenhaMenuPrincipal();
+void desenhaTelaTelas();
 void desenhaTelaNome(char *nomeJogador, int *tamanho);
 void desenhaTelaRanking();
 
