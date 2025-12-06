@@ -11,61 +11,52 @@
 #define FOOD_COLOR RED
 
 typedef struct Bordas{
-    Rectangle pos;
+Rectangle pos;
 }Bordas;
 
 typedef struct Food{
-    Rectangle pos;
-    Color color;
+Rectangle pos;
+Color color;
 }Food;
 
 typedef struct Barreiras{
-    Rectangle pos;
-    Color color;
-    int velocidade;
-    int inicia;
+Rectangle pos;
+Color color;
+int velocidade;
+int inicia;
 }Barreiras;
-
-typedef struct Texturas{
-    Texture2D Cabeca, Corpo, Rabo;
-    Texture2D pedras, pedras1, pedras2;
-    Texture2D tubaraoD ,tubaraoE;
-    Texture2D Food;
-}Texturas;
 
 //Início da Implementação da lista:
 
 typedef struct Body{
-    Rectangle pos;
-    Texture2D textura;
-    int direcao;
+Rectangle pos;
+Texture2D color;
+int direcao;
 }Body; //TipoItem
 
 typedef struct CelulaSnake * SnakeApontador;
 
 typedef struct CelulaSnake {
-    Body body;
-    SnakeApontador Prox;
+Body body;
+SnakeApontador Prox;
 } CelulaSnake; //TipoCelula
 
 typedef struct {
-    SnakeApontador Cabeca, Cauda;
-    int Comprimento;
-    int dirX, dirY;
+SnakeApontador Cabeca, Cauda;
+int Comprimento;
 }ListaSnake;
 
 typedef struct Jogo{
-    ListaSnake snake;
-    Food food;
-    Bordas bordas[4];
-    Barreiras barreiras[10];
-    Texturas tex;
-    double tempo;
-    double cooldown;
+int pendingDir; //resolver o bug de direção mantendo aqui a direção teclada
+ListaSnake snake;
+Food food;
+Bordas bordas[4];
+Barreiras barreiras[10];
+double tempo;
+double cooldown;
 }Jogo;
 
 void VSvazia(ListaSnake *snake);
-void CarregaTexturas(Jogo *j);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
@@ -73,21 +64,21 @@ void IniciaBarreiras1(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
-void DesenhaFood(Jogo *j); //Desenha uma comida em uma posição aleatória
+void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
-void DesenhaBarreiras1(Jogo *j);
+void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2);
 void DesenhaBarreiras3(Jogo *j);
-void DesenhaJogo(Jogo *j);
-void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
+void DesenhaJogo(Jogo *j, Texture2D maca, Texture2D corpo, Texture2D cabeca, Texture2D rabo);
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
+void AtualizaDirecao(Jogo *j);
+void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
 int ColisaoBarreiras1(Jogo *j);
 int ColisaoBarreiras3(Jogo* j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
-void LiberaTexturas(Jogo *j);
 
 #endif
