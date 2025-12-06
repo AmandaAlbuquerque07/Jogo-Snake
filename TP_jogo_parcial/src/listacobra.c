@@ -6,7 +6,6 @@
 #include "listacobra.h"
 #define TAMANHO_CELULA 40
 
-
 void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     Snake->Cauda = Snake->Cabeca;
@@ -14,11 +13,23 @@ void FSVazia(ListaSnake *Snake){
     Snake->Comprimento = 0;
 }
 
+void CarregaTexturas(Jogo *j){
+    j->tex.Cabeca = LoadTexture("Assets/cabeca.png");
+    j->tex.Corpo  = LoadTexture("Assets/corpo.png");
+    j->tex.Rabo   = LoadTexture("Assets/rabo.png");
+
+    j->tex.pedras    = LoadTexture("Assets/pedras.png");
+    j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
+    j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
+
+    j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
+    j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
+
+    j->tex.Food = LoadTexture("Assets/maca.png");
+}
+
 void IniciaSnake(Jogo *j){
     FSVazia(&j->snake); //Cria uma lista vazia.
-
-    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
-    Texture2D rabo = LoadTexture("Assets/rabo.png");
     
     //Cria a cauda:
     j->snake.Cabeca->Prox = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -29,14 +40,14 @@ void IniciaSnake(Jogo *j){
     j->snake.Cabeca->body.pos = (Rectangle) {LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y -10, STD_SIZE_X, STD_SIZE_Y};
     //posição inicial
     j->snake.Cabeca->body.direcao = 0;
-    j->snake.Cabeca->body.color = cabeca;
+    j->snake.Cabeca->body.textura = j->tex.Cabeca;
 
 
     //Cauda (logo atrás da cabeça)
     j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y};
 
     j->snake.Cauda->body.direcao = 0;
-    j->snake.Cauda->body.color = rabo;
+    j->snake.Cauda->body.textura = j->tex.Rabo;
 
     j->snake.dirX = 0;
     j->snake.dirY = -1; // começa subindo
@@ -44,12 +55,11 @@ void IniciaSnake(Jogo *j){
 }
 
 void AumentaSnake(Jogo *j){
-    Texture2D corpo = LoadTexture("Assets/corpo.png");
     SnakeApontador novo = (SnakeApontador)malloc(sizeof(CelulaSnake));
 
     novo->body.pos = j->snake.Cabeca->Prox->body.pos; 
     novo->body.direcao = j->snake.Cabeca->Prox->body.direcao;
-    novo->body.color = corpo;
+    novo->body.textura = j->tex.Corpo;
 
     //Insere na Lista na primeira posição logo após a cabeça:
     novo->Prox = j->snake.Cabeca->Prox;
@@ -85,7 +95,6 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[9].pos = (Rectangle) {LARGURA-60, ALTURA - 20, 60, 20};  
 }
 
-
 void IniciaFood(Jogo *j){
     int colisao;
     do {
@@ -115,9 +124,8 @@ void IniciaFood(Jogo *j){
         }    
     } while(colisao); // repete até não colidir
 
-    j->food.color = FOOD_COLOR;
+    j->food.color = FOOD_COLOR ;
 }
-
 
 void IniciaJogo(Jogo *j){
     IniciaBordas(j);
@@ -126,14 +134,12 @@ void IniciaJogo(Jogo *j){
     j->tempo = GetTime();
 }
 
-
 void DesenhaSnake(Jogo *j) {
 
     SnakeApontador k = j->snake.Cabeca;
-    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
     DrawTexturePro(
-        cabeca,
-        (Rectangle){0, 0, k->body.color.width, k->body.color.height}, //imagem
+        j->tex.Cabeca,
+        (Rectangle){0, 0,j->tex.Cabeca.width,j->tex.Cabeca.height}, //imagem
         (Rectangle){k->body.pos.x, k->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
         (Vector2){0, 0}, //origem
         0.0f, //rotação?
@@ -141,40 +147,34 @@ void DesenhaSnake(Jogo *j) {
         );
 
     SnakeApontador aux = j->snake.Cabeca->Prox;
-    Texture2D corpo = LoadTexture("Assets/corpo.png");
-    aux->body.color=corpo;
-
     while(aux->Prox != NULL) {
         DrawTexturePro(
-        aux->body.color,
-        (Rectangle){0, 0, aux->body.color.width, aux->body.color.height}, //imagem
+        j->tex.Corpo,
+        (Rectangle){0, 0, aux->body.textura.width, aux->body.textura.height}, //imagem
         (Rectangle){aux->body.pos.x, aux->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
         (Vector2){0, 0}, //origem
         0.0f, //rotação?
         WHITE
         );
-        //função da raylib
-
         aux = aux->Prox;
     }
 
     SnakeApontador i = j->snake.Cauda;
-    Texture2D rabo = LoadTexture("Assets/rabo.png");
     DrawTexturePro(
-        rabo,
-        (Rectangle){0, 0, i->body.color.width, i->body.color.height}, //imagem
+        j->tex.Rabo,
+        (Rectangle){0, 0,j->tex.Rabo.width,j->tex.Rabo.height}, //imagem
         (Rectangle){i->body.pos.x, i->body.pos.y, STD_SIZE_X, STD_SIZE_Y}, //pra onde ele vai na tela!
         (Vector2){0, 0}, //origem
         0.0f, //rotação?
         WHITE
-        );
+    );
 }
 
-void DesenhaFood(Jogo *j, Texture2D img){
+void DesenhaFood(Jogo *j){
     // Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
     DrawTexturePro(
-        img,
-        (Rectangle){0, 0, img.width, img.height},                   // Fonte (toda a textura)
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},                   // Fonte (toda a textura)
         (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
         (Vector2){0, 0},                                            // Origem para rotação
         0,                                                           // Rotação
@@ -182,13 +182,12 @@ void DesenhaFood(Jogo *j, Texture2D img){
     );
 }
 
-void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2){
-   
+void DesenhaBarreiras1(Jogo *j){   
     //Desenha as barreiras do meio
     for(int i=0; i<2; i++){
         DrawTexturePro(
-            pedras,
-            (Rectangle){0, 0, pedras.width, pedras.height},                   
+            j->tex.pedras,
+            (Rectangle){0, 0, j->tex.pedras.width, j->tex.pedras.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
@@ -198,8 +197,8 @@ void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D p
     //Desenha as barreiras nas bordas
     for(int i = 2; i < 6; i++ ){
         DrawTexturePro(
-            pedras1,
-            (Rectangle){0, 0, pedras1.width, pedras1.height},                   
+            j->tex.pedras1,
+            (Rectangle){0, 0, j->tex.pedras1.width, j->tex.pedras1.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
@@ -208,8 +207,8 @@ void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D p
     }
     for (int i= 6; i<10; i++){
         DrawTexturePro(
-            pedras2,
-            (Rectangle){0, 0, pedras2.width, pedras2.height},                   
+            j->tex.pedras2,
+            (Rectangle){0, 0, j->tex.pedras2.width, j->tex.pedras2.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
@@ -218,20 +217,14 @@ void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D p
     }
 }
 
-
-
 void DesenhaBarreiras3(Jogo *j) {
-
-    Texture2D tubaraoD = LoadTexture("Assets/tubarao2.png");
-    Texture2D tubaraoE = LoadTexture("Assets/tubarao1.png");
-
         DrawTexturePro(
-            tubaraoD,
+            j->tex.tubaraoD,
             (Rectangle){
                 0,
                 0,
-                tubaraoD.width,
-                tubaraoD.height
+                j->tex.tubaraoD.width,
+                j->tex.tubaraoD.height
             }, // imagem inteira
 
             (Rectangle){
@@ -246,12 +239,12 @@ void DesenhaBarreiras3(Jogo *j) {
             WHITE
         );
         DrawTexturePro(
-            tubaraoE,
+            j->tex.tubaraoE,
             (Rectangle){
                 0,
                 0,
-                tubaraoE.width,
-                tubaraoE.height
+                j->tex.tubaraoE.width,
+                j->tex.tubaraoE.height
             }, // imagem inteira
 
             (Rectangle){
@@ -264,24 +257,13 @@ void DesenhaBarreiras3(Jogo *j) {
             (Vector2){0, 0},   // origem
             0.0f,              // rotação
             WHITE
-        );
-        /*Parte da Amanda:
-        void DesenhaBarreiras3(Jogo *j){
-        //Desenha as barreiras nas bordas:
-            for (int i = 0; i < 2; i++){
-            DrawRectangleRec(j->barreiras[i].pos, WHITE);
-            }
-        }   
-        */
-    
+        );   
 }
 
-
-
-void DesenhaJogo(Jogo *j, Texture2D maca){
+void DesenhaJogo(Jogo *j){
     //DesenhaBordas(j);
     DesenhaSnake(j);
-    DesenhaFood(j, maca);
+    DesenhaFood(j);
 }
 
 void AtualizaDirecao(Jogo *j){
@@ -418,7 +400,6 @@ int ColisaoBarreiras3(Jogo *j){
     return 0; // Não colidiu
 }
 
-
 void ColisaoBordas(Jogo *j) {
     // Se sair pela esquerda, reaparece na direita
     if (j->snake.Cabeca->body.pos.x < 0) {
@@ -459,10 +440,24 @@ void FreeLista(ListaSnake *Snake){
     while(atual != NULL){
         aux = atual;
         atual = atual->Prox;
-        UnloadTexture(aux->body.color);
         free(aux);
         
     }
     Snake->Comprimento = 0;
 }
 
+void LiberaTexturas(Jogo *j) {
+    UnloadTexture(j->tex.Cabeca);
+    UnloadTexture(j->tex.Corpo);
+    UnloadTexture(j->tex.Rabo);
+
+    UnloadTexture(j->tex.pedras);
+    UnloadTexture(j->tex.pedras1);
+    UnloadTexture(j->tex.pedras2);
+
+    UnloadTexture(j->tex.tubaraoD);
+    UnloadTexture(j->tex.tubaraoE);
+
+    UnloadTexture(j->tex.Food);
+   
+}
