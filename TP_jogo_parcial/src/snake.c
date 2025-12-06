@@ -107,14 +107,14 @@ int main(){
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
 
-                if(Pontos <= 1){
+                if(Pontos <= 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.0f);
 
                     DrawTexture(fundo1, 0, 0, WHITE);
-                    IniciaBarreiras1(&jogo, pedras, pedras1, pedras2);
+                    IniciaBarreiras1(&jogo);
                     if (gameOver) {
                         DesenhaJogo(&jogo, maca);
                         DesenhaBarreiras1(&jogo, pedras, pedras1, pedras2);
@@ -148,7 +148,7 @@ int main(){
                         }
                     } 
 
-                }else if(Pontos > 1 && Pontos < 3){
+                }else if(Pontos > 5 && Pontos <= 10){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -187,7 +187,7 @@ int main(){
                         }
                     }
                 
-                }else if(Pontos >= 3){
+                }else if(Pontos > 10){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
