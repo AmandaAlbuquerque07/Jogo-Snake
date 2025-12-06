@@ -26,11 +26,18 @@ typedef struct Barreiras{
     int inicia;
 }Barreiras;
 
+typedef struct Texturas{
+    Texture2D Cabeca, Corpo, Rabo;
+    Texture2D pedras, pedras1, pedras2;
+    Texture2D tubaraoD ,tubaraoE;
+    Texture2D Food;
+}Texturas;
+
 //Início da Implementação da lista:
 
 typedef struct Body{
     Rectangle pos;
-    Texture2D color;
+    Texture2D textura;
     int direcao;
 }Body; //TipoItem
 
@@ -52,11 +59,13 @@ typedef struct Jogo{
     Food food;
     Bordas bordas[4];
     Barreiras barreiras[10];
+    Texturas tex;
     double tempo;
     double cooldown;
 }Jogo;
 
 void VSvazia(ListaSnake *snake);
+void CarregaTexturas(Jogo *j);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
@@ -64,22 +73,21 @@ void IniciaBarreiras1(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
-void DesenhaFood(Jogo *j, Texture2D maca); //Desenha uma comida em uma posição aleatória
+void DesenhaFood(Jogo *j); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
-void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2);
+void DesenhaBarreiras1(Jogo *j);
 void DesenhaBarreiras3(Jogo *j);
-void DesenhaJogo(Jogo *j, Texture2D maca);
+void DesenhaJogo(Jogo *j);
 void AtualizaDirecao(Jogo *j); //Atualiza a direção da cobrinha
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
-void DesenhaFood(Jogo *j, Texture2D maca);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
 int ColisaoBarreiras1(Jogo *j);
 int ColisaoBarreiras3(Jogo* j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
+void LiberaTexturas(Jogo *j);
 
 #endif
-
