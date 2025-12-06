@@ -4,11 +4,14 @@
 #include <unistd.h>
 #include <time.h>
 #include "listacobra.h"
+#include "giracobra.h"
+
 #include "ranking.h"
 #include "menu.h"
 
 int Pontos;
 char Nome[50];
+
 
 int main(){
     Jogo jogo;
@@ -40,7 +43,7 @@ int main(){
 
 
     SetExitKey(KEY_NULL);//pra não dar o bug do esc sempre fechar o jogo.
-    SetTargetFPS(40);
+    SetTargetFPS(50);
     srand(time(NULL));
 
     Sound somComer = LoadSound("Assets/somComer.mp3");
@@ -48,10 +51,19 @@ int main(){
     Sound somMorrer2 = LoadSound("Assets/somMorrer2.mp3");
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
+    Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
-    Texture2D fundo2 = LoadTexture("Assets/espaco.png");
+    Texture2D fundo2 = LoadTexture("Assets/espaco1.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
-    CarregaTexturas(&jogo);
+
+    Texture2D pedras = LoadTexture("Assets/pedras.png");
+    Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
+    Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
+
+    Texture2D cabeca = LoadTexture("Assets/cabecanovo4.png");
+    Texture2D corpo = LoadTexture("Assets/corponovo4.png");
+    Texture2D rabo = LoadTexture("Assets/rabonovo4.png");
+
 
     Estado estado= MENU;
         while (!WindowShouldClose()) {
@@ -100,7 +112,8 @@ int main(){
                 
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
-                if(Pontos <= 5){
+
+                if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -109,8 +122,8 @@ int main(){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
                     if (gameOver) {
-                        DesenhaJogo(&jogo);
-                        DesenhaBarreiras1(&jogo);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
+                        DesenhaBarreiras1(&jogo, pedras, pedras1, pedras2);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -141,7 +154,7 @@ int main(){
                         }
                     } 
 
-                }else if(Pontos > 5 && Pontos <= 10){
+                }else if(Pontos > 1 && Pontos < 3){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -149,7 +162,7 @@ int main(){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -180,14 +193,14 @@ int main(){
                         }
                     }
                 
-                }else if(Pontos > 10){
+                }else if(Pontos >= 3){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo);
+                        DesenhaJogo(&jogo, maca, cabeca, corpo, rabo);
                         DesenhaBarreiras3(&jogo);
                         AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
@@ -246,13 +259,20 @@ int main(){
     UnloadSound(somMorrer2);
     UnloadSound(somMorrer3);
 
+    UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
 
-    FreeLista(&jogo.snake); 
+    UnloadTexture(pedras);
+    UnloadTexture(pedras1);
+    UnloadTexture(pedras2);
 
-    LiberaTexturas(&jogo);
+    UnloadTexture(cabeca);
+    UnloadTexture(corpo);
+    UnloadTexture(rabo);
+
+    FreeLista(&jogo.snake); 
 
     UnloadMusicStream(musmenu);
     UnloadMusicStream(trilha1);
