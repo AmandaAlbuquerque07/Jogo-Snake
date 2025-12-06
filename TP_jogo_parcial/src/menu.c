@@ -19,7 +19,7 @@ void desenhaMenuPrincipal() {
 void desenhaTelaTelas() {
     ClearBackground(SKYBLUE);
     DrawText("Escolha o tamanho\nda sua tela de jogo", 155, 200, 40, DARKGREEN);
-    DrawText("1 - Pequena", 225, 300, 30, RED);
+    DrawText("1 - Pequena", 225, 300, 30, DARKPURPLE);
     DrawText("2 - Grande", 225, 350, 30, DARKPURPLE);
     DrawText("Pressione ENTER para continuar", 175, 400, 20, GRAY);
 }
