@@ -52,7 +52,7 @@ int main(){
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
-    Texture2D fundo2 = LoadTexture("Assets/espaco1.png");
+    Texture2D fundo2 = LoadTexture("Assets/espaco.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
     CarregaTexturas(&jogo);
     
