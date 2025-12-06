@@ -51,20 +51,11 @@ int main(){
     Sound somMorrer2 = LoadSound("Assets/somMorrer2.mp3");
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
-    Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/espaco.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
 
-    Texture2D pedras = LoadTexture("Assets/pedras.png");
-    Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
-    Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
-
-    Texture2D cabeca = LoadTexture("Assets/cabecanovo4.png");
-    Texture2D corpo = LoadTexture("Assets/corponovo4.png");
-    Texture2D rabo = LoadTexture("Assets/rabonovo4.png");
-
-
+    CarregaTexturas(&jogo);
     Estado estado= MENU;
         while (!WindowShouldClose()) {
         UpdateMusicStream(musmenu);  
@@ -97,7 +88,7 @@ int main(){
             SetMusicVolume(trilha3, 0.0f);
 
             desenhaTelaTelas();
-            if(IskeyPressed(KEY_ONE));//comandos pra um tamanho de tela
+            if(IsKeyPressed(KEY_ONE));//comandos pra um tamanho de tela
             if(IsKeyPressed(KEY_TWO));//comando pro outro
             if(IsKeyPressed(KEY_ENTER)) estado = NOME;
             break;
@@ -124,7 +115,6 @@ int main(){
                 
 
             case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
-
                 if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
@@ -271,18 +261,9 @@ int main(){
     UnloadSound(somMorrer2);
     UnloadSound(somMorrer3);
 
-    UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
-
-    UnloadTexture(pedras);
-    UnloadTexture(pedras1);
-    UnloadTexture(pedras2);
-
-    UnloadTexture(cabeca);
-    UnloadTexture(corpo);
-    UnloadTexture(rabo);
 
     FreeLista(&jogo.snake); 
 
