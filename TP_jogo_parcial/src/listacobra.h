@@ -60,7 +60,7 @@ void VSvazia(ListaSnake *snake);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
-void IniciaBarreiras1(Jogo *j, Texture2D pedra, Texture2D pedras1, Texture2D pedras2);
+void IniciaBarreiras1(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
@@ -82,3 +82,4 @@ int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 
 #endif
+
