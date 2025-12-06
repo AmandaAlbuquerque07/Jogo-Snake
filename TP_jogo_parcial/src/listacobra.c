@@ -69,9 +69,20 @@ void IniciaBordas(Jogo *j){
     j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
 }
 
-void IniciaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2){
-    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 240};
-    j->barreiras[1].pos = (Rectangle) {LARGURA - 130, ALTURA-490, 40, 240};
+void IniciaBarreiras1(Jogo *j){
+     //Bordas do centro
+    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 320};
+    j->barreiras[1].pos = (Rectangle) {LARGURA - 170, ALTURA-490, 40, 320};
+    //Bordas verticais
+    j->barreiras[2].pos = (Rectangle) {0, 0, 20, 60};
+    j->barreiras[3].pos = (Rectangle) {LARGURA - 20, 0, 20, 60};
+    j->barreiras[4].pos = (Rectangle) {0, ALTURA - 60, 20, 60}; 
+    j->barreiras[5].pos = (Rectangle) {LARGURA-20, ALTURA - 60, 20, 60};
+    //Bordas horizontais
+    j->barreiras[6].pos = (Rectangle) {0, 0, LARGURA-600, 20};
+    j->barreiras[7].pos = (Rectangle) {LARGURA-60, 0, LARGURA-600, 20};
+    j->barreiras[8].pos = (Rectangle) {0, ALTURA - 20, 60, 20};
+    j->barreiras[9].pos = (Rectangle) {LARGURA-60, ALTURA - 20, 60, 20};  
 }
 
 
@@ -172,9 +183,38 @@ void DesenhaFood(Jogo *j, Texture2D img){
 }
 
 void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2){
+   
+    //Desenha as barreiras do meio
+    for(int i=0; i<2; i++){
+        DrawTexturePro(
+            pedras,
+            (Rectangle){0, 0, pedras.width, pedras.height},                   
+            (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
+            (Vector2){0, 0},                                            
+            0,                                                           
+            WHITE                                                        
+        );
+    }
     //Desenha as barreiras nas bordas
-    for (int i = 0; i < 2; i++){
-        DrawRectangleRec(j->barreiras[i].pos, WHITE);
+    for(int i = 2; i < 6; i++ ){
+        DrawTexturePro(
+            pedras1,
+            (Rectangle){0, 0, pedras1.width, pedras1.height},                   
+            (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
+            (Vector2){0, 0},                                            
+            0,                                                           
+            WHITE                                                        
+        ); 
+    }
+    for (int i= 6; i<10; i++){
+        DrawTexturePro(
+            pedras2,
+            (Rectangle){0, 0, pedras2.width, pedras2.height},                   
+            (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
+            (Vector2){0, 0},                                            
+            0,                                                           
+            WHITE                                                        
+        );    
     }
 }
 
@@ -425,3 +465,4 @@ void FreeLista(ListaSnake *Snake){
     }
     Snake->Comprimento = 0;
 }
+
