@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 #include "listacobra.h"
@@ -16,6 +17,21 @@ void FSVazia(ListaSnake *Snake){
     Snake->Cabeca = NULL;
     Snake->Cauda  = NULL;
     Snake->Comprimento = 0;
+}
+
+void CarregaTexturas(Jogo *j){
+    //j->tex.Cabeca = LoadTexture("Assets/cabeca.png");
+    //j->tex.Corpo  = LoadTexture("Assets/corpo.png");
+    //j->tex.Rabo   = LoadTexture("Assets/rabo.png");
+
+    j->tex.pedras    = LoadTexture("Assets/pedras.png");
+    j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
+    j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
+
+    j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
+    j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
+
+    j->tex.Food = LoadTexture("Assets/maca.png");
 }
 
 void IniciaSnake(Jogo *j){
@@ -74,14 +90,14 @@ void AumentaSnake(Jogo *j){
 }
 
 void IniciaBordas(Jogo *j){
-//Borda de cima
-j->bordas[0].pos = (Rectangle) {0, 0, LARGURA, 10};
-//Borda da direita
-j->bordas[1].pos = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
-//Borda de baixo
-j->bordas[2].pos = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
-//Borda da esquerda
-j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
+    //Borda de cima
+    j->bordas[0].pos = (Rectangle) {0, 0, LARGURA, 10};
+    //Borda da direita
+    j->bordas[1].pos = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
+    //Borda de baixo
+    j->bordas[2].pos = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
+    //Borda da esquerda
+    j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
 }
 
 
@@ -103,35 +119,35 @@ void IniciaBarreiras1(Jogo *j){
 
 
 void IniciaFood(Jogo *j){
-int colisao;
-do {
-colisao = 0; // assume que não há colisão
-j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
-j->food.pos.y = (float)((rand() % ((ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
-//STD size é o tamanho do quadradinho
-j->food.pos.width = STD_SIZE_X;
-j->food.pos.height = STD_SIZE_Y;
+    int colisao;
+    do {
+        colisao = 0; // assume que não há colisão
+        j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
+        j->food.pos.y = (float)((rand() % ((ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
+        //STD size é o tamanho do quadradinho
+        j->food.pos.width = STD_SIZE_X;
+        j->food.pos.height = STD_SIZE_Y;
 
-// Verifica se a nova posição colide com a cobra
-SnakeApontador aux = j->snake.Cabeca;
-while(aux != NULL){
-if(CheckCollisionRecs(j->food.pos, aux->body.pos)){
-colisao = 1; // houve colisão, precisa gerar outra posição
-break;
-}
-aux = aux->Prox;
-} 
-if(colisao == 0){
-for(int i=0; i<10; i++){
-if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
-colisao = 1; // houve colisão, precisa gerar outra posição
-break;
-}
-}
-}    
-} while(colisao); // repete até não colidir
+        // Verifica se a nova posição colide com a cobra
+        SnakeApontador aux = j->snake.Cabeca;
+        while(aux != NULL){
+            if(CheckCollisionRecs(j->food.pos, aux->body.pos)){
+                colisao = 1; // houve colisão, precisa gerar outra posição
+                break;
+            }
+            aux = aux->Prox;
+        } 
+            if(colisao == 0){
+            for(int i=0; i<10; i++){
+                if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
+                    colisao = 1; // houve colisão, precisa gerar outra posição
+                    break;
+                }
+            }
+        }    
+    } while(colisao); // repete até não colidir
 
-j->food.color = FOOD_COLOR;
+    j->food.color = FOOD_COLOR;
 }
 
 
@@ -147,38 +163,35 @@ void IniciaJogo(Jogo *j){
     j->tempo = GetTime();
 }
 
-
-
-void DesenhaFood(Jogo *j, Texture2D img){
-// Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
-DrawTexturePro(
-img,
-(Rectangle){0, 0, img.width, img.height},                   // Fonte (toda a textura)
-(Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
-(Vector2){0, 0},                                            // Origem para rotação
-0,                                                           // Rotação
-WHITE                                                        // Cor
-);
+void DesenhaFood(Jogo *j){
+    // Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
+    DrawTexturePro(
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
+        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
 }
 
-void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D pedras2){
-   
+void DesenhaBarreiras1(Jogo *j){   
     //Desenha as barreiras do meio
     for(int i=0; i<2; i++){
         DrawTexturePro(
-            pedras,
-            (Rectangle){0, 0, pedras.width, pedras.height},                   
+            j->tex.pedras,
+            (Rectangle){0, 0, j->tex.pedras.width, j->tex.pedras.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
             WHITE                                                        
         );
     }
-//Desenha as barreiras nas bordas
+    //Desenha as barreiras nas bordas
     for(int i = 2; i < 6; i++ ){
         DrawTexturePro(
-            pedras1,
-            (Rectangle){0, 0, pedras1.width, pedras1.height},                   
+            j->tex.pedras1,
+            (Rectangle){0, 0, j->tex.pedras1.width, j->tex.pedras1.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
@@ -187,78 +200,67 @@ void DesenhaBarreiras1(Jogo *j, Texture2D pedras, Texture2D pedras1, Texture2D p
     }
     for (int i= 6; i<10; i++){
         DrawTexturePro(
-            pedras2,
-            (Rectangle){0, 0, pedras2.width, pedras2.height},                   
+            j->tex.pedras2,
+            (Rectangle){0, 0, j->tex.pedras2.width, j->tex.pedras2.height},                   
             (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
             (Vector2){0, 0},                                            
             0,                                                           
             WHITE                                                        
         );    
+    }
 }
-}
+
 
 void DesenhaBarreiras3(Jogo *j) {
+    DrawTexturePro(
+        j->tex.tubaraoD,
+        (Rectangle){
+            0,
+            0,
+            j->tex.tubaraoD.width,
+            j->tex.tubaraoD.height
+        }, // imagem inteira
 
-Texture2D tubaraoD = LoadTexture("Assets/tubarao2.png");
-Texture2D tubaraoE = LoadTexture("Assets/tubarao1.png");
+        (Rectangle){
+            j->barreiras[0].pos.x,
+            j->barreiras[0].pos.y,
+            160,      
+            80
+        }, // onde desenhar
 
-DrawTexturePro(
-tubaraoD,
-(Rectangle){
-0,
-0,
-tubaraoD.width,
-tubaraoD.height
-}, // imagem inteira
+        (Vector2){0, 0},   // origem
+        0.0f,              // rotação
+        WHITE
+    );
+    DrawTexturePro(
+        j->tex.tubaraoE,
+        (Rectangle){
+            0,
+            0,
+            j->tex.tubaraoE.width,
+            j->tex.tubaraoE.height
+        }, // imagem inteira
 
-(Rectangle){
-j->barreiras[0].pos.x,
-j->barreiras[0].pos.y,
-160,      
-80
-}, // onde desenhar
+        (Rectangle){
+            j->barreiras[1].pos.x,
+            j->barreiras[1].pos.y,
+            160,      
+            80
+        }, // onde desenhar
 
-(Vector2){0, 0},   // origem
-0.0f,              // rotação
-WHITE
-);
-DrawTexturePro(
-tubaraoE,
-(Rectangle){
-0,
-0,
-tubaraoE.width,
-tubaraoE.height
-}, // imagem inteira
-
-(Rectangle){
-j->barreiras[1].pos.x,
-j->barreiras[1].pos.y,
-160,      
-80
-}, // onde desenhar
-
-(Vector2){0, 0},   // origem
-0.0f,              // rotação
-WHITE
-);
-/*Parte da Amanda:
-       void DesenhaBarreiras3(Jogo *j){
-       //Desenha as barreiras nas bordas:
-           for (int i = 0; i < 2; i++){
-           DrawRectangleRec(j->barreiras[i].pos, WHITE);
-           }
-       }   
-       */
-
+        (Vector2){0, 0},   // origem
+        0.0f,              // rotação
+        WHITE
+    );   
 }
 
 
 
-void DesenhaJogo(Jogo *j, Texture2D maca, Texture2D cabeca,Texture2D corpo,Texture2D rabo){
-//DesenhaBordas(j);
-DesenhaCobra(j, cabeca, corpo, rabo);
-DesenhaFood(j, maca);
+
+void DesenhaJogo(Jogo *j, Texture2D cabeca,Texture2D corpo,Texture2D rabo){
+    //DesenhaBordas(j);
+    DesenhaCobra(j, cabeca, corpo, rabo);
+    DesenhaFood(j);
 }
 
 
@@ -337,29 +339,28 @@ return 0;
 
 
 int ColisaoBarreiras1(Jogo *j){
-if (CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[0].pos)){
-return 1;
-}else if(CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[1].pos)){
-return 1;
-}else{
-return 0;
-}
+    for(int i=0; i<10; i++){
+        if (CheckCollisionRecs(j->snake.Cabeca->body.pos, j->barreiras[i].pos)){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 int ColisaoBarreiras3(Jogo *j){
-SnakeApontador aux = j->snake.Cabeca;
+    SnakeApontador aux = j->snake.Cabeca;
 
-// Passa por TODOS os segmentos da cobra
-while (aux != NULL){
-for (int i = 0; i < 2; i++){    // suas 2 barreiras móveis
-if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
-return 1;   // bateu → morre
-}
-}
-aux = aux->Prox;
-}
+    // Passa por TODOS os segmentos da cobra
+    while (aux != NULL){
+        for (int i = 0; i < 2; i++){    // suas 2 barreiras móveis
+            if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
+                return 1;   // bateu → morre
+            }
+        }
+        aux = aux->Prox;
+    }
 
-return 0; // Não colidiu
+    return 0; // Não colidiu
 }
 
 void ColisaoBordas(Jogo *j) {
@@ -390,28 +391,43 @@ void ColisaoBordas(Jogo *j) {
 }
 
 int ColisaoSnake(Jogo *j){
-SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
-float headX = j->snake.Cabeca->body.pos.x;
-float headY = j->snake.Cabeca->body.pos.y;
+    SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
+    float headX = j->snake.Cabeca->body.pos.x;
+    float headY = j->snake.Cabeca->body.pos.y;
 
-while(aux != NULL){
-if(aux->body.pos.x == headX && aux->body.pos.y == headY){
-return 1; // Colidiu com o corpo
-}
-aux = aux->Prox;
-}
-return 0; // sem colisão
+    while(aux != NULL){
+        if(aux->body.pos.x == headX && aux->body.pos.y == headY){
+            return 1; // Colidiu com o corpo
+        }
+        aux = aux->Prox;
+    }
+    return 0; // sem colisão
 }
 
 void FreeLista(ListaSnake *Snake){
-SnakeApontador atual = Snake->Cabeca;
-SnakeApontador aux;
-while(atual != NULL){
-aux = atual;
-atual = atual->Prox;
-UnloadTexture(aux->body.color);
-free(aux);
-
+    SnakeApontador atual = Snake->Cabeca;
+    SnakeApontador aux;
+    while(atual != NULL){
+        aux = atual;
+        atual = atual->Prox;
+        free(aux);
+        
+    }
+    Snake->Comprimento = 0;
 }
-Snake->Comprimento = 0;
+
+void LiberaTexturas(Jogo *j) {
+    //UnloadTexture(j->tex.Cabeca);
+    //UnloadTexture(j->tex.Corpo);
+    //UnloadTexture(j->tex.Rabo);
+
+    UnloadTexture(j->tex.pedras);
+    UnloadTexture(j->tex.pedras1);
+    UnloadTexture(j->tex.pedras2);
+
+    UnloadTexture(j->tex.tubaraoD);
+    UnloadTexture(j->tex.tubaraoE);
+
+    UnloadTexture(j->tex.Food);
+   
 }
