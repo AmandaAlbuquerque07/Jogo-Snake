@@ -20,9 +20,9 @@ void FSVazia(ListaSnake *Snake){
 }
 
 void CarregaTexturas(Jogo *j){
-    //j->tex.Cabeca = LoadTexture("Assets/cabeca.png");
-    //j->tex.Corpo  = LoadTexture("Assets/corpo.png");
-    //j->tex.Rabo   = LoadTexture("Assets/rabo.png");
+    j->tex.Cabeca = LoadTexture("Assets/cabecanovo4.png");
+    j->tex.Corpo  = LoadTexture("Assets/corponovo4.png");
+    j->tex.Rabo   = LoadTexture("Assets/rabonovo4.png");
 
     j->tex.pedras    = LoadTexture("Assets/pedras.png");
     j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
