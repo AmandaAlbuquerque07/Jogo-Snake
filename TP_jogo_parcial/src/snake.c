@@ -51,11 +51,15 @@ int main(){
     Sound somMorrer2 = LoadSound("Assets/somMorrer2.mp3");
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
+    Texture2D maca = LoadTexture("Assets/maca.png"); // carrega as imagens
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/espaco.png");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
-    CarregaTexturas(&jogo);
-    
+
+    Texture2D pedras = LoadTexture("Assets/pedras.png");
+    Texture2D pedras1 = LoadTexture("Assets/pedras1.png");
+    Texture2D pedras2 = LoadTexture("Assets/pedras2.png");
+
     Texture2D cabeca = LoadTexture("Assets/cabecanovo4.png");
     Texture2D corpo = LoadTexture("Assets/corponovo4.png");
     Texture2D rabo = LoadTexture("Assets/rabonovo4.png");
@@ -80,11 +84,23 @@ int main(){
 
                 desenhaMenuPrincipal();
                 if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
-                if (IsKeyPressed(KEY_TWO)) estado = NOME; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
+                if (IsKeyPressed(KEY_TWO)) estado = TELAS; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
                 if (IsKeyPressed(KEY_ESCAPE)){
                     CloseWindow();//fecha a tela com esc;
                 } 
                 break;
+
+            case TELAS:
+            SetMusicVolume(musmenu, 0.5f);
+            SetMusicVolume(trilha1, 0.0f);
+            SetMusicVolume(trilha2, 0.0f);
+            SetMusicVolume(trilha3, 0.0f);
+
+            desenhaTelaTelas();
+            if(IskeyPressed(KEY_ONE));//comandos pra um tamanho de tela
+            if(IsKeyPressed(KEY_TWO));//comando pro outro
+            if(IsKeyPressed(KEY_ENTER)) estado = NOME;
+            break;
 
             case NOME:
             SetMusicVolume(musmenu, 0.5f);
@@ -118,7 +134,7 @@ int main(){
                     DrawTexture(fundo1, 0, 0, WHITE);
                     IniciaBarreiras1(&jogo);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo);
                         DesenhaBarreiras1(&jogo);
                         AtualizaRodada(&jogo);
 
@@ -158,7 +174,7 @@ int main(){
 
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
@@ -196,7 +212,7 @@ int main(){
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
                     if (gameOver) {
-                        DesenhaJogo(&jogo, cabeca, corpo, rabo);
+                        DesenhaJogo(&jogo);
                         DesenhaBarreiras3(&jogo);
                         AtualizaBarreiras3(&jogo);
                         AtualizaRodada(&jogo);
@@ -255,16 +271,20 @@ int main(){
     UnloadSound(somMorrer2);
     UnloadSound(somMorrer3);
 
+    UnloadTexture(maca); // libera as texturas
     UnloadTexture(fundo1);
     UnloadTexture(fundo2);
     UnloadTexture(fundo3);
+
+    UnloadTexture(pedras);
+    UnloadTexture(pedras1);
+    UnloadTexture(pedras2);
 
     UnloadTexture(cabeca);
     UnloadTexture(corpo);
     UnloadTexture(rabo);
 
     FreeLista(&jogo.snake); 
-    LiberaTexturas(&jogo);
 
     UnloadMusicStream(musmenu);
     UnloadMusicStream(trilha1);
