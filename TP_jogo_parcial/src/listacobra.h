@@ -11,19 +11,19 @@
 #define FOOD_COLOR RED
 
 typedef struct Bordas{
-    Rectangle pos;
+Rectangle pos;
 }Bordas;
 
 typedef struct Food{
-    Rectangle pos;
-    Color color;
+Rectangle pos;
+Color color;
 }Food;
 
 typedef struct Barreiras{
-    Rectangle pos;
-    Color color;
-    int velocidade;
-    int inicia;
+Rectangle pos;
+Color color;
+int velocidade;
+int inicia;
 }Barreiras;
 
 typedef struct Texturas{
@@ -36,36 +36,35 @@ typedef struct Texturas{
 //Início da Implementação da lista:
 
 typedef struct Body{
-    Rectangle pos;
-    Texture2D color;
-    int direcao;
+Rectangle pos;
+Texture2D color;
+int direcao;
 }Body; //TipoItem
 
 typedef struct CelulaSnake * SnakeApontador;
 
 typedef struct CelulaSnake {
-    Body body;
-    SnakeApontador Prox;
+Body body;
+SnakeApontador Prox;
 } CelulaSnake; //TipoCelula
 
 typedef struct {
-    SnakeApontador Cabeca, Cauda;
-    int Comprimento;
+SnakeApontador Cabeca, Cauda;
+int Comprimento;
 }ListaSnake;
 
 typedef struct Jogo{
-    int pendingDir; //resolver o bug de direção mantendo aqui a direção teclada
-    ListaSnake snake;
-    Food food;
-    Bordas bordas[4];
-    Barreiras barreiras[10];
-    Texturas tex;
-    double tempo;
-    double cooldown;
+ListaSnake snake;
+Food food;
+Bordas bordas[4];
+Barreiras barreiras[10];
+Texturas tex;
+double tempo;
+double cooldown;
 }Jogo;
 
 void VSvazia(ListaSnake *snake);
-void CarregaTexturas(Jogo *j);
+void CarregaTexturas(Jogo*j);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
@@ -77,7 +76,7 @@ void DesenhaFood(Jogo *j); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
 void DesenhaBarreiras1(Jogo *j);
 void DesenhaBarreiras3(Jogo *j);
-void DesenhaJogo(Jogo *j, Texture2D corpo, Texture2D cabeca, Texture2D rabo);
+void DesenhaJogo(Jogo *j);
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
