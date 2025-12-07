@@ -29,7 +29,7 @@ void CarregaTexturas(Jogo *j){
     j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
     j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
 
-    j->tex.asteroide = LoadTexture("Assets/asteroide.png");
+    j->tex.asteroide = LoadTexture("Assets/AsteroideFrog.png");
 
     j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
     j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
@@ -112,18 +112,23 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
-void DesenhaBarreiras2(Jogo *j){
+void IniciaBarreiras2(Jogo *j){
     for (int i = 0; i < 3; i++) {
-        DrawTexturePro(
-            j->tex.asteroide,
-            (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},
-            j->barreiras[i].pos,   // <<< USANDO DIRETO O RECTANGLE DA COLISÃO
-            (Vector2){0, 0},
-            0,
-            WHITE
-        );
+        j->barreiras[i].pos.width  = 120;
+        j->barreiras[i].pos.height = 120;
     }
+
+    j->barreiras[0].pos.x = (j->LARGURA - 170*j->escala);
+    j->barreiras[0].pos.y = (j->ALTURA  - 440*j->escala);
+
+    j->barreiras[1].pos.x = (j->LARGURA - 590*j->escala);
+    j->barreiras[1].pos.y = (j->ALTURA  - 180*j->escala);
+
+    j->barreiras[2].pos.x = (j->LARGURA - 320*j->escala);
+    j->barreiras[2].pos.y = (j->ALTURA  - 170*j->escala);
 }
+
+
 
 void Barreiras3(Jogo *j){
     static int iniciado = 0;
@@ -291,33 +296,19 @@ void DesenhaBarreiras1(Jogo *j){
 }
 
 void DesenhaBarreiras2(Jogo *j){
-    DrawTexturePro(
-        j->tex.asteroide,
-        (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},           // Fonte (toda a textura)
-        (Rectangle){j->barreiras[0].pos.x, j->barreiras[0].pos.y, 120, 120}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
-    );
-
-    DrawTexturePro(
-        j->tex.asteroide,
-        (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},           // Fonte (toda a textura)
-        (Rectangle){j->barreiras[1].pos.x, j->barreiras[1].pos.y, 120, 120}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
-    );
-
-    DrawTexturePro(
-        j->tex.asteroide,
-        (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},           // Fonte (toda a textura)
-        (Rectangle){j->barreiras[2].pos.x, j->barreiras[2].pos.y, 120, 120}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
-    );
+    for (int i = 0; i < 3; i++) {
+        DrawTexturePro(
+            j->tex.asteroide,
+            (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},
+            j->barreiras[i].pos,   // <<< USANDO DIRETO O RECTANGLE DA COLISÃO
+            (Vector2){0, 0},
+            0,
+            WHITE
+        );
+    }
 }
+
+
 
 void DesenhaBarreiras3(Jogo *j) {
     DrawTexturePro(
@@ -595,4 +586,3 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
-
