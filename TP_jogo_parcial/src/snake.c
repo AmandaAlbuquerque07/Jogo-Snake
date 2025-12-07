@@ -57,8 +57,8 @@ int main(){
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
     Texture2D fundo2 = LoadTexture("Assets/fundoespaco.jpg");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
-
     CarregaTexturas(&jogo);
+
     Estado estado= MENU;
         while (!WindowShouldClose()) {
         UpdateMusicStream(musmenu);  
@@ -286,6 +286,7 @@ int main(){
     UnloadTexture(fundo3);
 
     FreeLista(&jogo.snake); 
+    LiberaTexturas(&jogo);
 
     UnloadMusicStream(musmenu);
     UnloadMusicStream(trilha1);
