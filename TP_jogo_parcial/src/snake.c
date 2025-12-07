@@ -15,6 +15,8 @@ char Nome[50];
 
 int main(){
     Jogo jogo;
+    jogo.LARGURA = 660;
+    jogo.ALTURA = 660;
     int gameOver = 1;
     Pontos=0;
     char PontoNaTela[20];
@@ -23,7 +25,7 @@ int main(){
     jogo.barreiras[1].inicia = 0;
 
     //Cria a janela do jogo;
-    InitWindow(LARGURA, ALTURA, "Snake Game");
+    InitWindow(jogo.LARGURA, jogo.ALTURA, "Snake Game");
 
     InitAudioDevice();   // inicializa o sistema de som
     Music musmenu = LoadMusicStream("Assets/musmenu.mp3");
@@ -88,8 +90,21 @@ int main(){
             SetMusicVolume(trilha3, 0.0f);
 
             desenhaTelaTelas();
-            if(IsKeyPressed(KEY_ONE));//comandos pra um tamanho de tela
-            if(IsKeyPressed(KEY_TWO));//comando pro outro
+            if(IsKeyPressed(KEY_ONE)){
+                SetWindowSize(660, 660);
+                jogo.LARGURA = 660;
+                jogo.ALTURA = 660;
+                estado = NOME;
+            }//comandos pra tela pequena
+
+            if(IsKeyPressed(KEY_TWO)){
+                SetWindowSize(880, 880);
+                jogo.LARGURA = 880;
+                jogo.ALTURA = 880;
+                estado = NOME;
+
+            }
+                //comando pro outro
             if(IsKeyPressed(KEY_ENTER)) estado = NOME;
             if(IsKeyPressed(KEY_ESCAPE)) estado = MENU;
             break;
