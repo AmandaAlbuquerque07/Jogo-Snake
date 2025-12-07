@@ -2,35 +2,36 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "listacobra.h"
 #include "menu.h"
 #include "ranking.h"
 
 #define MAX_TAM 50
 
-void desenhaMenuPrincipal() {
+void desenhaMenuPrincipal(Jogo* j) {
     ClearBackground(SKYBLUE);
-    DrawText("MENU PRINCIPAL", 140, 200, 50, DARKGREEN);
-    DrawText("1 - Ranking", 225, 300, 30, RED);
-    DrawText("2 - Jogar", 225, 350, 30, VIOLET);
-    DrawText("ESC - Sair", 225, 400, 30, DARKGRAY);
+    DrawText("MENU PRINCIPAL", (140*j->escala), (200*j->escala), (50*j->escala), DARKGREEN);
+    DrawText("1 - Ranking", (225*j->escala), (300*j->escala), (30*j->escala), RED);
+    DrawText("2 - Jogar", (225*j->escala), (350*j->escala), (30*j->escala), VIOLET);
+    DrawText("ESC - Sair", (225*j->escala), (400*j->escala), (30*j->escala), DARKGRAY);
 }
 
-//AQUI É A ESTÉTICA DA TELA NOVA, MUDAR SE NECESSÁRIO
-void desenhaTelaTelas() {
+//TELA para escolher o tamanho das telas
+void desenhaTelaTelas(Jogo* j) {
     ClearBackground(SKYBLUE);
-    DrawText("Escolha o tamanho\nda sua tela de jogo", 155, 180, 40, DARKGREEN);
-    DrawText("1 - Pequena", 230, 310, 30, DARKPURPLE);
-    DrawText("2 - Grande", 230, 360, 30, DARKPURPLE);
-    DrawText("Pressione ENTER para continuar", 175, 450, 20, GRAY);
-    DrawText("Pressione ESC para voltar", 190, 480, 20, GRAY);
+    DrawText("Escolha o tamanho\nda sua tela de jogo", (155*j->escala), (180*j->escala), (40*j->escala), DARKGREEN);
+    DrawText("1 - Pequena", (230*j->escala), (310*j->escala), (30*j->escala), DARKPURPLE);
+    DrawText("2 - Grande", (230*j->escala), (360*j->escala), (30*j->escala), DARKPURPLE);
+    DrawText("Pressione ENTER para continuar", (175*j->escala), (450*j->escala), (20*j->escala), GRAY);
+    DrawText("Pressione ESC para voltar", (190*j->escala), (480*j->escala), (20*j->escala), GRAY);
 }
 
-void desenhaTelaNome(char *nomeJogador, int *tamanho) {
+void desenhaTelaNome(Jogo* j, char *nomeJogador, int *tamanho) {
     ClearBackground(SKYBLUE);
-    //desenha na tela o "digite seu nomme" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
+    //desenha na tela o "digite seu nome" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
 
-    DrawText("Digite seu nome:", 185, 200, 40, DARKGREEN);
-    DrawText(nomeJogador, 250, 300, 30, DARKPURPLE);
+    DrawText("Digite seu nome:", (185*j->escala), (200*j->escala), (40*j->escala), DARKGREEN);
+    DrawText(nomeJogador, (250*j->escala), (300*j->escala), (30*j->escala), DARKPURPLE);
 
     //Isso aqui é o loop de coleta das letras a partir da pressão nas teclas:
     int tecla = GetCharPressed();
@@ -51,16 +52,13 @@ void desenhaTelaNome(char *nomeJogador, int *tamanho) {
         nomeJogador[*tamanho] = '\0';
     }
 
-    DrawText("Pressione ENTER para começar", 170, 430, 20, GRAY);
-    DrawText("Pressione ESC para voltar", 190, 480, 20, GRAY);
+    DrawText("Pressione ENTER para começar", (170*j->escala), (430*j->escala), (20*j->escala), GRAY);
+    DrawText("Pressione ESC para voltar", (190*j->escala), (480*j->escala), (20*j->escala), GRAY);
 }
 
-
-
-
-void desenhaTelaRanking() {
+void desenhaTelaRanking(Jogo* j) {
     ClearBackground(SKYBLUE);
-    DrawText("RANKING", 225, 50, 40, DARKPURPLE);
+    DrawText("RANKING", (225*j->escala), (50*j->escala), (40*j->escala), DARKPURPLE);
 
     //abre pra ler:
     FILE *rk = fopen("ranking.txt", "r");
@@ -69,20 +67,20 @@ void desenhaTelaRanking() {
     if (rk != NULL) {
         int pontos;
         char nome[50];
-        int y = 120; //esse y detremina a posição inicial das linhas do ranking em pixels no eixo vertical
+        int y = (120*j->escala); //esse y detremina a posição inicial das linhas do ranking em pixels no eixo vertical
         int posicao=1; //coloca enumeração no ranking!
 
         while (fscanf(rk, "%d %s", &pontos, nome) == 2) { //enquanto ler o nome e os pontos com sucesso,
             char linha[120]; //esse armazena a junção dos pontos e do nome em uma linha só, pro DrawText ler, assim como o PontoNaTela, da main, que formata o ponto pro DrawText também;
             sprintf(linha, "%dº - %s : %d pts", posicao, nome, pontos); //combinando os dois E A POSIÇÃO!;
-            DrawText(linha, 225, y, 20, RED); //texto, x, y, tam fonte, cor 
-            y += 20; //pula 20 pixels verticais pra próxima linha ficar
+            DrawText(linha, (225*j->escala), y, (20*j->escala), RED); //texto, x, y, tam fonte, cor 
+            y += (20*j->escala); //pula 20 pixels verticais pra próxima linha ficar
             posicao++;
         }
         fclose(rk);
     } else {
-        DrawText("Ranking vazio!", 250, 150, 30, RED);
+        DrawText("Ranking vazio!", (250*j->escala), (150*j->escala), (30*j->escala), RED);
     }
 
-    DrawText("Pressione ENTER para voltar",180, 550, 20, GRAY);
+     DrawText("Pressione ENTER para voltar",(180*j->escala), (550*j->escala), (20*j->escala), GRAY);
 }
