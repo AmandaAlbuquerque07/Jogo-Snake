@@ -62,7 +62,7 @@ int main(){
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
     CarregaTexturas(&jogo);
 
-    Estado estado= MENU;
+    Estado estado= INTRO;
     while (!WindowShouldClose()) {
 
         UpdateMusicStream(musmenu);  
@@ -73,6 +73,17 @@ int main(){
         ClearBackground(RAYWHITE);
 
     switch (estado) { //determina o que fazer em cada estado do jogo:
+        case INTRO:
+            SetMusicVolume(musmenu, 0.5f);
+            SetMusicVolume(trilha1, 0.0f);
+            SetMusicVolume(trilha2, 0.0f);
+            SetMusicVolume(trilha3, 0.0f);
+        desenhaIntro(&jogo);
+                if (IsKeyPressed(KEY_ENTER)) estado = MENU; //se apertar 1 abre o ranking,
+                if (IsKeyPressed(KEY_ESCAPE)){
+                CloseWindow();//fecha a tela com esc;
+            } 
+        break;
         case MENU:
             SetMusicVolume(musmenu, 0.5f);
             SetMusicVolume(trilha1, 0.0f);
@@ -136,6 +147,7 @@ int main(){
 
 
         case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
+            //JOGO 1
             if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
@@ -161,7 +173,7 @@ int main(){
                     DrawText(PontoNaTela, 25, 20, 30, WHITE);
 
                     ColisaoBordas(&jogo);
-                    if (ColisaoSnake(&jogo)  /*|| ColisaoBarreiras1(&jogo)*/) {
+                    if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
                         PlaySound(somMorrer1);
                         gameOver = 0;
                     }
@@ -177,7 +189,9 @@ int main(){
                     }
                 } 
 
-                }else if(Pontos > 1 && Pontos < 5){
+                }
+                //JOGO 2
+                else if(Pontos > 1 && Pontos < 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -218,13 +232,15 @@ int main(){
                 }
                 }
 
-            }else if(Pontos >= 5){
+            }
+            //JOGO 3
+            else if(Pontos >= 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
-                
                 DesenhaFundo(&jogo, &fundo3);
+                //IniciaBarreiras3(&jogo);
                 if (gameOver) {
                     DesenhaJogo3(&jogo);
                     DesenhaBarreiras3(&jogo);
@@ -243,7 +259,7 @@ int main(){
                     DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
                     ColisaoBordas(&jogo);
-                    if (ColisaoSnake(&jogo) /*|| ColisaoBarreiras3(&jogo)*/) {
+                    if (ColisaoSnake(&jogo) || ColisaoBarreiras3(&jogo)) {
                         PlaySound(somMorrer3);
                         gameOver = 0;
                     }
@@ -299,5 +315,5 @@ int main(){
     CloseAudioDevice();
 
     CloseWindow();
-    return 0;
+return 0;
 }
