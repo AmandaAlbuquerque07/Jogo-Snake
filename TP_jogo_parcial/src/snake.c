@@ -5,6 +5,7 @@
 #include <time.h>
 #include "listacobra.h"
 #include "giracobra.h"
+#include <math.h>
 
 #include "ranking.h"
 #include "menu.h"
@@ -14,6 +15,8 @@ char Nome[50];
 
 
 int main(){
+    srand(time(NULL)); 
+
     Jogo jogo;
     jogo.LARGURA = 660;
     jogo.ALTURA = 660;
@@ -175,7 +178,7 @@ int main(){
                         }
                     } 
 
-                }else if(Pontos > 1 && Pontos < 3){
+                }else if(Pontos > 1 && Pontos < 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -184,11 +187,13 @@ int main(){
                     DrawTexture(fundo2, 0, 0, WHITE);
                     if (gameOver) {
                         DesenhaJogo(&jogo);
+                        DesenhaBarreiras2(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
                             PlaySound(somComer);
                             IniciaFood(&jogo);
+                            IniciaBarreiras2(&jogo);
                             AumentaSnake(&jogo);
                             Pontos++; //atualiza pontuação
                         }
@@ -214,7 +219,7 @@ int main(){
                         }
                     }
                 
-                }else if(Pontos >= 3){
+                }else if(Pontos >= 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -224,7 +229,7 @@ int main(){
                     if (gameOver) {
                         DesenhaJogo(&jogo);
                         DesenhaBarreiras3(&jogo);
-                        AtualizaBarreiras3(&jogo);
+                        Barreiras3(&jogo);
                         AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
