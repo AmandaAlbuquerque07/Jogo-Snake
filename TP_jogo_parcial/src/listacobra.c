@@ -103,19 +103,20 @@ void IniciaBordas(Jogo *j){
 
 
 void IniciaBarreiras1(Jogo *j){
+    float escala = j->LARGURA / 660.0f;
      //Bordas do centro
-    j->barreiras[0].pos = (Rectangle) {j->LARGURA- 530, j->ALTURA-490, 40, 320};
-    j->barreiras[1].pos = (Rectangle) {j->LARGURA - 170, j->ALTURA-490, 40, 320};
+    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*escala), (j->ALTURA-490*escala), (40*escala), (320*escala)};
+    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*escala), (j->ALTURA-490*escala), (40*escala), (320*escala)};
     //Bordas verticais
-    j->barreiras[2].pos = (Rectangle) {0, 0, 20, 60};
-    j->barreiras[3].pos = (Rectangle) {j->LARGURA - 20, 0, 20, 60};
-    j->barreiras[4].pos = (Rectangle) {0, j->ALTURA - 60, 20, 60}; 
-    j->barreiras[5].pos = (Rectangle) {j->LARGURA-20, j->ALTURA - 60, 20, 60};
+    j->barreiras[2].pos = (Rectangle) {0, 0, (20*escala), (60*escala)};
+    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*escala), 0, (20*escala), (60*escala)};
+    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*escala), (20*escala), (60*escala)}; 
+    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*escala)), (j->ALTURA-60*escala), (20*escala), (60*escala)};
     //Bordas horizontais
-    j->barreiras[6].pos = (Rectangle) {0, 0, j->LARGURA-600, 20};
-    j->barreiras[7].pos = (Rectangle) {j->LARGURA-60, 0, j->LARGURA-600, 20};
-    j->barreiras[8].pos = (Rectangle) {0, j->ALTURA - 20, 60, 20};
-    j->barreiras[9].pos = (Rectangle) {j->LARGURA-60, j->ALTURA - 20, 60, 20};  
+    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*escala), (20*escala)};
+    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*escala), 0, (j->LARGURA-600*escala), (20*escala)};
+    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*escala), (60*escala), (20*escala)};
+    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*escala), (j->LARGURA-20*escala), (60*escala), (20*escala)};  
 }
 
 
