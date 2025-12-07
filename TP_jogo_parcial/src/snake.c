@@ -55,7 +55,7 @@ int main(){
     Sound somMorrer3 = LoadSound("Assets/somMorrer3.mp3");
 
     Texture2D fundo1 = LoadTexture("Assets/GramaFundo.jpeg");
-    Texture2D fundo2 = LoadTexture("Assets/espaco.png");
+    Texture2D fundo2 = LoadTexture("Assets/espacoo.jpg");
     Texture2D fundo3 = LoadTexture("Assets/fundomar.jpeg");
 
     CarregaTexturas(&jogo);
@@ -76,7 +76,7 @@ int main(){
             SetMusicVolume(trilha2, 0.0f);
             SetMusicVolume(trilha3, 0.0f);
 
-                desenhaMenuPrincipal();
+                desenhaMenuPrincipal(&jogo);
                 if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
                 if (IsKeyPressed(KEY_TWO)) estado = TELAS; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
                 if (IsKeyPressed(KEY_ESCAPE)){
@@ -90,7 +90,7 @@ int main(){
             SetMusicVolume(trilha2, 0.0f);
             SetMusicVolume(trilha3, 0.0f);
 
-            desenhaTelaTelas();
+            desenhaTelaTelas(&jogo);
             if(IsKeyPressed(KEY_ONE)){
                 SetWindowSize(660, 660);
                 jogo.LARGURA = 660;
@@ -100,9 +100,9 @@ int main(){
             }//comandos pra tela pequena
 
             if(IsKeyPressed(KEY_TWO)){
-                SetWindowSize(880, 880);
-                jogo.LARGURA = 880;
-                jogo.ALTURA = 880;
+                SetWindowSize(800, 800);
+                jogo.LARGURA = 800;
+                jogo.ALTURA = 800;
                 jogo.escala = jogo.LARGURA / 660.0f;
                 estado = NOME;
 
@@ -118,7 +118,7 @@ int main(){
             SetMusicVolume(trilha2, 0.0f);
             SetMusicVolume(trilha3, 0.0f);
 
-                desenhaTelaNome(Nome, &tamanhoNome); //recebe o nome.
+                desenhaTelaNome(&jogo, Nome, &tamanhoNome); //recebe o nome.
                 if (IsKeyPressed(KEY_ENTER) && tamanhoNome > 0) { //começa o jogo!
                     IniciaJogo(&jogo);
                     Pontos = 0;
@@ -159,7 +159,7 @@ int main(){
                         DrawText(PontoNaTela, 25, 20, 30, WHITE);
 
                         ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
+                        if (ColisaoSnake(&jogo)  /*|| ColisaoBarreiras1(&jogo)*/) {
                             PlaySound(somMorrer1);
                             gameOver = 0;
                         }
@@ -220,6 +220,7 @@ int main(){
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
                     DrawTexture(fundo3, 0, 0, WHITE);
+                    //IniciaBarreiras3(&jogo);
                     if (gameOver) {
                         DesenhaJogo(&jogo);
                         DesenhaBarreiras3(&jogo);
@@ -238,7 +239,7 @@ int main(){
                         DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
                         ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo) || ColisaoBarreiras3(&jogo)) {
+                        if (ColisaoSnake(&jogo) /*|| ColisaoBarreiras3(&jogo)*/) {
                             PlaySound(somMorrer3);
                             gameOver = 0;
                         }
@@ -265,7 +266,7 @@ int main(){
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.0f);
 
-                desenhaTelaRanking();
+                desenhaTelaRanking(&jogo);
                 if (IsKeyPressed(KEY_ENTER)){
                     estado = MENU;
                 }
