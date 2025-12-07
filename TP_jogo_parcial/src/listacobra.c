@@ -259,7 +259,7 @@ void DesenhaBarreiras3(Jogo *j) {
 
 void DesenhaJogo(Jogo *j){
     //DesenhaBordas(j);
-    DesenhaCobra(j, j->tex.Cabeca, j->tex.Corpo, j->tex.Rabo);
+    DesenhaCobra(j);
     DesenhaFood(j);
 }
 
