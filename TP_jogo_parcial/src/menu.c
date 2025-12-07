@@ -30,8 +30,7 @@ void desenhaTelaTelas(Jogo* j) {
     DrawText("Escolha o tamanho\nda sua tela de jogo", (155*j->escala), (180*j->escala), (40*j->escala), DARKGREEN);
     DrawText("1 - Pequena", (230*j->escala), (310*j->escala), (30*j->escala), DARKPURPLE);
     DrawText("2 - Grande", (230*j->escala), (360*j->escala), (30*j->escala), DARKPURPLE);
-    DrawText("Pressione ENTER para continuar", (175*j->escala), (450*j->escala), (20*j->escala), GRAY);
-    DrawText("Pressione ESC para voltar", (190*j->escala), (480*j->escala), (20*j->escala), GRAY);
+    DrawText("Pressione ESC para voltar", (190*j->escala), (450*j->escala), (20*j->escala), GRAY);
 }
 
 void desenhaTelaNome(Jogo* j, char *nomeJogador, int *tamanho) {
