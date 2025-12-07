@@ -43,16 +43,6 @@ void CarregaTexturas(Jogo *j){
 
 
 void IniciaSnake(Jogo *j){
-    //teste
-    printf("Comprimento: %d\n", j->snake.Comprimento);
-    CelulaSnake *c = j->snake.Cabeca;
-    while(c){
-    printf("Segmento: x=%f y=%f dir=%d\n", c->body.pos.x, c->body.pos.y, c->body.direcao);
-    c = c->Prox;
-    }
-    //Texture2D cabeca = LoadTexture("Assets/cabeca.png");
-    //Texture2D rabo   = LoadTexture("Assets/rabo.png");
-
     j->snake.Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     memset(j->snake.Cabeca, 0, sizeof(CelulaSnake));
     j->snake.Cauda  = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -61,8 +51,7 @@ void IniciaSnake(Jogo *j){
     j->snake.Cabeca->Prox = j->snake.Cauda;
     j->snake.Cauda->Prox  = NULL;
 
-
-    j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - 10, j->ALTURA - 80  , STD_SIZE_X, STD_SIZE_Y };
+    j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2, j->ALTURA-90  , STD_SIZE_X, STD_SIZE_Y };
     j->snake.Cabeca->body.direcao = CIMA;
     j->snake.Cabeca->body.color   = j->tex.Cabeca;
 
@@ -74,27 +63,25 @@ void IniciaSnake(Jogo *j){
 }
 
 void AumentaSnake(Jogo *j){
-    Texture2D corpo = LoadTexture("Assets/corpo.png");
     SnakeApontador novo  = malloc(sizeof(CelulaSnake));
     memset(novo, 0, sizeof(CelulaSnake));
 
     // posição inicial: logo atrás do rabo atual
     novo->body.pos = j->snake.Cauda->body.pos;
     switch (j->snake.Cauda->body.direcao) {
-    case CIMA:     novo->body.pos.y += STD_SIZE_Y; break;
-    case BAIXO:    novo->body.pos.y -= STD_SIZE_Y; break;
-    case ESQUERDA: novo->body.pos.x += STD_SIZE_X; break;
-    case DIREITA:  novo->body.pos.x -= STD_SIZE_X; break;
+        case CIMA:     novo->body.pos.y += STD_SIZE_Y; break;
+        case BAIXO:    novo->body.pos.y -= STD_SIZE_Y; break;
+        case ESQUERDA: novo->body.pos.x += STD_SIZE_X; break;
+        case DIREITA:  novo->body.pos.x -= STD_SIZE_X; break;
     }
 
     novo->body.direcao = j->snake.Cauda->body.direcao;
-    novo->body.color   = corpo;
+    novo->body.color   = j->tex.Corpo;
 
     // insere no fim da lista
     j->snake.Cauda->Prox = novo;
     j->snake.Cauda = novo;   // novo passa a ser o rabo
     novo->Prox = NULL;
-
     j->snake.Comprimento++;
 }
 
@@ -109,22 +96,21 @@ void IniciaBordas(Jogo *j){
     j->bordas[3].pos = (Rectangle) {0, 0, 10, j->ALTURA};
 }
 
-
 void IniciaBarreiras1(Jogo *j){
-    //Bordas do centro
+    // Barreiras do centro (duas colunas altas)
     j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
     j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
-    //Bordas verticais
+    //Barreiras verticais
     j->barreiras[2].pos = (Rectangle) {0, 0, (20*j->escala), (60*j->escala)};
     j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*j->escala), 0, (20*j->escala), (60*j->escala)};
     j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)}; 
     j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*j->escala)), (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)};
-    //Bordas horizontais
+    //Barreiras horizontais
     j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (20*j->escala)};
     j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (20*j->escala)};
     j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};
     j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
-    }
+}
 
 void IniciaBarreiras2(Jogo *j){
     int colisao = 0;
@@ -595,17 +581,14 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Cabeca);
     UnloadTexture(j->tex.Corpo);
     UnloadTexture(j->tex.Rabo);
-
     UnloadTexture(j->tex.pedras);
     UnloadTexture(j->tex.pedras1);
     UnloadTexture(j->tex.pedras2);
-
     UnloadTexture(j->tex.asteroide);
-
     UnloadTexture(j->tex.tubaraoD);
     UnloadTexture(j->tex.tubaraoE);
-
     UnloadTexture(j->tex.Food);
     UnloadTexture(j->tex.Food2);
     UnloadTexture(j->tex.Food3);
+    UnloadTexture(j->tex.inicio);
 }
