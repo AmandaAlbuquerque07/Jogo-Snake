@@ -142,7 +142,7 @@ int main(){
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.0f);
 
-                DrawTexture(fundo1, 0, 0, WHITE);
+                DesenhaFundo(&jogo, &fundo1);
                 IniciaBarreiras1(&jogo);
                 if (gameOver) {
                     DesenhaJogo(&jogo);
@@ -183,7 +183,7 @@ int main(){
                 SetMusicVolume(trilha2, 0.5f);
                 SetMusicVolume(trilha3, 0.0f);
 
-                DrawTexture(fundo2, 0, 0, WHITE);
+                DesenhaFundo(&jogo, &fundo2);
                 if (gameOver) {
                 DesenhaJogo2(&jogo);
                 DesenhaBarreiras2(&jogo);
@@ -223,8 +223,8 @@ int main(){
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
-                DrawTexture(fundo3, 0, 0, WHITE);
-                //IniciaBarreiras3(&jogo);
+                
+                DesenhaFundo(&jogo, &fundo3);
                 if (gameOver) {
                     DesenhaJogo3(&jogo);
                     DesenhaBarreiras3(&jogo);
@@ -299,5 +299,5 @@ int main(){
     CloseAudioDevice();
 
     CloseWindow();
-return 0;
+    return 0;
 }
