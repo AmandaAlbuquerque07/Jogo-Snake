@@ -15,8 +15,8 @@ char Nome[50];
 
 
 int main(){
-    srand(time(NULL)); 
 
+    srand(time(NULL)); 
     Jogo jogo;
     jogo.LARGURA = 660;
     jogo.ALTURA = 660;
@@ -63,31 +63,31 @@ int main(){
     CarregaTexturas(&jogo);
 
     Estado estado= MENU;
-        while (!WindowShouldClose()) {
+    while (!WindowShouldClose()) {
+
         UpdateMusicStream(musmenu);  
         UpdateMusicStream(trilha1);
         UpdateMusicStream(trilha2);
         UpdateMusicStream(trilha3);
-
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        switch (estado) { //determina o que fazer em cada estado do jogo:
-            case MENU:
+    switch (estado) { //determina o que fazer em cada estado do jogo:
+        case MENU:
             SetMusicVolume(musmenu, 0.5f);
             SetMusicVolume(trilha1, 0.0f);
             SetMusicVolume(trilha2, 0.0f);
             SetMusicVolume(trilha3, 0.0f);
 
-                desenhaMenuPrincipal(&jogo);
+            desenhaMenuPrincipal(&jogo);
                 if (IsKeyPressed(KEY_ONE)) estado = RANKING; //se apertar 1 abre o ranking,
                 if (IsKeyPressed(KEY_TWO)) estado = TELAS; //2 -> JOGAR! Pede o NOME antes! Por isso tem o caso NOME.
                 if (IsKeyPressed(KEY_ESCAPE)){
-                    CloseWindow();//fecha a tela com esc;
-                } 
-                break;
+                CloseWindow();//fecha a tela com esc;
+            } 
+        break;
 
-            case TELAS:
+        case TELAS:
             SetMusicVolume(musmenu, 0.5f);
             SetMusicVolume(trilha1, 0.0f);
             SetMusicVolume(trilha2, 0.0f);
@@ -108,75 +108,74 @@ int main(){
                 jogo.ALTURA = 800;
                 jogo.escala = jogo.LARGURA / 660.0f;
                 estado = NOME;
-
             }
-                //comando pro outro
+            //comando pro outro
             if(IsKeyPressed(KEY_ENTER)) estado = NOME;
             if(IsKeyPressed(KEY_ESCAPE)) estado = MENU;
-            break;
+        break;
 
-            case NOME:
+        case NOME:
             SetMusicVolume(musmenu, 0.5f);
             SetMusicVolume(trilha1, 0.0f);
             SetMusicVolume(trilha2, 0.0f);
             SetMusicVolume(trilha3, 0.0f);
 
-                desenhaTelaNome(&jogo, Nome, &tamanhoNome); //recebe o nome.
-                if (IsKeyPressed(KEY_ENTER) && tamanhoNome > 0) { //começa o jogo!
-                    IniciaJogo(&jogo);
-                    Pontos = 0;
-                    gameOver = 1;
-                    estado = JOGO;
-                }
-                if(IsKeyPressed(KEY_ESCAPE)){
-                    estado=MENU;
-                    Nome[0]='\0';
-                    tamanhoNome=0;
-                }
-                break;
-                
+            desenhaTelaNome(&jogo, Nome, &tamanhoNome); //recebe o nome.
+            if (IsKeyPressed(KEY_ENTER) && tamanhoNome > 0) { //começa o jogo!
+                IniciaJogo(&jogo);
+                Pontos = 0;
+                gameOver = 1;
+                estado = JOGO;
+            }
+            if(IsKeyPressed(KEY_ESCAPE)){
+                estado=MENU;
+                Nome[0]='\0';
+                tamanhoNome=0;
+            }
+        break;
 
-            case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
-                if(Pontos <= 1){
+
+        case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
+            if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.0f);
 
-                    DrawTexture(fundo1, 0, 0, WHITE);
-                    IniciaBarreiras1(&jogo);
-                    if (gameOver) {
-                        DesenhaJogo(&jogo);
-                        DesenhaBarreiras1(&jogo);
-                        AtualizaRodada(&jogo);
+                DrawTexture(fundo1, 0, 0, WHITE);
+                IniciaBarreiras1(&jogo);
+                if (gameOver) {
+                    DesenhaJogo(&jogo);
+                    DesenhaBarreiras1(&jogo);
+                    AtualizaRodada(&jogo);
 
-                        if (ColisaoFood(&jogo)) {
-                            PlaySound(somComer);
-                            IniciaFood(&jogo);
-                            AumentaSnake(&jogo);
-                            Pontos++; //atualiza pontuação
-                        }
+                    if (ColisaoFood(&jogo)) {
+                        PlaySound(somComer);
+                        IniciaFood(&jogo);
+                        AumentaSnake(&jogo);
+                        Pontos++; //atualiza pontuação
+                    }
 
-                        //mostra pontuação:
-                        sprintf(PontoNaTela, "Score: %d", Pontos);
-                        DrawText(PontoNaTela, 25, 20, 30, WHITE);
+                    //mostra pontuação:
+                    sprintf(PontoNaTela, "Score: %d", Pontos);
+                    DrawText(PontoNaTela, 25, 20, 30, WHITE);
 
-                        ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)  /*|| ColisaoBarreiras1(&jogo)*/) {
-                            PlaySound(somMorrer1);
-                            gameOver = 0;
-                        }
+                    ColisaoBordas(&jogo);
+                    if (ColisaoSnake(&jogo)  /*|| ColisaoBarreiras1(&jogo)*/) {
+                        PlaySound(somMorrer1);
+                        gameOver = 0;
+                    }
 
-                        }else{
-                        DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                        DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
-                        if (IsKeyPressed(KEY_ENTER)) { 
-                            atualizarRanking("ranking.txt", Nome, Pontos);                                     
-                            estado = MENU;
-                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                            tamanhoNome = 0;
-                        }
-                    } 
+                }else{
+                DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    if (IsKeyPressed(KEY_ENTER)) { 
+                        atualizarRanking("ranking.txt", Nome, Pontos);                                     
+                        estado = MENU;
+                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                        tamanhoNome = 0;
+                    }
+                } 
 
                 }else if(Pontos > 1 && Pontos < 5){
                 SetMusicVolume(musmenu, 0.0f);
@@ -184,98 +183,98 @@ int main(){
                 SetMusicVolume(trilha2, 0.5f);
                 SetMusicVolume(trilha3, 0.0f);
 
-                    DrawTexture(fundo2, 0, 0, WHITE);
-                    if (gameOver) {
-                        DesenhaJogo(&jogo);
-                        DesenhaBarreiras2(&jogo);
-                        AtualizaRodada(&jogo);
+                DrawTexture(fundo2, 0, 0, WHITE);
+                if (gameOver) {
+                DesenhaJogo2(&jogo);
+                DesenhaBarreiras2(&jogo);
+                AtualizaRodada(&jogo);
 
-                        if (ColisaoFood(&jogo)) {
-                            PlaySound(somComer);
-                            IniciaFood(&jogo);
-                            IniciaBarreiras2(&jogo);
-                            AumentaSnake(&jogo);
-                            Pontos++; //atualiza pontuação
-                        }
+                if (ColisaoFood(&jogo)) {
+                PlaySound(somComer);
+                IniciaFood(&jogo);
+                IniciaBarreiras2(&jogo);
+                AumentaSnake(&jogo);
+                Pontos++; //atualiza pontuação
+                }
 
-                        //mostra pontuação:
-                        sprintf(PontoNaTela, "Score: %d", Pontos);
-                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                //mostra pontuação:
+                sprintf(PontoNaTela, "Score: %d", Pontos);
+                DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                        ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)) {
-                            PlaySound(somMorrer2);
-                            gameOver = 0;
-                        }
+                ColisaoBordas(&jogo);
+                if (ColisaoSnake(&jogo)) {
+                PlaySound(somMorrer2);
+                gameOver = 0;
+                }
 
-                    }else { //quando o jogador perde:
-                        DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                        DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
-                        if (IsKeyPressed(KEY_ENTER)) {
-                            atualizarRanking("ranking.txt", Nome, Pontos);                                      
-                            estado = MENU;
-                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                            tamanhoNome = 0;
-                        }
-                    }
-                
-                }else if(Pontos >= 5){
+                }else { //quando o jogador perde:
+                DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
+                if (IsKeyPressed(KEY_ENTER)) {
+                atualizarRanking("ranking.txt", Nome, Pontos);                                      
+                estado = MENU;
+                Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                tamanhoNome = 0;
+                }
+                }
+
+            }else if(Pontos >= 5){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
-                    DrawTexture(fundo3, 0, 0, WHITE);
-                    //IniciaBarreiras3(&jogo);
-                    if (gameOver) {
-                        DesenhaJogo(&jogo);
-                        DesenhaBarreiras3(&jogo);
-                        Barreiras3(&jogo);
-                        AtualizaRodada(&jogo);
+                DrawTexture(fundo3, 0, 0, WHITE);
+                //IniciaBarreiras3(&jogo);
+                if (gameOver) {
+                    DesenhaJogo3(&jogo);
+                    DesenhaBarreiras3(&jogo);
+                    Barreiras3(&jogo);
+                    AtualizaRodada(&jogo);
 
-                        if (ColisaoFood(&jogo)) {
-                            PlaySound(somComer);
-                            IniciaFood(&jogo);
-                            AumentaSnake(&jogo);
-                            Pontos++; //atualiza pontuação
-                        }
+                    if (ColisaoFood(&jogo)) {
+                        PlaySound(somComer);
+                        IniciaFood(&jogo);
+                        AumentaSnake(&jogo);
+                        Pontos++; //atualiza pontuação
+                    }
 
-                        //mostra pontuação:
-                        sprintf(PontoNaTela, "Score: %d", Pontos);
-                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                    //mostra pontuação:
+                    sprintf(PontoNaTela, "Score: %d", Pontos);
+                    DrawText(PontoNaTela, 10, 10, 30, WHITE);
 
-                        ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo) /*|| ColisaoBarreiras3(&jogo)*/) {
-                            PlaySound(somMorrer3);
-                            gameOver = 0;
-                        }
+                    ColisaoBordas(&jogo);
+                    if (ColisaoSnake(&jogo) /*|| ColisaoBarreiras3(&jogo)*/) {
+                        PlaySound(somMorrer3);
+                        gameOver = 0;
+                    }
 
-                        }else{
-                        DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                        DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
-                        if (IsKeyPressed(KEY_ENTER)) { 
-                            atualizarRanking("ranking.txt", Nome, Pontos);                                     
-                            estado = MENU;
-                            Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                            tamanhoNome = 0;
-                            jogo.barreiras[0].inicia = 0;
-                            jogo.barreiras[1].inicia = 0;
-                        }
-                    } 
-                }
-                break;
-                
-
-            case RANKING:
-                SetMusicVolume(musmenu, 0.5f);
-                SetMusicVolume(trilha1, 0.0f);
-                SetMusicVolume(trilha2, 0.0f);
-                SetMusicVolume(trilha3, 0.0f);
-
-                desenhaTelaRanking(&jogo);
-                if (IsKeyPressed(KEY_ENTER)){
+                }else{
+                DrawText("FIM DE JOGO", 150, 200, 60, RED);
+                DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    if (IsKeyPressed(KEY_ENTER)) { 
+                    atualizarRanking("ranking.txt", Nome, Pontos);                                     
                     estado = MENU;
+                    Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                    tamanhoNome = 0;
+                    jogo.barreiras[0].inicia = 0;
+                    jogo.barreiras[1].inicia = 0;
+                    }
+                } 
+            }
+        break;
+
+
+        case RANKING:
+            SetMusicVolume(musmenu, 0.5f);
+            SetMusicVolume(trilha1, 0.0f);
+            SetMusicVolume(trilha2, 0.0f);
+            SetMusicVolume(trilha3, 0.0f);
+
+            desenhaTelaRanking(&jogo);
+                if (IsKeyPressed(KEY_ENTER)){
+                estado = MENU;
                 }
-                break;
+        break;
         }
 
         EndDrawing();
@@ -300,5 +299,5 @@ int main(){
     CloseAudioDevice();
 
     CloseWindow();
-    return 0;
+return 0;
 }
