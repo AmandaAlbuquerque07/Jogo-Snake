@@ -20,6 +20,6 @@ void AplicarCurvasNosSegmentos(Jogo *j);
 void LimparCurvas(void);
 
 
-void DesenhaCobra(Jogo *j,  Texture2D texCabeca, Texture2D texCorpo, Texture2D texRabo);
+void DesenhaCobra(Jogo *j);
 
 #endif
