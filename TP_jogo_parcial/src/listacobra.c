@@ -103,20 +103,20 @@ void IniciaBordas(Jogo *j){
 
 
 void IniciaBarreiras1(Jogo *j){
-    float escala = j->LARGURA / 660.0f;
+//    float escala = j->LARGURA / 660.0f;
      //Bordas do centro
-    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*escala), (j->ALTURA-490*escala), (40*escala), (320*escala)};
-    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*escala), (j->ALTURA-490*escala), (40*escala), (320*escala)};
+    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
+    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
     //Bordas verticais
-    j->barreiras[2].pos = (Rectangle) {0, 0, (20*escala), (60*escala)};
-    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*escala), 0, (20*escala), (60*escala)};
-    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*escala), (20*escala), (60*escala)}; 
-    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*escala)), (j->ALTURA-60*escala), (20*escala), (60*escala)};
+    j->barreiras[2].pos = (Rectangle) {0, 0, (20*j->escala), (60*j->escala)};
+    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*j->escala), 0, (20*j->escala), (60*j->escala)};
+    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)}; 
+    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*j->escala)), (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)};
     //Bordas horizontais
-    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*escala), (20*escala)};
-    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*escala), 0, (j->LARGURA-600*escala), (20*escala)};
-    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*escala), (60*escala), (20*escala)};
-    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*escala), (j->LARGURA-20*escala), (60*escala), (20*escala)};  
+    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (20*j->escala)};
+    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (20*j->escala)};
+    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};
+    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
 
