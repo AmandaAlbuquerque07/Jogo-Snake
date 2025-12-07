@@ -1,8 +1,6 @@
 #ifndef COBRA_H
 #define COBRA_H
 
-#define LARGURA 660
-#define ALTURA 660
 #define STD_SIZE_X 40
 #define STD_SIZE_Y 40
 #define TEMPO 0.16
@@ -54,13 +52,15 @@ int Comprimento;
 }ListaSnake;
 
 typedef struct Jogo{
-ListaSnake snake;
-Food food;
-Bordas bordas[4];
-Barreiras barreiras[10];
-Texturas tex;
-double tempo;
-double cooldown;
+    ListaSnake snake;
+    Food food;
+    Bordas bordas[4];
+    Barreiras barreiras[10];
+    Texturas tex;
+    double tempo;
+    double cooldown;
+    int LARGURA;
+    int ALTURA;
 }Jogo;
 
 void VSvazia(ListaSnake *snake);
