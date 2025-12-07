@@ -2,13 +2,21 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "listacobra.h"
 #include "menu.h"
 #include "ranking.h"
+#include "listacobra.h"
 
 #define MAX_TAM 50
 
-void desenhaMenuPrincipal(Jogo* j) {
+void desenhaIntro(Jogo*j) {
+    DesenhaFundo(j, &j->tex.inicio);
+    DrawText("SPEEDY", (160*j->escala), (200*j->escala), (80*j->escala), WHITE);
+     DrawText("SNAKE", (190*j->escala), (300*j->escala), (80*j->escala), WHITE);
+    DrawText("ENTER - Começar", (250*j->escala), (500*j->escala), (20*j->escala), GRAY);
+    DrawText("ESC - Sair", (275*j->escala), (550*j->escala), (20*j->escala), GRAY);
+}
+
+void desenhaMenuPrincipal(Jogo*j) {
     ClearBackground(SKYBLUE);
     DrawText("MENU PRINCIPAL", (140*j->escala), (200*j->escala), (50*j->escala), DARKGREEN);
     DrawText("1 - Ranking", (225*j->escala), (300*j->escala), (30*j->escala), RED);
@@ -28,11 +36,10 @@ void desenhaTelaTelas(Jogo* j) {
 
 void desenhaTelaNome(Jogo* j, char *nomeJogador, int *tamanho) {
     ClearBackground(SKYBLUE);
-    //desenha na tela o "digite seu nome" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
+    //desenha na tela o "digite seu nomme" e vai mostrando o que for digitado na string nomeJogador[MAX_TAM];
 
     DrawText("Digite seu nome:", (185*j->escala), (200*j->escala), (40*j->escala), DARKGREEN);
     DrawText(nomeJogador, (250*j->escala), (300*j->escala), (30*j->escala), DARKPURPLE);
-
     //Isso aqui é o loop de coleta das letras a partir da pressão nas teclas:
     int tecla = GetCharPressed();
     while (tecla > 0) {
@@ -56,7 +63,10 @@ void desenhaTelaNome(Jogo* j, char *nomeJogador, int *tamanho) {
     DrawText("Pressione ESC para voltar", (190*j->escala), (480*j->escala), (20*j->escala), GRAY);
 }
 
-void desenhaTelaRanking(Jogo* j) {
+
+
+
+void desenhaTelaRanking(Jogo*j) {
     ClearBackground(SKYBLUE);
     DrawText("RANKING", (225*j->escala), (50*j->escala), (40*j->escala), DARKPURPLE);
 
@@ -82,5 +92,5 @@ void desenhaTelaRanking(Jogo* j) {
         DrawText("Ranking vazio!", (250*j->escala), (150*j->escala), (30*j->escala), RED);
     }
 
-     DrawText("Pressione ENTER para voltar",(180*j->escala), (550*j->escala), (20*j->escala), GRAY);
+    DrawText("Pressione ENTER para voltar",(180*j->escala), (550*j->escala), (20*j->escala), GRAY);
 }
