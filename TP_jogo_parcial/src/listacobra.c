@@ -127,9 +127,23 @@ void IniciaBarreiras1(Jogo *j){
     }
 
 void IniciaBarreiras2(Jogo *j){
-    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-560*j->escala), (80*j->escala), (80*j->escala)};
-    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-590*j->escala), (j->ALTURA-300*j->escala), (80*j->escala), (80*j->escala)};
+    int colisao = 0;
+    // Colisão com a comidinha
+    if (!colisao) {
+        if (CheckCollisionRecs(j->barreiras[0].pos, j->food.pos) ||
+            CheckCollisionRecs(j->barreiras[1].pos, j->food.pos) ||
+            CheckCollisionRecs(j->barreiras[2].pos, j->food.pos)) {
+                colisao = 1;
+        }
+    }
+    if(colisao){
+        AtualizaBarreiras2(j);
+    } 
+    else{
+    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-440*j->escala), (80*j->escala), (80*j->escala)};
+    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-590*j->escala), (j->ALTURA-180*j->escala), (80*j->escala), (80*j->escala)};
     j->barreiras[2].pos = (Rectangle) {(j->LARGURA-320*j->escala), (j->ALTURA-170*j->escala), (80*j->escala), (80*j->escala)};
+    }
 }
 
 void Barreiras3(Jogo *j){
