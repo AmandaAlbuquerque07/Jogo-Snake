@@ -21,52 +21,52 @@ Snake->Comprimento = 0;
 }
 
 void CarregaTexturas(Jogo *j){
-j->tex.Cabeca = LoadTexture("Assets/cabecanovo4.png");
-j->tex.Corpo  = LoadTexture("Assets/corponovo4.png");
-j->tex.Rabo   = LoadTexture("Assets/rabonovo4.png");
-
-j->tex.pedras    = LoadTexture("Assets/pedras.png");
-j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
-j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
-
-j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
-j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
-
-j->tex.Food = LoadTexture("Assets/maca.png");
-j->tex.Food2 = LoadTexture("Assets/estrela.png");
-j->tex.Food3 = LoadTexture("Assets/peixe.png");
+    j->tex.Cabeca = LoadTexture("Assets/cabecanovo4.png");
+    j->tex.Corpo  = LoadTexture("Assets/corponovo4.png");
+    j->tex.Rabo   = LoadTexture("Assets/rabonovo4.png");
+    
+    j->tex.pedras    = LoadTexture("Assets/pedras.png");
+    j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
+    j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
+    
+    j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
+    j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
+    
+    j->tex.Food = LoadTexture("Assets/maca.png");
+    j->tex.Food2 = LoadTexture("Assets/estrela.png");
+    j->tex.Food3 = LoadTexture("Assets/peixe.png");
 }
 
 
-void IniciaSnake(Jogo *j){
-//teste
-printf("Comprimento: %d\n", j->snake.Comprimento);
-CelulaSnake *c = j->snake.Cabeca;
-while(c){
-printf("Segmento: x=%f y=%f dir=%d\n", c->body.pos.x, c->body.pos.y, c->body.direcao);
-c = c->Prox;
-}
-//Texture2D cabeca = LoadTexture("Assets/cabeca.png");
-//Texture2D rabo   = LoadTexture("Assets/rabo.png");
-
-j->snake.Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
-memset(j->snake.Cabeca, 0, sizeof(CelulaSnake));
-j->snake.Cauda  = (SnakeApontador)malloc(sizeof(CelulaSnake));
-memset(j->snake.Cauda, 0, sizeof(CelulaSnake));
-
-j->snake.Cabeca->Prox = j->snake.Cauda;
-j->snake.Cauda->Prox  = NULL;
-
-
-j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - 10, j->ALTURA - 80  , STD_SIZE_X, STD_SIZE_Y };
-j->snake.Cabeca->body.direcao = CIMA;
-j->snake.Cabeca->body.color   = j->tex.Cabeca;
-
-j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y };
-j->snake.Cauda->body.direcao = CIMA;
-j->snake.Cauda->body.color   = j->tex.Rabo;
-
-j->snake.Comprimento = 2;
+    void IniciaSnake(Jogo *j){
+    //teste
+    printf("Comprimento: %d\n", j->snake.Comprimento);
+    CelulaSnake *c = j->snake.Cabeca;
+    while(c){
+    printf("Segmento: x=%f y=%f dir=%d\n", c->body.pos.x, c->body.pos.y, c->body.direcao);
+    c = c->Prox;
+    }
+    //Texture2D cabeca = LoadTexture("Assets/cabeca.png");
+    //Texture2D rabo   = LoadTexture("Assets/rabo.png");
+    
+    j->snake.Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
+    memset(j->snake.Cabeca, 0, sizeof(CelulaSnake));
+    j->snake.Cauda  = (SnakeApontador)malloc(sizeof(CelulaSnake));
+    memset(j->snake.Cauda, 0, sizeof(CelulaSnake));
+    
+    j->snake.Cabeca->Prox = j->snake.Cauda;
+    j->snake.Cauda->Prox  = NULL;
+    
+    
+    j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - 10, j->ALTURA - 80  , STD_SIZE_X, STD_SIZE_Y };
+    j->snake.Cabeca->body.direcao = CIMA;
+    j->snake.Cabeca->body.color   = j->tex.Cabeca;
+    
+    j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y };
+    j->snake.Cauda->body.direcao = CIMA;
+    j->snake.Cauda->body.color   = j->tex.Rabo;
+    
+    j->snake.Comprimento = 2;
 }
 
 void AumentaSnake(Jogo *j){
@@ -107,19 +107,19 @@ j->bordas[3].pos = (Rectangle) {0, 0, 10, j->ALTURA};
 
 
 void IniciaBarreiras1(Jogo *j){
-//Bordas do centro
-j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
-j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
-//Bordas verticais
-j->barreiras[2].pos = (Rectangle) {0, 0, (20*j->escala), (60*j->escala)};
-j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*j->escala), 0, (20*j->escala), (60*j->escala)};
-j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)}; 
-j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*j->escala)), (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)};
-//Bordas horizontais
-j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (20*j->escala)};
-j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (20*j->escala)};
-j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};
-j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
+    //Bordas do centro
+    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
+    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
+    //Bordas verticais
+    j->barreiras[2].pos = (Rectangle) {0, 0, (20*j->escala), (60*j->escala)};
+    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*j->escala), 0, (20*j->escala), (60*j->escala)};
+    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)}; 
+    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*j->escala)), (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)};
+    //Bordas horizontais
+    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (20*j->escala)};
+    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (20*j->escala)};
+    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};
+    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
 void IniciaBarreiras2(Jogo *j){
@@ -314,6 +314,20 @@ j->tex.Food3,
 WHITE                                                        // Cor
 );
 }
+
+
+void DesenhaFundo(Jogo *j, Texture2D* img){
+    DrawTexturePro(
+        *img,
+        (Rectangle){0, 0, img->width, img->height},           // Fonte (toda a textura)
+        (Rectangle){0, 0, (j->LARGURA*j->escala), (j->ALTURA*j->escala)}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
+        
+}
+
 
 void DesenhaBarreiras1(Jogo *j){
 
@@ -571,3 +585,4 @@ UnloadTexture(j->tex.tubaraoE);
 
 UnloadTexture(j->tex.Food);
 }
+
