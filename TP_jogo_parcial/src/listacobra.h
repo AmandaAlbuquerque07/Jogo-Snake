@@ -9,19 +9,19 @@
 #define FOOD_COLOR RED
 
 typedef struct Bordas{
-Rectangle pos;
+    Rectangle pos;
 }Bordas;
 
 typedef struct Food{
-Rectangle pos;
-Color color;
+    Rectangle pos;
+    Color color;
 }Food;
 
 typedef struct Barreiras{
-Rectangle pos;
-Color color;
-int velocidade;
-int inicia;
+    Rectangle pos;
+    Color color;
+    int velocidade;
+    int inicia;
 }Barreiras;
 
 typedef struct Texturas{
@@ -34,21 +34,21 @@ typedef struct Texturas{
 //Início da Implementação da lista:
 
 typedef struct Body{
-Rectangle pos;
-Texture2D color;
-int direcao;
+    Rectangle pos;
+    Texture2D color;
+    int direcao;
 }Body; //TipoItem
 
 typedef struct CelulaSnake * SnakeApontador;
 
 typedef struct CelulaSnake {
-Body body;
-SnakeApontador Prox;
+    Body body;
+    SnakeApontador Prox;
 } CelulaSnake; //TipoCelula
 
 typedef struct {
-SnakeApontador Cabeca, Cauda;
-int Comprimento;
+    SnakeApontador Cabeca, Cauda;
+    int Comprimento;
 }ListaSnake;
 
 typedef struct Jogo{
@@ -59,8 +59,8 @@ typedef struct Jogo{
     Texturas tex;
     double tempo;
     double cooldown;
-    int LARGURA;
-    int ALTURA;
+    int LARGURA, ALTURA;
+    float escala;
 }Jogo;
 
 void VSvazia(ListaSnake *snake);
