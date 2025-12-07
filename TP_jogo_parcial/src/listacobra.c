@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <math.h>
 #include "listacobra.h"
 #define TAMANHO_CELULA 40
 
@@ -54,7 +55,7 @@ void IniciaSnake(Jogo *j){
     j->snake.Cabeca->Prox = j->snake.Cauda;
     j->snake.Cauda->Prox  = NULL;
 
-    j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - STD_SIZE_X, j->ALTURA - STD_SIZE_Y - 10, STD_SIZE_X, STD_SIZE_Y };
+     j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - 10, j->ALTURA - 80  , STD_SIZE_X, STD_SIZE_Y };
     j->snake.Cabeca->body.direcao = CIMA;
     j->snake.Cabeca->body.color   = j->tex.Cabeca;
 
@@ -118,6 +119,115 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
+void IniciaBarreiras2(Jogo *j){
+    int colisao;
+    float distanciaMin = 120.0f; // Distância mínima entre barreiras
+
+    do {
+        colisao = 0;
+
+        
+        // Gerar posições aleatórias
+        
+        // Barreira 0
+        j->barreiras[0].pos.x = (float)(rand() % (j->LARGURA - STD_SIZE_X));
+        j->barreiras[0].pos.y = (float)(rand() % (j->ALTURA  - STD_SIZE_Y));
+        j->barreiras[0].pos.width  = STD_SIZE_X;
+        j->barreiras[0].pos.height = STD_SIZE_Y;
+
+        // Barreira 1
+        j->barreiras[1].pos.x = (float)(rand() % (j->LARGURA - STD_SIZE_X));
+        j->barreiras[1].pos.y = (float)(rand() % (j->ALTURA  - STD_SIZE_Y));
+        j->barreiras[1].pos.width  = STD_SIZE_X;
+        j->barreiras[1].pos.height = STD_SIZE_Y;
+
+        // Barreira 2
+        j->barreiras[2].pos.x = (float)(rand() % (j->LARGURA - STD_SIZE_X));
+        j->barreiras[2].pos.y = (float)(rand() % (j->ALTURA  - STD_SIZE_Y));
+        j->barreiras[2].pos.width  = STD_SIZE_X;
+        j->barreiras[2].pos.height = STD_SIZE_Y;
+
+        // Distância entre barreiras
+        // dist = sqrt((x2-x1)^2 + (y2-y1)^2)
+
+        float dx01 = j->barreiras[1].pos.x - j->barreiras[0].pos.x;
+        float dy01 = j->barreiras[1].pos.y - j->barreiras[0].pos.y;
+        float dist01 = sqrt(dx01*dx01 + dy01*dy01);
+
+        float dx02 = j->barreiras[2].pos.x - j->barreiras[0].pos.x;
+        float dy02 = j->barreiras[2].pos.y - j->barreiras[0].pos.y;
+        float dist02 = sqrt(dx02*dx02 + dy02*dy02);
+
+        float dx12 = j->barreiras[2].pos.x - j->barreiras[1].pos.x;
+        float dy12 = j->barreiras[2].pos.y - j->barreiras[1].pos.y;
+        float dist12 = sqrt(dx12*dx12 + dy12*dy12);
+
+        if (dist01 < distanciaMin || dist02 < distanciaMin || dist12 < distanciaMin)
+            colisao = 1;
+
+        // Colisão com a cobra
+        if (!colisao) {
+            SnakeApontador aux = j->snake.Cabeca;
+
+            while(aux != NULL){
+                if (CheckCollisionRecs(j->barreiras[0].pos, aux->body.pos) ||
+                    CheckCollisionRecs(j->barreiras[1].pos, aux->body.pos) ||
+                    CheckCollisionRecs(j->barreiras[2].pos, aux->body.pos)) {
+
+                    colisao = 1;
+                    break;
+                }
+                aux = aux->Prox;
+            }
+        }
+
+        // Colisão com a comida
+        if (!colisao) {
+            if (CheckCollisionRecs(j->barreiras[0].pos, j->food.pos) ||
+                CheckCollisionRecs(j->barreiras[1].pos, j->food.pos) ||
+                CheckCollisionRecs(j->barreiras[2].pos, j->food.pos)) {
+                colisao = 1;
+            }
+        }
+
+    } while(colisao);  // repetir até tudo ficar válido
+
+    j->food.color = FOOD_COLOR;
+}
+
+void Barreiras3(Jogo *j){
+    static int iniciado = 0;
+
+    // Inicializa apenas uma vez
+        if (!iniciado){
+        // Barreira 0: direita → esquerda
+        j->barreiras[0].pos = (Rectangle){j->LARGURA, (j->ALTURA - 530*j->escala), (160*j->escala), (80*j->escala)};
+        j->barreiras[0].velocidade = -3;
+
+        // Barreira 1: esquerda → direita
+        j->barreiras[1].pos = (Rectangle){-j->LARGURA, (j->ALTURA - 250*j->escala), (160*j->escala), (80*j->escala)};
+        j->barreiras[1].velocidade = 3;
+
+        iniciado = 1;
+    }
+
+
+    // Movimento das barreiras
+    for (int i = 0; i < 2; i++) {
+        j->barreiras[i].pos.x += j->barreiras[i].velocidade;
+
+        // Se sair pela direita, volta da esquerda
+        if (j->barreiras[i].pos.x > j->LARGURA) {
+            j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
+        }
+
+        // Se sair pela esquerda, volta da direita
+        if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
+                j->barreiras[i].pos.x = j->LARGURA;
+        }
+    }
+}
+
 void IniciaFood(Jogo *j){
 int colisao;
     do {
@@ -162,8 +272,6 @@ void IniciaJogo(Jogo *j){
     //j->pendingDir = CIMA;
     j->tempo = GetTime();
 }
-
-
 
 void DesenhaFood(Jogo *j){
 // Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
@@ -211,6 +319,36 @@ void DesenhaBarreiras1(Jogo *j){
             WHITE                                                        
         );    
 }
+}
+
+void DesenhaBarreiras2(Jogo *j){
+
+    DrawTexturePro(
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
+        (Rectangle){j->barreiras[0].pos.x, j->barreiras[0].pos.y, 120, 120}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
+
+    DrawTexturePro(
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
+        (Rectangle){j->barreiras[1].pos.x, j->barreiras[1].pos.y, 120, 120}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
+
+    DrawTexturePro(
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
+        (Rectangle){j->barreiras[2].pos.x, j->barreiras[2].pos.y, 120, 120}, // Destino na tela
+        (Vector2){0, 0},                                            // Origem para rotação
+        0,                                                           // Rotação
+        WHITE                                                        // Cor
+    );
 }
 
 void DesenhaBarreiras3(Jogo *j) {
@@ -281,39 +419,6 @@ void AtualizaPosSnake(Jogo *j){
         else if (corpo->body.pos.y >= j->ALTURA) corpo->body.pos.y = 0;
 
         corpo = corpo->Prox;
-    }
-}
-
-void AtualizaBarreiras3(Jogo *j){
-    static int iniciado = 0;
-
-    // Inicializa apenas uma vez
-        if (!iniciado){
-        // Barreira 0: direita → esquerda
-        j->barreiras[0].pos = (Rectangle){j->LARGURA, (j->ALTURA - 530*j->escala), (160*j->escala), (80*j->escala)};
-        j->barreiras[0].velocidade = -3;
-
-        // Barreira 1: esquerda → direita
-        j->barreiras[1].pos = (Rectangle){-j->LARGURA, (j->ALTURA - 250*j->escala), (160*j->escala), (80*j->escala)};
-        j->barreiras[1].velocidade = 3;
-
-        iniciado = 1;
-    }
-
-
-    // Movimento das barreiras
-    for (int i = 0; i < 2; i++) {
-        j->barreiras[i].pos.x += j->barreiras[i].velocidade;
-
-        // Se sair pela direita, volta da esquerda
-        if (j->barreiras[i].pos.x > j->LARGURA) {
-            j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
-        }
-
-        // Se sair pela esquerda, volta da direita
-        if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
-                j->barreiras[i].pos.x = j->LARGURA;
-        }
     }
 }
 
