@@ -91,6 +91,7 @@ int main(){
             if(IsKeyPressed(KEY_ONE));//comandos pra um tamanho de tela
             if(IsKeyPressed(KEY_TWO));//comando pro outro
             if(IsKeyPressed(KEY_ENTER)) estado = NOME;
+            if(IsKeyPressed(KEY_ESCAPE)) estado = MENU;
             break;
 
             case NOME:
@@ -137,7 +138,7 @@ int main(){
 
                         //mostra pontuação:
                         sprintf(PontoNaTela, "Score: %d", Pontos);
-                        DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                        DrawText(PontoNaTela, 25, 20, 30, WHITE);
 
                         ColisaoBordas(&jogo);
                         if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
