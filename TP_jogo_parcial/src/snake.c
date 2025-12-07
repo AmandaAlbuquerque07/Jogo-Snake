@@ -114,9 +114,9 @@ int main(){
             }//comandos pra tela pequena
 
             if(IsKeyPressed(KEY_TWO)){
-                SetWindowSize(800, 800);
-                jogo.LARGURA = 800;
-                jogo.ALTURA = 800;
+                SetWindowSize(820, 820);
+                jogo.LARGURA = 820;
+                jogo.ALTURA = 820;
                 jogo.escala = jogo.LARGURA / 660.0f;
                 estado = NOME;
             }
