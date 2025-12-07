@@ -103,7 +103,6 @@ void IniciaBordas(Jogo *j){
 
 
 void IniciaBarreiras1(Jogo *j){
-//    float escala = j->LARGURA / 660.0f;
      //Bordas do centro
     j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
     j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
@@ -429,3 +428,4 @@ void LiberaTexturas(Jogo *j) {
 
     UnloadTexture(j->tex.Food);
 }
+
