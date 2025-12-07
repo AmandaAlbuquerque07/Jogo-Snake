@@ -54,7 +54,7 @@ void IniciaSnake(Jogo *j){
     j->snake.Cabeca->Prox = j->snake.Cauda;
     j->snake.Cauda->Prox  = NULL;
 
-    j->snake.Cabeca->body.pos = (Rectangle){ LARGURA/2 - STD_SIZE_X, ALTURA - STD_SIZE_Y - 10, STD_SIZE_X, STD_SIZE_Y };
+    j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - STD_SIZE_X, j->ALTURA - STD_SIZE_Y - 10, STD_SIZE_X, STD_SIZE_Y };
     j->snake.Cabeca->body.direcao = CIMA;
     j->snake.Cabeca->body.color   = cabeca;
 
@@ -92,30 +92,30 @@ void AumentaSnake(Jogo *j){
 
 void IniciaBordas(Jogo *j){
     //Borda de cima
-    j->bordas[0].pos = (Rectangle) {0, 0, LARGURA, 10};
+    j->bordas[0].pos = (Rectangle) {0, 0, j->LARGURA, 10};
     //Borda da direita
-    j->bordas[1].pos = (Rectangle) {LARGURA - 10, 0, 10, ALTURA};
+    j->bordas[1].pos = (Rectangle) {j->LARGURA - 10, 0, 10, j->ALTURA};
     //Borda de baixo
-    j->bordas[2].pos = (Rectangle) {0, ALTURA - 10, LARGURA, 10};
+    j->bordas[2].pos = (Rectangle) {0, j->ALTURA - 10, j->LARGURA, 10};
     //Borda da esquerda
-    j->bordas[3].pos = (Rectangle) {0, 0, 10, ALTURA};
+    j->bordas[3].pos = (Rectangle) {0, 0, 10, j->ALTURA};
 }
 
 
 void IniciaBarreiras1(Jogo *j){
      //Bordas do centro
-    j->barreiras[0].pos = (Rectangle) {LARGURA- 530, ALTURA-490, 40, 320};
-    j->barreiras[1].pos = (Rectangle) {LARGURA - 170, ALTURA-490, 40, 320};
+    j->barreiras[0].pos = (Rectangle) {j->LARGURA- 530, j->ALTURA-490, 40, 320};
+    j->barreiras[1].pos = (Rectangle) {j->LARGURA - 170, j->ALTURA-490, 40, 320};
     //Bordas verticais
     j->barreiras[2].pos = (Rectangle) {0, 0, 20, 60};
-    j->barreiras[3].pos = (Rectangle) {LARGURA - 20, 0, 20, 60};
-    j->barreiras[4].pos = (Rectangle) {0, ALTURA - 60, 20, 60}; 
-    j->barreiras[5].pos = (Rectangle) {LARGURA-20, ALTURA - 60, 20, 60};
+    j->barreiras[3].pos = (Rectangle) {j->LARGURA - 20, 0, 20, 60};
+    j->barreiras[4].pos = (Rectangle) {0, j->ALTURA - 60, 20, 60}; 
+    j->barreiras[5].pos = (Rectangle) {j->LARGURA-20, j->ALTURA - 60, 20, 60};
     //Bordas horizontais
-    j->barreiras[6].pos = (Rectangle) {0, 0, LARGURA-600, 20};
-    j->barreiras[7].pos = (Rectangle) {LARGURA-60, 0, LARGURA-600, 20};
-    j->barreiras[8].pos = (Rectangle) {0, ALTURA - 20, 60, 20};
-    j->barreiras[9].pos = (Rectangle) {LARGURA-60, ALTURA - 20, 60, 20};  
+    j->barreiras[6].pos = (Rectangle) {0, 0, j->LARGURA-600, 20};
+    j->barreiras[7].pos = (Rectangle) {j->LARGURA-60, 0, j->LARGURA-600, 20};
+    j->barreiras[8].pos = (Rectangle) {0, j->ALTURA - 20, 60, 20};
+    j->barreiras[9].pos = (Rectangle) {j->LARGURA-60, j->ALTURA - 20, 60, 20};  
 }
 
 
@@ -123,8 +123,8 @@ void IniciaFood(Jogo *j){
 int colisao;
     do {
         colisao = 0; // assume que não há colisão
-        j->food.pos.x = (float)((rand() % ((LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
-        j->food.pos.y = (float)((rand() % ((ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
+        j->food.pos.x = (float)((rand() % ((j->LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
+        j->food.pos.y = (float)((rand() % ((j->ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
         //STD size é o tamanho do quadradinho
         j->food.pos.width = STD_SIZE_X;
         j->food.pos.height = STD_SIZE_Y;
@@ -275,11 +275,11 @@ void AtualizaPosSnake(Jogo *j){
         }
 
         //aqui eu mexo no teleporte: quando a cobra chega nas bordas:
-        if (corpo->body.pos.x < 0) corpo->body.pos.x = LARGURA - STD_SIZE_X;
-        else if (corpo->body.pos.x >= LARGURA) corpo->body.pos.x = 0;
+        if (corpo->body.pos.x < 0) corpo->body.pos.x = j->LARGURA - STD_SIZE_X;
+        else if (corpo->body.pos.x >= j->LARGURA) corpo->body.pos.x = 0;
 
-        if (corpo->body.pos.y < 0) corpo->body.pos.y = ALTURA - STD_SIZE_Y;
-        else if (corpo->body.pos.y >= ALTURA) corpo->body.pos.y = 0;
+        if (corpo->body.pos.y < 0) corpo->body.pos.y = j->ALTURA - STD_SIZE_Y;
+        else if (corpo->body.pos.y >= j->ALTURA) corpo->body.pos.y = 0;
 
         corpo = corpo->Prox;
     }
@@ -291,13 +291,13 @@ static int iniciado = 0;
 // Inicializa apenas uma vez
 if (!iniciado){
 // Barreira 0: direita → esquerda
-j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 530, 160, 80};
-j->barreiras[0].pos = (Rectangle){LARGURA, ALTURA - 530, 160, 80};
+j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
+j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
 j->barreiras[0].velocidade = -3;
 
 // Barreira 1: esquerda → direita
-j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 250, 160, 80};
-j->barreiras[1].pos = (Rectangle){-LARGURA, ALTURA - 250, 160, 80};
+j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
+j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
 j->barreiras[1].velocidade = 3;
 
 iniciado = 1;
@@ -308,13 +308,13 @@ for (int i = 0; i < 2; i++) {
 j->barreiras[i].pos.x += j->barreiras[i].velocidade;
 
 // Se sair pela direita, volta da esquerda
-if (j->barreiras[i].pos.x > LARGURA) {
+if (j->barreiras[i].pos.x > j->LARGURA) {
 j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
 }
 
 // Se sair pela esquerda, volta da direita
 if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
-j->barreiras[i].pos.x = LARGURA;
+j->barreiras[i].pos.x = j->LARGURA;
 }
 }
 }
@@ -368,22 +368,22 @@ void ColisaoBordas(Jogo *j) {
 
     if (cab->body.pos.x < 0) {
         AdicionaCurva(0, (int)cab->body.pos.y, dir); // curva na entrada
-        cab->body.pos.x = LARGURA - TAMANHO_CELULA;
+        cab->body.pos.x = j->LARGURA - TAMANHO_CELULA;
         AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir); // curva na saída
     }
-    else if (cab->body.pos.x >= LARGURA) {
-        AdicionaCurva(LARGURA - TAMANHO_CELULA, (int)cab->body.pos.y, dir);
+    else if (cab->body.pos.x >= j->LARGURA) {
+        AdicionaCurva(j->LARGURA - TAMANHO_CELULA, (int)cab->body.pos.y, dir);
         cab->body.pos.x = 0;
         AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
     }
 
     if (cab->body.pos.y < 0) {
         AdicionaCurva((int)cab->body.pos.x, 0, dir);
-        cab->body.pos.y = ALTURA - TAMANHO_CELULA;
+        cab->body.pos.y = j->ALTURA - TAMANHO_CELULA;
         AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
     }
-    else if (cab->body.pos.y >= ALTURA) {
-        AdicionaCurva((int)cab->body.pos.x, ALTURA - TAMANHO_CELULA, dir);
+    else if (cab->body.pos.y >= j->ALTURA) {
+        AdicionaCurva((int)cab->body.pos.x, j->ALTURA - TAMANHO_CELULA, dir);
         cab->body.pos.y = 0;
         AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
     }
