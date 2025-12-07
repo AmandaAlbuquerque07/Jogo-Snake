@@ -112,23 +112,16 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
-void IniciaBarreiras2(Jogo *j){
-    int colisao = 0;
-    // Colisão com a comidinha
-    if (!colisao) {
-        if (CheckCollisionRecs(j->barreiras[0].pos, j->food.pos) ||
-            CheckCollisionRecs(j->barreiras[1].pos, j->food.pos) ||
-            CheckCollisionRecs(j->barreiras[2].pos, j->food.pos)) {
-                colisao = 1;
-        }
-    }
-    if(colisao){
-        AtualizaBarreiras2(j);
-    } 
-    else{
-    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-440*j->escala), (80*j->escala), (80*j->escala)};
-    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-590*j->escala), (j->ALTURA-180*j->escala), (80*j->escala), (80*j->escala)};
-    j->barreiras[2].pos = (Rectangle) {(j->LARGURA-320*j->escala), (j->ALTURA-170*j->escala), (80*j->escala), (80*j->escala)};
+void DesenhaBarreiras2(Jogo *j){
+    for (int i = 0; i < 3; i++) {
+        DrawTexturePro(
+            j->tex.asteroide,
+            (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},
+            j->barreiras[i].pos,   // <<< USANDO DIRETO O RECTANGLE DA COLISÃO
+            (Vector2){0, 0},
+            0,
+            WHITE
+        );
     }
 }
 
@@ -421,76 +414,62 @@ void AtualizaRodada(Jogo *j){
 
 void AtualizaBarreiras2(Jogo *j){
     int colisao;
-    float distanciaMin = 150.0f; // distância mínima entre barreir
+    float distanciaMin = 160.0f;
+
+    // Tamanho fixo compatível com o desenho
+    for (int i = 0; i < 3; i++) {
+        j->barreiras[i].pos.width  = 120;
+        j->barreiras[i].pos.height = 120;
+    }
 
     do {
         colisao = 0;
 
-        // Barreira 0
-        j->barreiras[0].pos.x = rand() % (j->LARGURA - 80);
-        j->barreiras[0].pos.y = rand() % (j->ALTURA  - 80);
-        j->barreiras[0].pos.width  = 80;
-        j->barreiras[0].pos.height = 80;
+        // --- Sorteia posições ---
+        for (int i = 0; i < 3; i++) {
+            j->barreiras[i].pos.x = GetRandomValue(50, j->LARGURA - 170);
+            j->barreiras[i].pos.y = GetRandomValue(50, j->ALTURA  - 170);
+        }
 
-        // Barreira 1
-        j->barreiras[1].pos.x = rand() % (j->LARGURA - 80);
-        j->barreiras[1].pos.y = rand() % (j->ALTURA  - 80);
-        j->barreiras[1].pos.width  = 80;
-        j->barreiras[1].pos.height = 80;
+        // --- Distância mínima entre elas ---
+        for (int i = 0; i < 3 && !colisao; i++) {
+            for (int k = i + 1; k < 3; k++) {
+                float dx = j->barreiras[k].pos.x - j->barreiras[i].pos.x;
+                float dy = j->barreiras[k].pos.y - j->barreiras[i].pos.y;
+                float dist = sqrt(dx*dx + dy*dy);
 
-        // Barreira 2
-        j->barreiras[2].pos.x = rand() % (j->LARGURA - 80);
-        j->barreiras[2].pos.y = rand() % (j->ALTURA  - 80);
-        j->barreiras[2].pos.width  = 80;
-        j->barreiras[2].pos.height = 80;
+                if (dist < distanciaMin) {
+                    colisao = 1;
+                }
+            }
+        }
 
-        //Distância entre as barreiras:
-        float dx01 = j->barreiras[1].pos.x - j->barreiras[0].pos.x;
-        float dy01 = j->barreiras[1].pos.y - j->barreiras[0].pos.y;
+        // --- Colisão com a comida ---
+        if (!colisao) {
+            for (int i = 0; i < 3; i++) {
+                if (CheckCollisionRecs(j->barreiras[i].pos, j->food.pos)) {
+                    colisao = 1;
+                    break;
+                }
+            }
+        }
 
-        float dx02 = j->barreiras[2].pos.x - j->barreiras[0].pos.x;
-        float dy02 = j->barreiras[2].pos.y - j->barreiras[0].pos.y;
-
-        float dx12 = j->barreiras[2].pos.x - j->barreiras[1].pos.x;
-        float dy12 = j->barreiras[2].pos.y - j->barreiras[1].pos.y;
-
-        float dist01 = sqrt(dx01*dx01 + dy01*dy01);
-        float dist02 = sqrt(dx02*dx02 + dy02*dy02);
-        float dist12 = sqrt(dx12*dx12 + dy12*dy12);
-
-        if (dist01 < distanciaMin ||
-            dist02 < distanciaMin ||
-            dist12 < distanciaMin)
-            colisao = 1;
-
-        // Colisão com a cobra
+          // --- Colisão com a cobra ---
         if (!colisao) {
             SnakeApontador aux = j->snake.Cabeca;
 
-            while(aux != NULL){
-                if (CheckCollisionRecs(j->barreiras[0].pos, aux->body.pos) ||
-                    CheckCollisionRecs(j->barreiras[1].pos, aux->body.pos) ||
-                    CheckCollisionRecs(j->barreiras[2].pos, aux->body.pos)) {
-
+            while (aux != NULL && !colisao) {
+                for (int i = 0; i < 3; i++) {
+                    if (CheckCollisionRecs(j->barreiras[i].pos, aux->body.pos)) {
                         colisao = 1;
                         break;
+                    }
                 }
                 aux = aux->Prox;
             }
         }
 
-        // Colisão com a comidinha
-        if (!colisao) {
-            if (CheckCollisionRecs(j->barreiras[0].pos, j->food.pos) ||
-                CheckCollisionRecs(j->barreiras[1].pos, j->food.pos) ||
-                CheckCollisionRecs(j->barreiras[2].pos, j->food.pos)) {
-                    colisao = 1;
-            }
-        }
-
-    } while(colisao);  // repetir até não ter
-
-    j->food.color = FOOD_COLOR;
+    } while (colisao);
 }
 
 
@@ -509,6 +488,30 @@ int ColisaoBarreiras1(Jogo *j){
         }
     }
     return 0;
+}
+
+int ColisaoBarreiras2(Jogo *j){
+    SnakeApontador cabeca = j->snake.Cabeca;
+    SnakeApontador aux = j->snake.Cabeca->Prox;   // começa no PRIMEIRO DO CORPO
+
+    // 1) Verifica colisão da CABEÇA
+    for (int i = 0; i < 3; i++){
+        if (CheckCollisionRecs(cabeca->body.pos, j->barreiras[i].pos)){
+            return 1;   // cabeça bateu → morre
+        }
+    }
+
+    // 2) Verifica colisão do CORPO
+    while (aux != NULL){
+        for (int i = 0; i < 3; i++){
+            if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
+                return 2;   // corpo bateu (se quiser tratar diferente)
+            }
+        }
+        aux = aux->Prox;
+    }
+
+    return 0; // nada colidiu
 }
 
 int ColisaoBarreiras3(Jogo *j){
@@ -592,3 +595,4 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
