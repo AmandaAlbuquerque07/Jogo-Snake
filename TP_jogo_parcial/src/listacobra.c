@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <math.h>
 #include "listacobra.h"
 #define TAMANHO_CELULA 40
 
@@ -589,4 +590,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food2);
     UnloadTexture(j->tex.Food3);
 }
+
 
