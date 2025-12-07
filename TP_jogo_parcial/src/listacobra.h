@@ -27,6 +27,7 @@ int inicia;
 typedef struct Texturas{
 Texture2D Cabeca, Corpo, Rabo;
 Texture2D pedras, pedras1, pedras2;
+Texture2D asteroide;
 Texture2D tubaraoD ,tubaraoE;
 Texture2D Food, Food2, Food3;
 Texture2D inicio;
@@ -89,6 +90,7 @@ void DesenhaFundo(Jogo *j, Texture2D* img);
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
 void AtualizaRodada(Jogo *j);
 void AtualizaDirecao(Jogo *j);
+void AtualizaBarreiras2(Jogo *j);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
 int ColisaoBarreiras1(Jogo *j);
