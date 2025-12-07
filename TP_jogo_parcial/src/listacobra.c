@@ -43,8 +43,8 @@ void IniciaSnake(Jogo *j){
         printf("Segmento: x=%f y=%f dir=%d\n", c->body.pos.x, c->body.pos.y, c->body.direcao);
         c = c->Prox;
         }
-    Texture2D cabeca = LoadTexture("Assets/cabeca.png");
-    Texture2D rabo   = LoadTexture("Assets/rabo.png");
+    //Texture2D cabeca = LoadTexture("Assets/cabeca.png");
+    //Texture2D rabo   = LoadTexture("Assets/rabo.png");
 
     j->snake.Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
     memset(j->snake.Cabeca, 0, sizeof(CelulaSnake));
@@ -56,11 +56,11 @@ void IniciaSnake(Jogo *j){
 
     j->snake.Cabeca->body.pos = (Rectangle){ j->LARGURA/2 - STD_SIZE_X, j->ALTURA - STD_SIZE_Y - 10, STD_SIZE_X, STD_SIZE_Y };
     j->snake.Cabeca->body.direcao = CIMA;
-    j->snake.Cabeca->body.color   = cabeca;
+    j->snake.Cabeca->body.color   = j->tex.Cabeca;
 
     j->snake.Cauda->body.pos = (Rectangle){ j->snake.Cabeca->body.pos.x, j->snake.Cabeca->body.pos.y + STD_SIZE_Y, STD_SIZE_X, STD_SIZE_Y };
     j->snake.Cauda->body.direcao = CIMA;
-    j->snake.Cauda->body.color   = rabo;
+    j->snake.Cauda->body.color   = j->tex.Rabo;
 
     j->snake.Comprimento = 2;
 }
@@ -118,13 +118,12 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
 }
 
-
 void IniciaFood(Jogo *j){
 int colisao;
     do {
         colisao = 0; // assume que não há colisão
         j->food.pos.x = (float)((rand() % ((j->LARGURA - 20) / STD_SIZE_X)) * STD_SIZE_X + 10);
-        j->food.pos.y = (float)((rand() % ((j->ALTURA - 20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
+        j->food.pos.y = (float)((rand() % ((j->ALTURA-20) / STD_SIZE_Y)) * STD_SIZE_Y + 10);
         //STD size é o tamanho do quadradinho
         j->food.pos.width = STD_SIZE_X;
         j->food.pos.height = STD_SIZE_Y;
@@ -289,19 +288,18 @@ void AtualizaBarreiras3(Jogo *j){
     static int iniciado = 0;
 
     // Inicializa apenas uma vez
-    if (!iniciado){
+        if (!iniciado){
         // Barreira 0: direita → esquerda
-        j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
-        j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
+        j->barreiras[0].pos = (Rectangle){j->LARGURA, (j->ALTURA - 530*j->escala), (160*j->escala), (80*j->escala)};
         j->barreiras[0].velocidade = -3;
 
         // Barreira 1: esquerda → direita
-        j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
-        j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
+        j->barreiras[1].pos = (Rectangle){-j->LARGURA, (j->ALTURA - 250*j->escala), (160*j->escala), (80*j->escala)};
         j->barreiras[1].velocidade = 3;
 
         iniciado = 1;
     }
+
 
     // Movimento das barreiras
     for (int i = 0; i < 2; i++) {
@@ -415,9 +413,9 @@ void FreeLista(ListaSnake *Snake){
 }
 
 void LiberaTexturas(Jogo *j) {
-    //UnloadTexture(j->tex.Cabeca);
-    //UnloadTexture(j->tex.Corpo);
-    //UnloadTexture(j->tex.Rabo);
+    UnloadTexture(j->tex.Cabeca);
+    UnloadTexture(j->tex.Corpo);
+    UnloadTexture(j->tex.Rabo);
 
     UnloadTexture(j->tex.pedras);
     UnloadTexture(j->tex.pedras1);
@@ -428,4 +426,3 @@ void LiberaTexturas(Jogo *j) {
 
     UnloadTexture(j->tex.Food);
 }
-
