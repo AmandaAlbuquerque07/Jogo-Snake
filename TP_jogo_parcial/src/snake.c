@@ -74,16 +74,16 @@ int main(){
 
     switch (estado) { //determina o que fazer em cada estado do jogo:
         case INTRO:
-            SetMusicVolume(musmenu, 0.5f);
-            SetMusicVolume(trilha1, 0.0f);
-            SetMusicVolume(trilha2, 0.0f);
-            SetMusicVolume(trilha3, 0.0f);
+        SetMusicVolume(musmenu, 0.5f);
+        SetMusicVolume(trilha1, 0.0f);
+        SetMusicVolume(trilha2, 0.0f);
+        SetMusicVolume(trilha3, 0.0f);
         desenhaIntro(&jogo);
-                if (IsKeyPressed(KEY_ENTER)) estado = MENU; //se apertar 1 abre o ranking,
-                if (IsKeyPressed(KEY_ESCAPE)){
-                CloseWindow();//fecha a tela com esc;
-            } 
-        break;
+        if (IsKeyPressed(KEY_ENTER)) estado = MENU; //se apertar 1 abre o ranking,
+        if (IsKeyPressed(KEY_ESCAPE)){
+            CloseWindow();//fecha a tela com esc;
+        } 
+    break;
         case MENU:
             SetMusicVolume(musmenu, 0.5f);
             SetMusicVolume(trilha1, 0.0f);
@@ -146,8 +146,8 @@ int main(){
         break;
 
 
-        case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
-            //JOGO 1
+        case JOGO: 
+             //JOGO 1
             if(Pontos <= 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
@@ -170,7 +170,7 @@ int main(){
 
                     //mostra pontuação:
                     sprintf(PontoNaTela, "Score: %d", Pontos);
-                    DrawText(PontoNaTela, 25, 20, 30, WHITE);
+                    DrawText(PontoNaTela, (10*jogo.escala), (10*jogo.escala), (30*jogo.escala), WHITE);
 
                     ColisaoBordas(&jogo);
                     if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
@@ -179,16 +179,14 @@ int main(){
                     }
 
                 }else{
-                DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
+                    DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); 
                     if (IsKeyPressed(KEY_ENTER)) { 
                         atualizarRanking("ranking.txt", Nome, Pontos);                                     
                         estado = MENU;
                         Nome[0] = '\0'; // limpa o nome pra próxima partida!
                         tamanhoNome = 0;
                     }
-                } 
-
                 }
                 //JOGO 2
                 else if(Pontos > 1 && Pontos < 5){
@@ -213,7 +211,7 @@ int main(){
 
                 //mostra pontuação:
                 sprintf(PontoNaTela, "Score: %d", Pontos);
-                DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                DrawText(PontoNaTela, (10*jogo.escala), (10*jogo.escala), (30*jogo.escala), WHITE);
 
                 ColisaoBordas(&jogo);
                 if (ColisaoSnake(&jogo)) {
@@ -222,16 +220,15 @@ int main(){
                 }
 
                 }else { //quando o jogador perde:
-                DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                DrawText("Pressione Enter para voltar ao menu", 110, 400, 25, WHITE); //texto, x, y, tam fonte, cor
-                if (IsKeyPressed(KEY_ENTER)) {
-                atualizarRanking("ranking.txt", Nome, Pontos);                                      
-                estado = MENU;
-                Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                tamanhoNome = 0;
+                    DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
+                    DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); 
+                    if (IsKeyPressed(KEY_ENTER)) {
+                        atualizarRanking("ranking.txt", Nome, Pontos);                                      
+                        estado = MENU;
+                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                        tamanhoNome = 0;
+                    }
                 }
-                }
-
             }
             //JOGO 3
             else if(Pontos >= 5){
@@ -239,8 +236,8 @@ int main(){
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
                 SetMusicVolume(trilha3, 0.5f);
+                
                 DesenhaFundo(&jogo, &fundo3);
-                //IniciaBarreiras3(&jogo);
                 if (gameOver) {
                     DesenhaJogo3(&jogo);
                     DesenhaBarreiras3(&jogo);
@@ -256,7 +253,7 @@ int main(){
 
                     //mostra pontuação:
                     sprintf(PontoNaTela, "Score: %d", Pontos);
-                    DrawText(PontoNaTela, 10, 10, 30, WHITE);
+                    DrawText(PontoNaTela, (10*jogo.escala), (10*jogo.escala), (30*jogo.escala), WHITE);
 
                     ColisaoBordas(&jogo);
                     if (ColisaoSnake(&jogo) || ColisaoBarreiras3(&jogo)) {
@@ -265,15 +262,15 @@ int main(){
                     }
 
                 }else{
-                DrawText("FIM DE JOGO", 150, 200, 60, RED);
-                DrawText("Pressione Enter para voltar ao menu", 110, 350, 25, WHITE); //texto, x, y, tam fonte, cor
+                    DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
+                    DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); //texto, x, y, tam fonte, cor
                     if (IsKeyPressed(KEY_ENTER)) { 
-                    atualizarRanking("ranking.txt", Nome, Pontos);                                     
-                    estado = MENU;
-                    Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                    tamanhoNome = 0;
-                    jogo.barreiras[0].inicia = 0;
-                    jogo.barreiras[1].inicia = 0;
+                        atualizarRanking("ranking.txt", Nome, Pontos);                                     
+                        estado = MENU;
+                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                        tamanhoNome = 0;
+                        jogo.barreiras[0].inicia = 0;
+                        jogo.barreiras[1].inicia = 0;
                     }
                 } 
             }
@@ -315,5 +312,5 @@ int main(){
     CloseAudioDevice();
 
     CloseWindow();
-return 0;
+    return 0;
 }
