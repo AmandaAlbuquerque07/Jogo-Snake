@@ -286,37 +286,37 @@ void AtualizaPosSnake(Jogo *j){
 }
 
 void AtualizaBarreiras3(Jogo *j){
-static int iniciado = 0;
+    static int iniciado = 0;
 
-// Inicializa apenas uma vez
-if (!iniciado){
-// Barreira 0: direita → esquerda
-j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
-j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
-j->barreiras[0].velocidade = -3;
+    // Inicializa apenas uma vez
+    if (!iniciado){
+        // Barreira 0: direita → esquerda
+        j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
+        j->barreiras[0].pos = (Rectangle){j->LARGURA, j->ALTURA - 530, 160, 80};
+        j->barreiras[0].velocidade = -3;
 
-// Barreira 1: esquerda → direita
-j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
-j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
-j->barreiras[1].velocidade = 3;
+        // Barreira 1: esquerda → direita
+        j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
+        j->barreiras[1].pos = (Rectangle){-j->LARGURA, j->ALTURA - 250, 160, 80};
+        j->barreiras[1].velocidade = 3;
 
-iniciado = 1;
-}
+        iniciado = 1;
+    }
 
-// Movimento das barreiras
-for (int i = 0; i < 2; i++) {
-j->barreiras[i].pos.x += j->barreiras[i].velocidade;
+    // Movimento das barreiras
+    for (int i = 0; i < 2; i++) {
+        j->barreiras[i].pos.x += j->barreiras[i].velocidade;
 
-// Se sair pela direita, volta da esquerda
-if (j->barreiras[i].pos.x > j->LARGURA) {
-j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
-}
+        // Se sair pela direita, volta da esquerda
+        if (j->barreiras[i].pos.x > j->LARGURA) {
+            j->barreiras[i].pos.x = -j->barreiras[i].pos.width;
+        }
 
-// Se sair pela esquerda, volta da direita
-if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
-j->barreiras[i].pos.x = j->LARGURA;
-}
-}
+        // Se sair pela esquerda, volta da direita
+        if (j->barreiras[i].pos.x < -j->barreiras[i].pos.width) {
+                j->barreiras[i].pos.x = j->LARGURA;
+        }
+    }
 }
 
 void AtualizaRodada(Jogo *j){
