@@ -94,9 +94,11 @@ void AtualizaBarreiras2(Jogo *j);
 int ColisaoFood(Jogo *j);
 void ColisaoBordas(Jogo *j);
 int ColisaoBarreiras1(Jogo *j);
+int ColisaoBarreiras2(Jogo *j);
 int ColisaoBarreiras3(Jogo* j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 void LiberaTexturas(Jogo *j);
 
 #endif
+
