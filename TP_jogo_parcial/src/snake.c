@@ -215,7 +215,7 @@ int main(){
                         DrawText(PontoNaTela, (10*jogo.escala), (10*jogo.escala), (30*jogo.escala), WHITE);
 
                         ColisaoBordas(&jogo);
-                        if (ColisaoSnake(&jogo)) {
+                        if (ColisaoSnake(&jogo) || ColisaoBarreiras2(&jogo) {
                             PlaySound(somMorrer2);
                             gameOver = 0;
                         }
