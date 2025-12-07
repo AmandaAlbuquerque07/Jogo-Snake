@@ -113,22 +113,25 @@ void IniciaBarreiras1(Jogo *j){
 }
 
 void IniciaBarreiras2(Jogo *j){
-    for (int i = 0; i < 3; i++) {
-        j->barreiras[i].pos.width  = 120;
-        j->barreiras[i].pos.height = 120;
+    int colisao = 0;
+    if (ColisaoBarreiras1(j) || ColisaoBarreiras2(j) || ColisaoBarreiras3(j) || ColisaoFood(j)){
+        colisao = 1;
+    }else{
+        for (int i = 0; i < 3; i++) {
+            j->barreiras[i].pos.width  = 120;
+            j->barreiras[i].pos.height = 120;
+        }
+
+        j->barreiras[0].pos.x = (j->LARGURA - 170*j->escala);
+        j->barreiras[0].pos.y = (j->ALTURA  - 440*j->escala);
+
+        j->barreiras[1].pos.x = (j->LARGURA - 590*j->escala);
+        j->barreiras[1].pos.y = (j->ALTURA  - 180*j->escala);
+
+        j->barreiras[2].pos.x = (j->LARGURA - 320*j->escala);
+        j->barreiras[2].pos.y = (j->ALTURA  - 170*j->escala);
     }
-
-    j->barreiras[0].pos.x = (j->LARGURA - 170*j->escala);
-    j->barreiras[0].pos.y = (j->ALTURA  - 440*j->escala);
-
-    j->barreiras[1].pos.x = (j->LARGURA - 590*j->escala);
-    j->barreiras[1].pos.y = (j->ALTURA  - 180*j->escala);
-
-    j->barreiras[2].pos.x = (j->LARGURA - 320*j->escala);
-    j->barreiras[2].pos.y = (j->ALTURA  - 170*j->escala);
 }
-
-
 
 void Barreiras3(Jogo *j){
     static int iniciado = 0;
@@ -586,3 +589,4 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
