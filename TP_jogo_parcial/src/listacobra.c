@@ -586,4 +586,7 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.tubaraoE);
 
     UnloadTexture(j->tex.Food);
+    UnloadTexture(j->tex.Food2);
+    UnloadTexture(j->tex.Food3);
 }
+
