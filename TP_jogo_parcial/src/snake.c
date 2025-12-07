@@ -17,6 +17,7 @@ int main(){
     Jogo jogo;
     jogo.LARGURA = 660;
     jogo.ALTURA = 660;
+    jogo.escala = jogo.LARGURA / 660.0f;
     int gameOver = 1;
     Pontos=0;
     char PontoNaTela[20];
@@ -94,6 +95,7 @@ int main(){
                 SetWindowSize(660, 660);
                 jogo.LARGURA = 660;
                 jogo.ALTURA = 660;
+                jogo.escala = jogo.LARGURA / 660.0f;
                 estado = NOME;
             }//comandos pra tela pequena
 
@@ -101,6 +103,7 @@ int main(){
                 SetWindowSize(880, 880);
                 jogo.LARGURA = 880;
                 jogo.ALTURA = 880;
+                jogo.escala = jogo.LARGURA / 660.0f;
                 estado = NOME;
 
             }
