@@ -69,16 +69,18 @@ void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
 void IniciaBarreiras1(Jogo *j);
+void IniciaBarreiras2(Jogo *j);
+void Barreiras3(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaSnake(Jogo *j);
 void DesenhaFood(Jogo *j); //Desenha uma comida em uma posição aleatória
 void DesenhaBordas(Jogo *j);
 void DesenhaBarreiras1(Jogo *j);
+void DesenhaBarreiras2(Jogo *j);
 void DesenhaBarreiras3(Jogo *j);
 void DesenhaJogo(Jogo *j);
 void AtualizaPosSnake(Jogo *j); //Atualiza a posição da cobrinha
-void AtualizaBarreiras3(Jogo *j);
 void AtualizaRodada(Jogo *j);
 void AtualizaDirecao(Jogo *j);
 int ColisaoFood(Jogo *j);
