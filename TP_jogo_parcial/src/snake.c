@@ -177,8 +177,8 @@ int main(){
                     }
 
                 }else{
-                DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
-                DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE);  //texto, x, y, tam fonte, cor
+                    DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
+                    DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE);  //texto, x, y, tam fonte, cor
                     if (IsKeyPressed(KEY_ENTER)) { 
                         atualizarRanking("ranking.txt", Nome, Pontos);                                     
                         estado = MENU;
@@ -263,15 +263,15 @@ int main(){
                     }
 
                 }else{
-                DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
-                DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); //texto, x, y, tam fonte, cor
+                    DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
+                    DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); //texto, x, y, tam fonte, cor
                     if (IsKeyPressed(KEY_ENTER)) { 
-                    atualizarRanking("ranking.txt", Nome, Pontos);                                     
-                    estado = MENU;
-                    Nome[0] = '\0'; // limpa o nome pra próxima partida!
-                    tamanhoNome = 0;
-                    jogo.barreiras[0].inicia = 0;
-                    jogo.barreiras[1].inicia = 0;
+                        atualizarRanking("ranking.txt", Nome, Pontos);                                     
+                        estado = MENU;
+                        Nome[0] = '\0'; // limpa o nome pra próxima partida!
+                        tamanhoNome = 0;
+                        jogo.barreiras[0].inicia = 0;
+                        jogo.barreiras[1].inicia = 0;
                     }
                 } 
             }
@@ -313,5 +313,5 @@ int main(){
     CloseAudioDevice();
 
     CloseWindow();
-return 0;
+    return 0;
 }
