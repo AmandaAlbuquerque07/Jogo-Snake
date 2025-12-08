@@ -143,6 +143,7 @@ void IniciaBordas(Jogo *j){
     //Borda da esquerda
     j->bordas[3].pos = (Rectangle) {0, 0, 10, j->ALTURA};
 }
+
 void IniciaBarreiras1(Jogo *j){
     // Barreiras do centro (duas colunas altas)
     if(j->LARGURA==660){
@@ -217,6 +218,25 @@ void Barreiras3(Jogo *j){
         }
     }
 }
+
+void IniciaPorta1(Jogo *j){
+    j->barreiras[10].pos = (Rectangle) {
+        (610),
+        (90),
+        (40*j->escala),
+        (40*j->escala)
+    };  
+}
+
+void IniciaPorta2(Jogo *j){
+    j->barreiras[11].pos = (Rectangle) {
+        (570),
+        (570),
+        (40*j->escala),
+        (40*j->escala)
+    };  
+}
+
 
 void DesenhaFundo(Jogo *j, Texture2D* img){
 
@@ -409,6 +429,28 @@ void DesenhaBarreiras3(Jogo *j) {
     );   
 }
 
+void DesenhaPorta1(Jogo *j){
+        DrawTexturePro(
+        j->tex.Food2,
+        (Rectangle){0, 0, j->tex.Food2.width, j->tex.Food2.height},                                
+        (Rectangle){j->barreiras[10].pos.x, j->barreiras[10].pos.y, j->barreiras[10].pos.width, j->barreiras[10].pos.height}, 
+        (Vector2){0, 0},                                            
+        0,                                                           
+        WHITE                                                        
+    );
+}
+
+void DesenhaPorta2(Jogo *j){
+        DrawTexturePro(
+        j->tex.Food3,
+        (Rectangle){0, 0, j->tex.Food3.width, j->tex.Food3.height},                                
+        (Rectangle){j->barreiras[11].pos.x, j->barreiras[11].pos.y, j->barreiras[11].pos.width, j->barreiras[11].pos.height}, 
+        (Vector2){0, 0},                                            
+        0,                                                           
+        WHITE                                                        
+    );
+}
+
 
 void DesenhaJogo(Jogo *j){
     //DesenhaBordas(j);
@@ -460,7 +502,6 @@ void AtualizaRodada(Jogo *j){
         j->tempo = GetTime();
     }
 }
-
 
 void AtualizaBarreiras2(Jogo *j){
     int colisao;
@@ -586,6 +627,24 @@ int ColisaoBarreiras3(Jogo *j){
     return 0; // Não colidiu
 }
 
+int ColisaoPorta1(Jogo *j){
+    if (!j->snake.Cabeca) return 0;
+
+    return CheckCollisionRecs(
+        j->snake.Cabeca->body.pos,
+        j->barreiras[10].pos
+    );
+}
+
+int ColisaoPorta2(Jogo *j){
+    if (!j->snake.Cabeca) return 0;
+
+    return CheckCollisionRecs(
+        j->snake.Cabeca->body.pos,
+        j->barreiras[11].pos
+    );
+}
+
 void ColisaoBordas(Jogo *j) {
     CelulaSnake *cab = j->snake.Cabeca;
 
@@ -650,6 +709,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
-
 
 
