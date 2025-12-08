@@ -28,6 +28,7 @@ int main(){
     jogo.barreiras[0].inicia = 0;
     jogo.barreiras[1].inicia = 0;
     int colisao = 0;
+    int primeiro = 1;
 
     //Cria a janela do jogo;
     InitWindow(jogo.LARGURA, jogo.ALTURA, "Snake Game");
@@ -210,7 +211,8 @@ int main(){
                 SetMusicVolume(trilha3, 0.0f);
 
                     DesenhaFundo(&jogo, &fundo2);
-                    if(Pontos < 3) IniciaBarreiras2(&jogo);
+                    if(primeiro) IniciaBarreiras2(&jogo);
+                    primeiro = 0;
                    // IniciaPorta2(&jogo);
                     if (gameOver) {
                         DesenhaJogo2(&jogo);
