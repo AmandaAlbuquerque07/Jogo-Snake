@@ -149,15 +149,15 @@ void IniciaBarreiras1(Jogo *j){
     j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
     j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
     //Barreiras verticais
-    j->barreiras[2].pos = (Rectangle) {0, 0, (20*j->escala), (60*j->escala)};
-    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-20*j->escala), 0, (20*j->escala), (60*j->escala)};
-    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)}; 
-    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(20*j->escala)), (j->ALTURA-60*j->escala), (20*j->escala), (60*j->escala)};
+    j->barreiras[2].pos = (Rectangle) {0, 0, (10*j->escala), (60*j->escala)};
+    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-10*j->escala), 0, (10*j->escala), (60*j->escala)};
+    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (10*j->escala), (60*j->escala)}; 
+    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(10*j->escala)), (j->ALTURA-60*j->escala), (10*j->escala), (60*j->escala)};
     //Barreiras horizontais
-    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (20*j->escala)};
-    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (20*j->escala)};
-    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};
-    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-20*j->escala), (60*j->escala), (20*j->escala)};  
+    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (10*j->escala)};
+    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (10*j->escala)};
+    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-10*j->escala), (60*j->escala), (10*j->escala)};
+    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-10*j->escala), (60*j->escala), (10*j->escala)};  
 }
 
 void IniciaBarreiras2(Jogo *j){
@@ -245,14 +245,14 @@ void IniciaFood(Jogo *j){
                 }
             aux = aux->Prox;
             } 
-            if(colisao == 0){
+            
                 for(int i=0; i<10; i++){
                     if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
                         colisao = 1; // houve colisão, precisa gerar outra posição
                         break;
                     }
                 }
-            }    
+               
 
     } while(colisao); // repete até não colidir
 
@@ -638,5 +638,4 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
-
 
