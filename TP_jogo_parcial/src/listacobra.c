@@ -113,9 +113,8 @@ void IniciaBarreiras1(Jogo *j){
 }
 
 void IniciaBarreiras2(Jogo *j){
-    int colisao = 0;
     if (ColisaoBarreiras1(j) || ColisaoBarreiras2(j) || ColisaoBarreiras3(j) || ColisaoFood(j)){
-        colisao = 1;
+        AtualizaBarreiras2(j);
     }else{
         for (int i = 0; i < 3; i++) {
             j->barreiras[i].pos.width  = 120;
@@ -589,4 +588,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
