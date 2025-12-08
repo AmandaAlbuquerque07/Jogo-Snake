@@ -589,4 +589,3 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.inicio);
 }
 
-
