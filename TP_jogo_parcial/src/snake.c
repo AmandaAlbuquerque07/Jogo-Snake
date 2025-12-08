@@ -158,9 +158,9 @@ int main(){
                 IniciaBarreiras1(&jogo);
                 IniciaPorta1(&jogo);
                 if (gameOver) {
-                    AtualizaRodada(&jogo);
                     DesenhaJogo(&jogo);
                     DesenhaBarreiras1(&jogo);
+                    AtualizaRodada(&jogo);
 
                     if (ColisaoFood(&jogo)) {
                         PlaySound(somComer);
@@ -215,9 +215,9 @@ int main(){
                     primeiro = 0;
                    // IniciaPorta2(&jogo);
                     if (gameOver) {
+                        AtualizaRodada(&jogo);
                         DesenhaJogo2(&jogo);
                         DesenhaBarreiras2(&jogo);
-                        AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
                             PlaySound(somComer);
