@@ -120,8 +120,7 @@ void DesenhaCobra(Jogo *j) {
         Rectangle src, dst = celula->body.pos;
         //src:dimensões da textura
         //dst:onde e em que tamanho ela vai aparecer na tela do jogo
-        Vector2 origin = { dst.width/2.0f, dst.height/2.0f };
-
+        Vector2 origin = {0, 0}; 
         float ang = DirecaoParaAngulo(celula->body.direcao);
 
         if (celula == j->snake.Cabeca) {
@@ -139,29 +138,3 @@ void DesenhaCobra(Jogo *j) {
         celula = celula->Prox;
     }
 }
-/* DEBUG:
-void DesenhaCobra(Jogo *j, Texture2D texCabeca, Texture2D texCorpo, Texture2D texRabo) {
-    CelulaSnake *celula = j->snake.Cabeca;
-    int i = 0;
-
-    while (celula) {
-        Rectangle dst = celula->body.pos;
-
-        // DEBUG: desenhar quadrados coloridos em vez de textura
-        Color cor;
-        if (celula == j->snake.Cabeca) cor = RED;        // cabeça
-        else if (celula->Prox == NULL) cor = BLUE;       // rabo
-        else cor = GREEN;                                // corpo
-
-        DrawRectangle((int)dst.x, (int)dst.y,
-                      (int)dst.width, (int)dst.height,
-                      cor);
-
-        // DEBUG extra: imprimir no console
-        printf("Segmento %d: x=%.0f y=%.0f dir=%d\n",
-               i, dst.x, dst.y, celula->body.direcao);
-
-        celula = celula->Prox;
-        i++;
-    }
-}*/
