@@ -213,9 +213,9 @@ int main(){
                     if(Pontos < 3) IniciaBarreiras2(&jogo);
                    // IniciaPorta2(&jogo);
                     if (gameOver) {
-                        AtualizaRodada(&jogo);
                         DesenhaJogo2(&jogo);
                         DesenhaBarreiras2(&jogo);
+                        AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
                             PlaySound(somComer);
