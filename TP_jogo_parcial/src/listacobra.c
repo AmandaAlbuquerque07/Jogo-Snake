@@ -143,21 +143,25 @@ void IniciaBordas(Jogo *j){
     //Borda da esquerda
     j->bordas[3].pos = (Rectangle) {0, 0, 10, j->ALTURA};
 }
-
 void IniciaBarreiras1(Jogo *j){
     // Barreiras do centro (duas colunas altas)
-    j->barreiras[0].pos = (Rectangle) {(j->LARGURA-530*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
-    j->barreiras[1].pos = (Rectangle) {(j->LARGURA-170*j->escala), (j->ALTURA-490*j->escala), (40*j->escala), (320*j->escala)};
+    if(j->LARGURA==660){
+        j->barreiras[0].pos = (Rectangle) {j->ALTURA-530, j->ALTURA-490, 40, 320};
+        j->barreiras[1].pos = (Rectangle) {j->LARGURA-170, j->ALTURA-490, 40, 320};
+    }else{
+        j->barreiras[0].pos = (Rectangle) {j->LARGURA-650, j->ALTURA-610, 80, 400};
+        j->barreiras[1].pos = (Rectangle) {j->LARGURA-290, j->ALTURA-610, 80, 400};
+    }
     //Barreiras verticais
-    j->barreiras[2].pos = (Rectangle) {0, 0, (10*j->escala), (60*j->escala)};
-    j->barreiras[3].pos = (Rectangle) {(j->LARGURA-10*j->escala), 0, (10*j->escala), (60*j->escala)};
-    j->barreiras[4].pos = (Rectangle) {0, (j->ALTURA-60*j->escala), (10*j->escala), (60*j->escala)}; 
-    j->barreiras[5].pos = (Rectangle) {(j->LARGURA-(10*j->escala)), (j->ALTURA-60*j->escala), (10*j->escala), (60*j->escala)};
+    j->barreiras[2].pos = (Rectangle) {0, 0, 10, 60};
+    j->barreiras[3].pos = (Rectangle) {j->LARGURA-10, 0, 10, 60};
+    j->barreiras[4].pos = (Rectangle) {0, j->ALTURA-60, 10, 60}; 
+    j->barreiras[5].pos = (Rectangle) {j->LARGURA-10, j->ALTURA-60, 10, 60};
     //Barreiras horizontais
-    j->barreiras[6].pos = (Rectangle) {0, 0, (j->LARGURA-600*j->escala), (10*j->escala)};
-    j->barreiras[7].pos = (Rectangle) {(j->ALTURA-60*j->escala), 0, (j->LARGURA-600*j->escala), (10*j->escala)};
-    j->barreiras[8].pos = (Rectangle) {0, (j->LARGURA-10*j->escala), (60*j->escala), (10*j->escala)};
-    j->barreiras[9].pos = (Rectangle) {(j->ALTURA-60*j->escala), (j->LARGURA-10*j->escala), (60*j->escala), (10*j->escala)};  
+    j->barreiras[6].pos = (Rectangle) {0, 0, j->LARGURA-600, 10};
+    j->barreiras[7].pos = (Rectangle) {j->ALTURA-60, 0, j->LARGURA-600, 10};
+    j->barreiras[8].pos = (Rectangle) {0, j->LARGURA-10, 60, 10};
+    j->barreiras[9].pos = (Rectangle) {j->ALTURA-60, j->LARGURA-10, 60, 10};  
 }
 
 void IniciaBarreiras2(Jogo *j){
@@ -646,5 +650,6 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
 
