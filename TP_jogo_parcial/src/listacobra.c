@@ -468,6 +468,7 @@ void DesenhaJogo3(Jogo *j){
     DesenhaFood3(j);
 }
 
+
 void AtualizaRodada(Jogo *j){
     if (GetTime() - j->tempo >= TEMPO){
         RegistrarCurvaSeDirecaoMudou(j);
@@ -684,7 +685,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
-
-
 
 
