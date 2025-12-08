@@ -92,7 +92,6 @@ void DesenhaJogo(Jogo *j);
 void DesenhaJogo2(Jogo *j);
 void DesenhaJogo3(Jogo *j);
 void DesenhaFundo(Jogo *j, Texture2D* img);
-void AtualizaPosSnake(Jogo *j);
 void AtualizaRodada(Jogo *j);
 void AtualizaBarreiras2(Jogo *j);
 int ColisaoFood(Jogo *j);
@@ -107,3 +106,4 @@ void FreeLista(ListaSnake *Snake);
 void LiberaTexturas(Jogo *j);
 
 #endif
+
