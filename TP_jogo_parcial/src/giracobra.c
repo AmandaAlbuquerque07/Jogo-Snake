@@ -65,8 +65,7 @@ static void RemoveCurva(Curva *tirar) {
     }
 }
 
-
-void RegistrarCurvaSeDirecaoMudou(Jogo *j) {
+/*void RegistrarCurvaSeDirecaoMudou(Jogo *j) {
     CelulaSnake *cab = j->snake.Cabeca;
     int dirAtual = cab->body.direcao;
     int nova = dirAtual;
@@ -80,6 +79,25 @@ void RegistrarCurvaSeDirecaoMudou(Jogo *j) {
         AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, nova);
         cab->body.direcao = nova;
     }
+}*/
+
+void RegistrarCurvaSeDirecaoMudou(Jogo *j) {
+    CelulaSnake *cab = j->snake.Cabeca;
+    int dirAtual = cab->body.direcao;
+    int nova = dirAtual;
+
+    if (IsKeyDown(KEY_UP)    && dirAtual != BAIXO)    nova = CIMA;
+    if (IsKeyDown(KEY_DOWN)  && dirAtual != CIMA)     nova = BAIXO;
+    if (IsKeyDown(KEY_LEFT)  && dirAtual != DIREITA)  nova = ESQUERDA;
+    if (IsKeyDown(KEY_RIGHT) && dirAtual != ESQUERDA) nova = DIREITA;
+
+    if (nova != dirAtual) {
+        // Snap (alinhar) a posição da cabeça ao grid antes de registrar a curva
+        int curveX = (((int)cab->body.pos.x) / STD_SIZE_X) * STD_SIZE_X;
+        int curveY = (((int)cab->body.pos.y) / STD_SIZE_Y) * STD_SIZE_Y;
+        AdicionaCurva(curveX, curveY, nova);
+        cab->body.direcao = nova;
+    }
 }
 
 void AplicarCurvasNosSegmentos(Jogo *j) {
@@ -89,20 +107,24 @@ void AplicarCurvasNosSegmentos(Jogo *j) {
     while (corpo) {
         Curva *c = curvas;
         while (c) {
-            //confiro se chegou no "quadrado de virada" e viro o corpo todo:
-        if ((int)corpo->body.pos.x == c->x && (int)corpo->body.pos.y == c->y) {
-            corpo->body.direcao = c->direcao;
-            if (corpo->Prox == NULL) { // rabo
-                RemoveCurva(c);
+            // arredondamos / alinhamos a posição atual do segmento ao grid
+            int segX = (((int)corpo->body.pos.x) / STD_SIZE_X) * STD_SIZE_X;
+            int segY = (((int)corpo->body.pos.y) / STD_SIZE_Y) * STD_SIZE_Y;
+
+            if (segX == c->x && segY == c->y) {
+                corpo->body.direcao = c->direcao;
+                if (corpo->Prox == NULL) { // rabo
+                    RemoveCurva(c);
+                }
+                break; // saiu do loop de curvas para este segmento
             }
-            break; // sai do loop de curvas para este segmento
-        }
-            //passo pra próxima curva da lista!
             c = c->prox;
         }
         corpo = corpo->Prox;
     }
 }
+
+
 
 void LimparCurvas(void) {
     Curva *c = curvas;
@@ -114,29 +136,38 @@ void LimparCurvas(void) {
     curvas = NULL;
 }
 
+
 void DesenhaCobra(Jogo *j) {
     CelulaSnake *celula = j->snake.Cabeca;
+
     while (celula) {
-        Rectangle src, dst = celula->body.pos;
-        //src:dimensões da textura
-        //dst:onde e em que tamanho ela vai aparecer na tela do jogo
-       Vector2 origin = { dst.width/2.0f, dst.height/2.0f };
-        //Vector2 origin = {0, 0};  
+        Rectangle hitbox = celula->body.pos;   // usado para colisão
+        Rectangle src;
+        
+        // novo rectangle APENAS para desenhar
+        Rectangle dstDraw = {
+            hitbox.x + hitbox.width / 2.0f,    // compensação
+            hitbox.y + hitbox.height / 2.0f,   // compensação
+            hitbox.width,
+            hitbox.height
+        };
+
+        Vector2 origin = { hitbox.width / 2.0f, hitbox.height / 2.0f };
         float ang = DirecaoParaAngulo(celula->body.direcao);
 
         if (celula == j->snake.Cabeca) {
-            src = (Rectangle){0, 0, (float)j->tex.Cabeca.width, (float)j->tex.Cabeca.height};
-            DrawTexturePro(j->tex.Cabeca, src, dst, origin, ang, WHITE);
+            src = (Rectangle){0, 0, j->tex.Cabeca.width, j->tex.Cabeca.height};
+            DrawTexturePro(j->tex.Cabeca, src, dstDraw, origin, ang, WHITE);
         }
         else if (celula->Prox == NULL) {
-            src = (Rectangle){0, 0, (float)j->tex.Rabo.width, (float)j->tex.Rabo.height};
-            DrawTexturePro(j->tex.Rabo, src, dst, origin, ang, WHITE);
+            src = (Rectangle){0, 0, j->tex.Rabo.width, j->tex.Rabo.height};
+            DrawTexturePro(j->tex.Rabo, src, dstDraw, origin, ang, WHITE);
         }
         else {
-            src = (Rectangle){0, 0, (float)j->tex.Corpo.width, (float)j->tex.Corpo.height};
-            DrawTexturePro(j->tex.Corpo, src, dst, origin, ang, WHITE);
+            src = (Rectangle){0, 0, j->tex.Corpo.width, j->tex.Corpo.height};
+            DrawTexturePro(j->tex.Corpo, src, dstDraw, origin, ang, WHITE);
         }
+
         celula = celula->Prox;
     }
 }
-
