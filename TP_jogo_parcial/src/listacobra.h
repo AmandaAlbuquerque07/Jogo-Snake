@@ -69,6 +69,7 @@ void VSvazia(ListaSnake *snake);
 void CarregaTexturas(Jogo*j);
 void IniciaSnake(Jogo *j);
 void AumentaSnake(Jogo *j);
+void MoveSnake(Jogo *j);
 void IniciaBordas(Jogo *j);
 void IniciaBarreiras1(Jogo *j);
 void IniciaBarreiras2(Jogo *j);
@@ -101,4 +102,5 @@ void FreeLista(ListaSnake *Snake);
 void LiberaTexturas(Jogo *j);
 
 #endif
+
 
