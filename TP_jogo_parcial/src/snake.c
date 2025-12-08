@@ -27,6 +27,7 @@ int main(){
     int tamanhoNome=0;
     jogo.barreiras[0].inicia = 0;
     jogo.barreiras[1].inicia = 0;
+    int colisao = 0;
 
     //Cria a janela do jogo;
     InitWindow(jogo.LARGURA, jogo.ALTURA, "Snake Game");
@@ -146,7 +147,7 @@ int main(){
 
         case JOGO: // o que fazer no jogo? todas as funções que já tínhamos:
             //JOGO 1
-            if(Pontos <= 1){
+            if(colisao == 0){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.5f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -154,10 +155,11 @@ int main(){
 
                 DesenhaFundo(&jogo, &fundo1);
                 IniciaBarreiras1(&jogo);
+                IniciaPorta1(&jogo);
                 if (gameOver) {
+                    AtualizaRodada(&jogo);
                     DesenhaJogo(&jogo);
                     DesenhaBarreiras1(&jogo);
-                    AtualizaRodada(&jogo);
 
                     if (ColisaoFood(&jogo)) {
                         PlaySound(somComer);
@@ -174,7 +176,19 @@ int main(){
                     if (ColisaoSnake(&jogo)  || ColisaoBarreiras1(&jogo)) {
                         PlaySound(somMorrer1);
                         gameOver = 0;
+                        colisao = 0;
                     }
+
+                    if(Pontos >= 2){
+                        IniciaPorta1(&jogo);
+                        DesenhaPorta1(&jogo);
+                        if(ColisaoPorta1(&jogo)){
+                            colisao = 1;
+                        }
+                    }
+
+
+                    
 
                 }else{
                     DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
@@ -189,7 +203,7 @@ int main(){
 
                 }
                 //JOGO 2
-                else if(Pontos > 1 && Pontos < 5){
+                else if(colisao == 1){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.5f);
@@ -197,10 +211,11 @@ int main(){
 
                     DesenhaFundo(&jogo, &fundo2);
                     if(Pontos < 3) IniciaBarreiras2(&jogo);
+                   // IniciaPorta2(&jogo);
                     if (gameOver) {
+                        AtualizaRodada(&jogo);
                         DesenhaJogo2(&jogo);
                         DesenhaBarreiras2(&jogo);
-                        AtualizaRodada(&jogo);
 
                         if (ColisaoFood(&jogo)) {
                             PlaySound(somComer);
@@ -218,6 +233,15 @@ int main(){
                         if (ColisaoSnake(&jogo) || ColisaoBarreiras2(&jogo)) {
                             PlaySound(somMorrer2);
                             gameOver = 0;
+                            colisao = 0;
+                        }
+
+                        if(Pontos >= 5){
+                            IniciaPorta2(&jogo);
+                            DesenhaPorta2(&jogo);
+                            if(ColisaoPorta2(&jogo)){
+                                colisao = 2;
+                            }
                         }
 
                     }else { //quando o jogador perde:
@@ -228,11 +252,12 @@ int main(){
                             estado = MENU;
                             Nome[0] = '\0'; // limpa o nome pra próxima partida!
                             tamanhoNome = 0;
+                            colisao = 0;
                         }
                     }
             }
             //JOGO 3
-            else if(Pontos >= 5){
+            else if(colisao == 2){
                 SetMusicVolume(musmenu, 0.0f);
                 SetMusicVolume(trilha1, 0.0f);
                 SetMusicVolume(trilha2, 0.0f);
@@ -260,6 +285,7 @@ int main(){
                     if (ColisaoSnake(&jogo) || ColisaoBarreiras3(&jogo)) {
                         PlaySound(somMorrer3);
                         gameOver = 0;
+                        colisao = 0;
                     }
 
                 }else{
