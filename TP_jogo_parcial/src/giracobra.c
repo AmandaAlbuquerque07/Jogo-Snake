@@ -120,7 +120,8 @@ void DesenhaCobra(Jogo *j) {
         Rectangle src, dst = celula->body.pos;
         //src:dimensões da textura
         //dst:onde e em que tamanho ela vai aparecer na tela do jogo
-        Vector2 origin = {0, 0}; 
+       Vector2 origin = { dst.width/2.0f, dst.height/2.0f };
+        //Vector2 origin = {0, 0};  
         float ang = DirecaoParaAngulo(celula->body.direcao);
 
         if (celula == j->snake.Cabeca) {
@@ -138,3 +139,4 @@ void DesenhaCobra(Jogo *j) {
         celula = celula->Prox;
     }
 }
+
