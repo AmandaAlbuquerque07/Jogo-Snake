@@ -85,6 +85,54 @@ void AumentaSnake(Jogo *j){
     j->snake.Comprimento++;
 }
 
+void MoveSnake(Jogo *j) {
+    // Começa na cabeça
+    SnakeApontador atual = j->snake.Cabeca;
+
+    // Guarda a posição anterior da cabeça
+    Rectangle posAnterior = atual->body.pos;
+
+    // Move a cabeça primeiro (40 em 40)
+    switch (atual->body.direcao) {
+        case CIMA:
+            atual->body.pos.y -= 40;
+            break;
+        case BAIXO:
+            atual->body.pos.y += 40;
+            break;
+        case ESQUERDA:
+            atual->body.pos.x -= 40;
+            break;
+        case DIREITA:
+            atual->body.pos.x += 40;
+            break;
+    }
+
+    // Trata bordas depois de mover
+    ColisaoBordas(j);
+
+    // Agora o corpo segue a posição anterior
+    atual = atual->Prox;
+
+    while (atual != NULL) {
+        Rectangle temp = atual->body.pos;
+        atual->body.pos = posAnterior;
+        posAnterior = temp;
+        atual = atual->Prox;
+    }
+}
+ 
+int SnakeDentroDaGrade(Jogo *j) {
+    float x = j->snake.Cabeca->body.pos.x;
+    float y = j->snake.Cabeca->body.pos.y;
+
+    return (x >= 10 &&
+            x <= j->LARGURA - 10 - TAMANHO_CELULA &&
+            y >= 10 &&
+            y <= j->ALTURA  - 10 - TAMANHO_CELULA);
+}
+
+
 void IniciaBordas(Jogo *j){
     //Borda de cima
     j->bordas[0].pos = (Rectangle) {0, 0, j->LARGURA, 10};
@@ -374,30 +422,34 @@ void DesenhaJogo3(Jogo *j){
 }
 
 void AtualizaPosSnake(Jogo *j){
-    CelulaSnake *corpo = j->snake.Cabeca;
-    while (corpo) {
-        switch (corpo->body.direcao) {
-            case CIMA:    corpo->body.pos.y -= STD_SIZE_Y; break;
-            case BAIXO:   corpo->body.pos.y += STD_SIZE_Y; break;
-            case ESQUERDA:corpo->body.pos.x -= STD_SIZE_X; break;
-            case DIREITA: corpo->body.pos.x += STD_SIZE_X; break;
-        }
+     if (SnakeDentroDaGrade(j)) {
 
-        //aqui eu mexo no teleporte: quando a cobra chega nas bordas:
-            if (corpo->body.pos.x < 0) corpo->body.pos.x = j->LARGURA - STD_SIZE_X;
-            else if (corpo->body.pos.x >= j->LARGURA) corpo->body.pos.x = 0;
+        if (IsKeyPressed(KEY_UP) &&
+            j->snake.Cabeca->body.direcao != BAIXO)
+            j->snake.Cabeca->body.direcao = CIMA;
 
-            if (corpo->body.pos.y < 0) corpo->body.pos.y = j->ALTURA - STD_SIZE_Y;
-            else if (corpo->body.pos.y >= j->ALTURA) corpo->body.pos.y = 0;
+        if (IsKeyPressed(KEY_DOWN) &&
+            j->snake.Cabeca->body.direcao != CIMA)
+            j->snake.Cabeca->body.direcao = BAIXO;
 
-        corpo = corpo->Prox;
+        if (IsKeyPressed(KEY_LEFT) &&
+            j->snake.Cabeca->body.direcao != DIREITA)
+            j->snake.Cabeca->body.direcao = ESQUERDA;
+
+        if (IsKeyPressed(KEY_RIGHT) &&
+            j->snake.Cabeca->body.direcao != ESQUERDA)
+            j->snake.Cabeca->body.direcao = DIREITA;
     }
+
+    // ✅ MOVIMENTO
+    MoveSnake(j);
 }
 
 void AtualizaRodada(Jogo *j){
     if (GetTime() - j->tempo >= TEMPO){
         RegistrarCurvaSeDirecaoMudou(j);
-        AtualizaPosSnake(j);
+        MoveSnake(j);
+        //AtualizaPosSnake(j);
         ColisaoBordas(j);
         AplicarCurvasNosSegmentos(j);
         j->tempo = GetTime();
@@ -524,30 +576,28 @@ int ColisaoBarreiras3(Jogo *j){
 
 void ColisaoBordas(Jogo *j) {
     CelulaSnake *cab = j->snake.Cabeca;
-    int dir = cab->body.direcao;
 
-    if (cab->body.pos.x < 0) {
-        AdicionaCurva(0, (int)cab->body.pos.y, dir); // curva na entrada
-        cab->body.pos.x = j->LARGURA - TAMANHO_CELULA;
-        AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir); // curva na saída
-    }
-    else if (cab->body.pos.x >= j->LARGURA) {
-        AdicionaCurva(j->LARGURA - TAMANHO_CELULA, (int)cab->body.pos.y, dir);
-        cab->body.pos.x = 0;
-        AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
-    }
+    int min = 10;
 
-    if (cab->body.pos.y < 0) {
-        AdicionaCurva((int)cab->body.pos.x, 0, dir);
-        cab->body.pos.y = j->ALTURA - TAMANHO_CELULA;
-        AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
-    }
-    else if (cab->body.pos.y >= j->ALTURA) {
-        AdicionaCurva((int)cab->body.pos.x, j->ALTURA - TAMANHO_CELULA, dir);
-        cab->body.pos.y = 0;
-        AdicionaCurva((int)cab->body.pos.x, (int)cab->body.pos.y, dir);
-    }
+    int colunas = (j->LARGURA - 20) / TAMANHO_CELULA;
+    int linhas  = (j->ALTURA  - 20) / TAMANHO_CELULA;
+
+    int maxX = min + (colunas - 1) * TAMANHO_CELULA;
+    int maxY = min + (linhas  - 1) * TAMANHO_CELULA;
+
+    // Eixo X
+    if (cab->body.pos.x < min)
+        cab->body.pos.x = maxX;
+    else if (cab->body.pos.x > maxX)
+        cab->body.pos.x = min;
+
+    // Eixo Y
+    if (cab->body.pos.y < min)
+        cab->body.pos.y = maxY;
+    else if (cab->body.pos.y > maxY)
+        cab->body.pos.y = min;
 }
+
 
 int ColisaoSnake(Jogo *j){
     SnakeApontador aux = j->snake.Cabeca->Prox; // começa depois da cabeça
@@ -588,4 +638,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
