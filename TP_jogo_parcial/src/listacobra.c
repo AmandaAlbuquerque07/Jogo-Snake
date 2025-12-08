@@ -161,22 +161,23 @@ void IniciaBarreiras1(Jogo *j){
 }
 
 void IniciaBarreiras2(Jogo *j){
-    if (ColisaoBarreiras1(j) || ColisaoBarreiras2(j) || ColisaoBarreiras3(j) || ColisaoFood(j)){
+    if (ColisaoBarreiras2(j) || ColisaoFood(j)) {
         AtualizaBarreiras2(j);
-    }else{
+    }
+    else {
         for (int i = 0; i < 3; i++) {
-            j->barreiras[i].pos.width  = 120;
-            j->barreiras[i].pos.height = 120;
+            j->barreiras[i].pos.width  = 120; // 3 blocos
+            j->barreiras[i].pos.height = 120; // 3 blocos
         }
 
-        j->barreiras[0].pos.x = (j->LARGURA - 170*j->escala);
-        j->barreiras[0].pos.y = (j->ALTURA  - 440*j->escala);
+        j->barreiras[0].pos.x = j->LARGURA - (170 * j->escala);
+        j->barreiras[0].pos.y = j->ALTURA  - (410 * j->escala);
+        
+        j->barreiras[1].pos.x = j->LARGURA - (570 * j->escala);
+        j->barreiras[1].pos.y = j->ALTURA  - (170 * j->escala);
 
-        j->barreiras[1].pos.x = (j->LARGURA - 590*j->escala);
-        j->barreiras[1].pos.y = (j->ALTURA  - 180*j->escala);
-
-        j->barreiras[2].pos.x = (j->LARGURA - 320*j->escala);
-        j->barreiras[2].pos.y = (j->ALTURA  - 170*j->escala);
+        j->barreiras[2].pos.x = j->LARGURA - (290 * j->escala);
+        j->barreiras[2].pos.y = j->ALTURA  - (170 * j->escala);
     }
 }
 
@@ -459,9 +460,9 @@ void AtualizaRodada(Jogo *j){
 
 void AtualizaBarreiras2(Jogo *j){
     int colisao;
-    float distanciaMin = 160.0f;
+    float distanciaMin = 160.0f; // 4 blocos de 40
 
-    // Tamanho fixo compatível com o desenho
+    // Tamanho fixo compatível com o desenho (3 blocos)
     for (int i = 0; i < 3; i++) {
         j->barreiras[i].pos.width  = 120;
         j->barreiras[i].pos.height = 120;
@@ -470,10 +471,17 @@ void AtualizaBarreiras2(Jogo *j){
     do {
         colisao = 0;
 
-        // --- Sorteia posições ---
+        // --- Sorteia posições ALINHADAS NA GRADE ---
         for (int i = 0; i < 3; i++) {
-            j->barreiras[i].pos.x = GetRandomValue(50, j->LARGURA - 170);
-            j->barreiras[i].pos.y = GetRandomValue(50, j->ALTURA  - 170);
+
+            int colunas = (j->LARGURA - 20 - 120) / 40;
+            int linhas  = (j->ALTURA  - 20 - 120) / 40;
+
+            int cx = GetRandomValue(0, colunas);
+            int cy = GetRandomValue(0, linhas);
+
+            j->barreiras[i].pos.x = 10 + cx * 40;
+            j->barreiras[i].pos.y = 10 + cy * 40;
         }
 
         // --- Distância mínima entre elas ---
@@ -499,7 +507,7 @@ void AtualizaBarreiras2(Jogo *j){
             }
         }
 
-          // --- Colisão com a cobra ---
+        // --- Colisão com a cobra ---
         if (!colisao) {
             SnakeApontador aux = j->snake.Cabeca;
 
@@ -638,4 +646,5 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
