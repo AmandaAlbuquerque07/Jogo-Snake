@@ -472,7 +472,6 @@ void AtualizaRodada(Jogo *j){
     if (GetTime() - j->tempo >= TEMPO){
         RegistrarCurvaSeDirecaoMudou(j);
         MoveSnake(j);
-        //AtualizaPosSnake(j);
         ColisaoBordas(j);
         AplicarCurvasNosSegmentos(j);
         j->tempo = GetTime();
@@ -685,6 +684,7 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
 
 
