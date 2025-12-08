@@ -468,30 +468,6 @@ void DesenhaJogo3(Jogo *j){
     DesenhaFood3(j);
 }
 
-void AtualizaPosSnake(Jogo *j){
-     if (SnakeDentroDaGrade(j)) {
-
-        if (IsKeyPressed(KEY_UP) &&
-            j->snake.Cabeca->body.direcao != BAIXO)
-            j->snake.Cabeca->body.direcao = CIMA;
-
-        if (IsKeyPressed(KEY_DOWN) &&
-            j->snake.Cabeca->body.direcao != CIMA)
-            j->snake.Cabeca->body.direcao = BAIXO;
-
-        if (IsKeyPressed(KEY_LEFT) &&
-            j->snake.Cabeca->body.direcao != DIREITA)
-            j->snake.Cabeca->body.direcao = ESQUERDA;
-
-        if (IsKeyPressed(KEY_RIGHT) &&
-            j->snake.Cabeca->body.direcao != ESQUERDA)
-            j->snake.Cabeca->body.direcao = DIREITA;
-    }
-
-    // ✅ MOVIMENTO
-    MoveSnake(j);
-}
-
 void AtualizaRodada(Jogo *j){
     if (GetTime() - j->tempo >= TEMPO){
         RegistrarCurvaSeDirecaoMudou(j);
@@ -709,5 +685,6 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
+
 
 
