@@ -25,13 +25,12 @@ typedef struct Barreiras{
 }Barreiras;
 
 typedef struct Texturas{
-    Texture2D Cabeca, Corpo, Rabo;
-    Texture2D pedras;
-    Texture2D asteroide;
-    Texture2D tubaraoD ,tubaraoE;
-    Texture2D Food, Food2, Food3;
-    Texture2D inicio;
-    Texture2D portal2;
+  Texture2D Cabeca, Corpo, Rabo;
+  Texture2D pedras;
+  Texture2D asteroide;
+  Texture2D tubaraoD ,tubaraoE;
+  Texture2D Food, Food2, Food3;
+  Texture2D inicio;
 }Texturas;
 
 //Início da Implementação da lista:
@@ -58,7 +57,7 @@ typedef struct Jogo{
   ListaSnake snake;
   Food food;
   Bordas bordas[4];
-  Barreiras barreiras[12];
+  Barreiras barreiras[13];
   Texturas tex;
   double tempo;
   double cooldown;
@@ -78,6 +77,7 @@ void IniciaBarreiras2(Jogo *j);
 void Barreiras3(Jogo *j);
 void IniciaPorta1(Jogo *j);
 void IniciaPorta2(Jogo *j);
+void IniciaPorta3(Jogo *j);
 void IniciaFood(Jogo *j);
 void IniciaJogo(Jogo *j);
 void DesenhaFood(Jogo *j); 
@@ -89,6 +89,7 @@ void DesenhaBarreiras2(Jogo *j);
 void DesenhaBarreiras3(Jogo *j);
 void DesenhaPorta1(Jogo *j);
 void DesenhaPorta2(Jogo *j);
+void DesenhaPorta3(Jogo *j);
 void DesenhaJogo(Jogo *j);
 void DesenhaJogo2(Jogo *j);
 void DesenhaJogo3(Jogo *j);
@@ -102,6 +103,7 @@ int ColisaoBarreiras2(Jogo *j);
 int ColisaoBarreiras3(Jogo* j);
 int ColisaoPorta1(Jogo *j);
 int ColisaoPorta2(Jogo *j);
+int ColisaoPorta3(Jogo *j);
 int ColisaoSnake(Jogo *j);
 void FreeLista(ListaSnake *Snake);
 void LiberaTexturas(Jogo *j);
