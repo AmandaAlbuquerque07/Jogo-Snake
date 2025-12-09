@@ -6,9 +6,8 @@
 #include <time.h>
 #include <math.h>
 #include "listacobra.h"
-#define TAMANHO_CELULA 40
-
 #include "giracobra.h"
+#define TAMANHO_CELULA 40
 #define CIMA     0
 #define DIREITA  1
 #define BAIXO    2
@@ -24,23 +23,15 @@ void CarregaTexturas(Jogo *j){
     j->tex.Cabeca = LoadTexture("Assets/cabecanovo4.png");
     j->tex.Corpo  = LoadTexture("Assets/corponovo4.png");
     j->tex.Rabo   = LoadTexture("Assets/rabonovo4.png");
-
     j->tex.pedras    = LoadTexture("Assets/pedras.png");
-    j->tex.pedras1   = LoadTexture("Assets/pedras1.png");
-    j->tex.pedras2   = LoadTexture("Assets/pedras2.png");
-
     j->tex.asteroide = LoadTexture("Assets/AsteroideFrog.png");
-
     j->tex.tubaraoD  = LoadTexture("Assets/tubarao2.png");
     j->tex.tubaraoE  = LoadTexture("Assets/tubarao1.png");
-
     j->tex.Food = LoadTexture("Assets/maca.png");
     j->tex.Food2 = LoadTexture("Assets/estrela.png");
     j->tex.Food3 = LoadTexture("Assets/peixe.png");
-
     j->tex.inicio= LoadTexture("Assets/inicio.jpg");
 }
-
 
 void IniciaSnake(Jogo *j){
     j->snake.Cabeca = (SnakeApontador)malloc(sizeof(CelulaSnake));
@@ -334,7 +325,6 @@ DrawTexturePro(
 }
 
 void DesenhaBarreiras1(Jogo *j){
-//Desenha as barreiras do meio
     for(int i=0; i<2; i++){
         DrawTexturePro(
         j->tex.pedras,
@@ -344,27 +334,6 @@ void DesenhaBarreiras1(Jogo *j){
         0,                                                           
         WHITE                                                        
     );
-}
-//Desenha as barreiras nas bordas
-    for(int i = 2; i < 6; i++ ){
-        DrawTexturePro(
-        j->tex.pedras1,
-        (Rectangle){0, 0, j->tex.pedras1.width, j->tex.pedras1.height},                   
-        (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
-        (Vector2){0, 0},                                            
-        0,                                                           
-        WHITE                                                        
-    ); 
-    }
-    for (int i= 6; i<10; i++){
-    DrawTexturePro(
-    j->tex.pedras2,
-        (Rectangle){0, 0, j->tex.pedras2.width, j->tex.pedras2.height},                                     
-        (Rectangle){j->barreiras[i].pos.x, j->barreiras[i].pos.y, j->barreiras[i].pos.width, j->barreiras[i].pos.height}, 
-        (Vector2){0, 0},                                            
-        0,                                                           
-        WHITE                                                        
-    );    
     }
 }
 
@@ -693,8 +662,6 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Corpo);
     UnloadTexture(j->tex.Rabo);
     UnloadTexture(j->tex.pedras);
-    UnloadTexture(j->tex.pedras1);
-    UnloadTexture(j->tex.pedras2);
     UnloadTexture(j->tex.asteroide);
     UnloadTexture(j->tex.tubaraoD);
     UnloadTexture(j->tex.tubaraoE);
@@ -703,5 +670,3 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
 }
-
-
