@@ -295,6 +295,7 @@ int main(){
                             DesenhaPorta3(&jogo);
                             if(ColisaoPorta3(&jogo)){
                                 colisao = 0;
+                                primeiro = 1;
                             }
                     }
 
