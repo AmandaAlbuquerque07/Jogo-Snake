@@ -25,12 +25,13 @@ typedef struct Barreiras{
 }Barreiras;
 
 typedef struct Texturas{
-  Texture2D Cabeca, Corpo, Rabo;
-  Texture2D pedras, pedras1, pedras2;
-  Texture2D asteroide;
-  Texture2D tubaraoD ,tubaraoE;
-  Texture2D Food, Food2, Food3;
-  Texture2D inicio;
+    Texture2D Cabeca, Corpo, Rabo;
+    Texture2D pedras, pedras1, pedras2;
+    Texture2D asteroide;
+    Texture2D tubaraoD ,tubaraoE;
+    Texture2D Food, Food2, Food3;
+    Texture2D inicio;
+    Texture2D portal2;
 }Texturas;
 
 //Início da Implementação da lista:
@@ -106,4 +107,3 @@ void FreeLista(ListaSnake *Snake);
 void LiberaTexturas(Jogo *j);
 
 #endif
-
