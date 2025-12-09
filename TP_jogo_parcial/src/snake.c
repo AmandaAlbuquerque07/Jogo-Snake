@@ -189,8 +189,6 @@ int main(){
                     }
 
 
-                    
-
                 }else{
                     DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
                     DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE);  //texto, x, y, tam fonte, cor
@@ -199,6 +197,7 @@ int main(){
                         estado = MENU;
                         Nome[0] = '\0'; // limpa o nome pra próxima partida!
                         tamanhoNome = 0;
+                        primeiro = 1;
                     }
                 } 
 
@@ -255,6 +254,7 @@ int main(){
                             Nome[0] = '\0'; // limpa o nome pra próxima partida!
                             tamanhoNome = 0;
                             colisao = 0;
+                            primeiro = 1;
                         }
                     }
             }
@@ -290,6 +290,14 @@ int main(){
                         colisao = 0;
                     }
 
+                    if(Pontos >= 7){
+                            IniciaPorta3(&jogo);
+                            DesenhaPorta3(&jogo);
+                            if(ColisaoPorta3(&jogo)){
+                                colisao = 0;
+                            }
+                    }
+
                 }else{
                     DrawText("FIM DE JOGO", (150*jogo.escala), (200*jogo.escala), (60*jogo.escala), RED);
                     DrawText("Pressione Enter para voltar ao menu", (110*jogo.escala), (350*jogo.escala), (25*jogo.escala), WHITE); //texto, x, y, tam fonte, cor
@@ -300,6 +308,7 @@ int main(){
                         tamanhoNome = 0;
                         jogo.barreiras[0].inicia = 0;
                         jogo.barreiras[1].inicia = 0;
+                        primeiro = 1;
                     }
                 } 
             }
