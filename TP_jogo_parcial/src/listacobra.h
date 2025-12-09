@@ -26,7 +26,7 @@ typedef struct Barreiras{
 
 typedef struct Texturas{
     Texture2D Cabeca, Corpo, Rabo;
-    Texture2D pedras, pedras1, pedras2;
+    Texture2D pedras;
     Texture2D asteroide;
     Texture2D tubaraoD ,tubaraoE;
     Texture2D Food, Food2, Food3;
