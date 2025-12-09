@@ -6,9 +6,9 @@
 #include <time.h>
 #include <math.h>
 #include "listacobra.h"
-#include "giracobra.h"
-
 #define TAMANHO_CELULA 40
+
+#include "giracobra.h"
 #define CIMA     0
 #define DIREITA  1
 #define BAIXO    2
@@ -39,8 +39,6 @@ void CarregaTexturas(Jogo *j){
     j->tex.Food3 = LoadTexture("Assets/peixe.png");
 
     j->tex.inicio= LoadTexture("Assets/inicio.jpg");
-
-    j->tex.portal2 = LoadTexture("portal2.png");
 }
 
 
@@ -229,6 +227,14 @@ void IniciaPorta2(Jogo *j){
     };  
 }
 
+void IniciaPorta3(Jogo *j){
+    j->barreiras[12].pos = (Rectangle) {
+        (90),
+        (90),
+        (40*j->escala),
+        (40*j->escala)
+    };  
+}
 
 void DesenhaFundo(Jogo *j, Texture2D* img){
 
@@ -284,6 +290,8 @@ void IniciaJogo(Jogo *j){
     IniciaSnake(j);
     IniciaBordas(j);
     IniciaFood(j);
+
+    //j->pendingDir = CIMA;
     j->tempo = GetTime();
 }
 
@@ -420,39 +428,55 @@ void DesenhaBarreiras3(Jogo *j) {
 }
 
 void DesenhaPorta1(Jogo *j){
-    DrawTexturePro(
-    j->tex.Food2,
-    (Rectangle){0, 0, j->tex.Food2.width, j->tex.Food2.height},                                
-    (Rectangle){j->barreiras[10].pos.x, j->barreiras[10].pos.y, j->barreiras[10].pos.width, j->barreiras[10].pos.height}, 
-    (Vector2){0, 0},                                            
-    0,                                                           
-    WHITE                                                        
-);
+        DrawTexturePro(
+        j->tex.Food2,
+        (Rectangle){0, 0, j->tex.Food2.width, j->tex.Food2.height},                                
+        (Rectangle){j->barreiras[10].pos.x, j->barreiras[10].pos.y, j->barreiras[10].pos.width, j->barreiras[10].pos.height}, 
+        (Vector2){0, 0},                                            
+        0,                                                           
+        WHITE                                                        
+    );
 }
 
 void DesenhaPorta2(Jogo *j){
-    DrawTexturePro(
-    j->tex.Food3,
-    (Rectangle){0, 0, j->tex.Food3.width, j->tex.Food3.height},                                
-    (Rectangle){j->barreiras[11].pos.x, j->barreiras[11].pos.y, j->barreiras[11].pos.width, j->barreiras[11].pos.height}, 
-    (Vector2){0, 0},                                            
-    0,                                                           
-    WHITE                                                        
-);
+        DrawTexturePro(
+        j->tex.Food3,
+        (Rectangle){0, 0, j->tex.Food3.width, j->tex.Food3.height},                                
+        (Rectangle){j->barreiras[11].pos.x, j->barreiras[11].pos.y, j->barreiras[11].pos.width, j->barreiras[11].pos.height}, 
+        (Vector2){0, 0},                                            
+        0,                                                           
+        WHITE                                                        
+    );
 }
 
+void DesenhaPorta3(Jogo *j){
+        DrawTexturePro(
+        j->tex.Food,
+        (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},                                
+        (Rectangle){j->barreiras[12].pos.x, j->barreiras[12].pos.y, j->barreiras[12].pos.width, j->barreiras[12].pos.height}, 
+        (Vector2){0, 0},                                            
+        0,                                                           
+        WHITE                                                        
+    );
+}
+
+
 void DesenhaJogo(Jogo *j){
+    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood(j);
 }
 void DesenhaJogo2(Jogo *j){
+    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood2(j);
 }
 void DesenhaJogo3(Jogo *j){
+    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood3(j);
 }
+
 
 void AtualizaRodada(Jogo *j){
     if (GetTime() - j->tempo >= TEMPO){
@@ -606,6 +630,15 @@ int ColisaoPorta2(Jogo *j){
     );
 }
 
+int ColisaoPorta3(Jogo *j){
+    if (!j->snake.Cabeca) return 0;
+
+    return CheckCollisionRecs(
+        j->snake.Cabeca->body.pos,
+        j->barreiras[12].pos
+    );
+}
+
 void ColisaoBordas(Jogo *j) {
     CelulaSnake *cab = j->snake.Cabeca;
 
@@ -669,5 +702,6 @@ void LiberaTexturas(Jogo *j) {
     UnloadTexture(j->tex.Food2);
     UnloadTexture(j->tex.Food3);
     UnloadTexture(j->tex.inicio);
-    UnloadTexture(j->tex.portal2);
 }
+
+
