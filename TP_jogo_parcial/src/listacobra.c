@@ -57,7 +57,6 @@ void AumentaSnake(Jogo *j){
     SnakeApontador novo  = malloc(sizeof(CelulaSnake));
     memset(novo, 0, sizeof(CelulaSnake));
 
-    // posição inicial: logo atrás do rabo atual
     novo->body.pos = j->snake.Cauda->body.pos;
     switch (j->snake.Cauda->body.direcao) {
         case CIMA:     novo->body.pos.y += STD_SIZE_Y; break;
@@ -69,21 +68,21 @@ void AumentaSnake(Jogo *j){
     novo->body.direcao = j->snake.Cauda->body.direcao;
     novo->body.color   = j->tex.Corpo;
 
-    // insere no fim da lista
+    //insere no fim da lista
     j->snake.Cauda->Prox = novo;
-    j->snake.Cauda = novo;   // novo passa a ser o rabo
+    j->snake.Cauda = novo;   //novo passa a ser o rabo, pra manter a textura
     novo->Prox = NULL;
     j->snake.Comprimento++;
 }
 
 void MoveSnake(Jogo *j) {
-    // Começa na cabeça
+    //começa na cabeça
     SnakeApontador atual = j->snake.Cabeca;
 
-    // Guarda a posição anterior da cabeça
+    //guarda a posição anterior da cabeça
     Rectangle posAnterior = atual->body.pos;
 
-    // Move a cabeça primeiro (40 em 40)
+    //move a cabeça primeiro (40 em 40)
     switch (atual->body.direcao) {
         case CIMA:
             atual->body.pos.y -= 40;
@@ -99,10 +98,10 @@ void MoveSnake(Jogo *j) {
             break;
     }
 
-    // Trata bordas depois de mover
+    // trata bordas depois de mover
     ColisaoBordas(j);
 
-    // Agora o corpo segue a posição anterior
+    //agora o corpo segue a posição anterior
     atual = atual->Prox;
 
     while (atual != NULL) {
@@ -153,7 +152,7 @@ void IniciaBarreiras2(Jogo *j){
     else {
         for (int i = 0; i < 3; i++) {
             j->barreiras[i].pos.width  = 120; // 3 blocos
-            j->barreiras[i].pos.height = 120; // 3 blocos
+            j->barreiras[i].pos.height = 120; 
         }
 
         j->barreiras[0].pos.x = j->LARGURA - (170 * j->escala);
@@ -169,14 +168,13 @@ void IniciaBarreiras2(Jogo *j){
 
 void Barreiras3(Jogo *j){
     static int iniciado = 0;
-
     // Inicializa apenas uma vez
         if (!iniciado){
-        // Barreira 0: direita → esquerda
+        // Barreira 0: direita pra esquerda
         j->barreiras[0].pos = (Rectangle){j->LARGURA, (j->ALTURA - 530*j->escala), (160*j->escala), (80*j->escala)};
         j->barreiras[0].velocidade = -3;
 
-        // Barreira 1: esquerda → direita
+        // Barreira 1: esquerda pra direita
         j->barreiras[1].pos = (Rectangle){-j->LARGURA, (j->ALTURA - 250*j->escala), (160*j->escala), (80*j->escala)};
         j->barreiras[1].velocidade = 3;
 
@@ -184,7 +182,7 @@ void Barreiras3(Jogo *j){
     }
 
 
-    // Movimento das barreiras
+    // Movimento das barreiras:
     for (int i = 0; i < 2; i++) {
         j->barreiras[i].pos.x += j->barreiras[i].velocidade;
 
@@ -231,11 +229,11 @@ void DesenhaFundo(Jogo *j, Texture2D* img){
 
     DrawTexturePro(
         *img,
-        (Rectangle){0, 0, img->width, img->height},           // Fonte (toda a textura)
-        (Rectangle){0, 0, (j->LARGURA*j->escala), (j->ALTURA*j->escala)}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
+        (Rectangle){0, 0, img->width, img->height},          
+        (Rectangle){0, 0, (j->LARGURA*j->escala), (j->ALTURA*j->escala)}, 
+        (Vector2){0, 0},                                          
+        0,                                                          
+        WHITE                                                     
     );
 }
 
@@ -249,12 +247,12 @@ void IniciaFood(Jogo *j){
             j->food.pos.width = STD_SIZE_X;
             j->food.pos.height = STD_SIZE_Y;
 
-            // Verifica se a nova posição colide com a cobra
+            //verifica se a nova posição colide com a cobra
             SnakeApontador aux = j->snake.Cabeca;
 
             while(aux != NULL){
                 if(CheckCollisionRecs(j->food.pos, aux->body.pos)){
-                    colisao = 1; // houve colisão, precisa gerar outra posição
+                    colisao = 1; //houve colisão, precisa gerar outra posição
                     break;
                 }
             aux = aux->Prox;
@@ -262,7 +260,7 @@ void IniciaFood(Jogo *j){
             
                 for(int i=0; i<10; i++){
                     if(CheckCollisionRecs(j->food.pos, j->barreiras[i].pos)){
-                        colisao = 1; // houve colisão, precisa gerar outra posição
+                        colisao = 1; //houve colisão, precisa gerar outra posição
                         break;
                     }
                 }
@@ -282,45 +280,42 @@ void IniciaJogo(Jogo *j){
     IniciaBordas(j);
     IniciaFood(j);
 
-    //j->pendingDir = CIMA;
     j->tempo = GetTime();
 }
 
 
 
 void DesenhaFood(Jogo *j){
-// Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
+//Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
     DrawTexturePro(
     j->tex.Food,
     (Rectangle){0, 0, j->tex.Food.width, j->tex.Food.height},           // Fonte (toda a textura)
-    (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
-    (Vector2){0, 0},                                            // Origem para rotação
-    0,                                                           // Rotação
-    WHITE                                                        // Cor
+    (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y},  // Destino na tela
+    (Vector2){0, 0},                                                    // Origem para rotação
+    0,                                                                  // Rotação
+    WHITE                                                               // Cor
     );
 }
 
 void DesenhaFood2(Jogo *j){
-// Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
     DrawTexturePro(
         j->tex.Food2,
-        (Rectangle){0, 0, j->tex.Food2.width, j->tex.Food2.height},           // Fonte (toda a textura)
-        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
+        (Rectangle){0, 0, j->tex.Food2.width, j->tex.Food2.height},          
+        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, 
+        (Vector2){0, 0},                                           
+        0,                                                         
+        WHITE                                                      
     );
 }
 
 void DesenhaFood3(Jogo *j){
-// Desenha a comida usando a textura da png que é redimensionada para STD_SIZE_X e STD_SIZE_Y
 DrawTexturePro(
         j->tex.Food3,
-        (Rectangle){0, 0, j->tex.Food3.width, j->tex.Food3.height},           // Fonte (toda a textura)
-        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, // Destino na tela
-        (Vector2){0, 0},                                            // Origem para rotação
-        0,                                                           // Rotação
-        WHITE                                                        // Cor
+        (Rectangle){0, 0, j->tex.Food3.width, j->tex.Food3.height},        
+        (Rectangle){j->food.pos.x, j->food.pos.y, STD_SIZE_X, STD_SIZE_Y}, 
+        (Vector2){0, 0},                                                   
+        0,                                                                 
+        WHITE                                                              
     );
 }
 
@@ -342,7 +337,7 @@ void DesenhaBarreiras2(Jogo *j){
         DrawTexturePro(
             j->tex.asteroide,
             (Rectangle){0, 0, j->tex.asteroide.width, j->tex.asteroide.height},
-            j->barreiras[i].pos,   // <<< USANDO DIRETO O RECTANGLE DA COLISÃO
+            j->barreiras[i].pos,   //USANDO DIRETO O RECTANGLE DA COLISÃO p evitar o bug invisível
             (Vector2){0, 0},
             0,
             WHITE
@@ -360,17 +355,17 @@ void DesenhaBarreiras3(Jogo *j) {
             0,
             j->tex.tubaraoD.width,
             j->tex.tubaraoD.height
-        }, // imagem inteira
+        }, 
 
         (Rectangle){
             j->barreiras[0].pos.x,
             j->barreiras[0].pos.y,
             160,      
             80
-        }, // onde desenhar
+        }, 
 
-        (Vector2){0, 0},   // origem
-            0.0f,          // rotação
+        (Vector2){0, 0},   
+            0.0f,         
             WHITE
     );
 
@@ -381,17 +376,17 @@ void DesenhaBarreiras3(Jogo *j) {
             0,
             j->tex.tubaraoE.width,
             j->tex.tubaraoE.height
-        }, // imagem inteira
+        },
 
         (Rectangle){
             j->barreiras[1].pos.x,
             j->barreiras[1].pos.y,
             160,      
             80
-        }, // onde desenhar
+        }, 
 
-        (Vector2){0, 0},   // origem
-            0.0f,          // rotação
+        (Vector2){0, 0},   
+            0.0f,          
             WHITE
     );   
 }
@@ -431,17 +426,14 @@ void DesenhaPorta3(Jogo *j){
 
 
 void DesenhaJogo(Jogo *j){
-    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood(j);
 }
 void DesenhaJogo2(Jogo *j){
-    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood2(j);
 }
 void DesenhaJogo3(Jogo *j){
-    //DesenhaBordas(j);
     DesenhaCobra(j);
     DesenhaFood3(j);
 }
@@ -459,9 +451,9 @@ void AtualizaRodada(Jogo *j){
 
 void AtualizaBarreiras2(Jogo *j){
     int colisao;
-    float distanciaMin = 160.0f; // 4 blocos de 40
+    float distanciaMin = 160.0f; //4 blocos de 40
 
-    // Tamanho fixo compatível com o desenho (3 blocos)
+    //tamanho fixo que combina com o desenho (3 quaddradinhos)
     for (int i = 0; i < 3; i++) {
         j->barreiras[i].pos.width  = 120;
         j->barreiras[i].pos.height = 120;
@@ -470,7 +462,7 @@ void AtualizaBarreiras2(Jogo *j){
     do {
         colisao = 0;
 
-        // --- Sorteia posições ALINHADAS NA GRADE ---
+        //sorteia posições
         for (int i = 0; i < 3; i++) {
 
             int colunas = (j->LARGURA - 20 - 120) / 40;
@@ -483,7 +475,7 @@ void AtualizaBarreiras2(Jogo *j){
             j->barreiras[i].pos.y = 10 + cy * 40;
         }
 
-        // --- Distância mínima entre elas ---
+        //distância mínima entre as barreiras
         for (int i = 0; i < 3 && !colisao; i++) {
             for (int k = i + 1; k < 3; k++) {
                 float dx = j->barreiras[k].pos.x - j->barreiras[i].pos.x;
@@ -496,7 +488,7 @@ void AtualizaBarreiras2(Jogo *j){
             }
         }
 
-        // --- Colisão com a comida ---
+        //colisão com a comida
         if (!colisao) {
             for (int i = 0; i < 3; i++) {
                 if (CheckCollisionRecs(j->barreiras[i].pos, j->food.pos)) {
@@ -506,7 +498,7 @@ void AtualizaBarreiras2(Jogo *j){
             }
         }
 
-        // --- Colisão com a cobra ---
+        //colisão com a cobra
         if (!colisao) {
             SnakeApontador aux = j->snake.Cabeca;
 
@@ -544,36 +536,36 @@ int ColisaoBarreiras1(Jogo *j){
 
 int ColisaoBarreiras2(Jogo *j){
     SnakeApontador cabeca = j->snake.Cabeca;
-    SnakeApontador aux = j->snake.Cabeca->Prox;   // começa no PRIMEIRO DO CORPO
+    SnakeApontador aux = j->snake.Cabeca->Prox;   //começa no PRIMEIRO DO CORPO
 
-    // 1) Verifica colisão da CABEÇA
+    //verifica colisão da CABEÇA
     for (int i = 0; i < 3; i++){
         if (CheckCollisionRecs(cabeca->body.pos, j->barreiras[i].pos)){
             return 1;   // cabeça bateu → morre
         }
     }
 
-    // 2) Verifica colisão do CORPO
+    //verifica colisão do CORPO
     while (aux != NULL){
         for (int i = 0; i < 3; i++){
             if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
-                return 2;   // corpo bateu (se quiser tratar diferente)
+                return 2;   //corpo bateu
             }
         }
         aux = aux->Prox;
     }
 
-    return 0; // nada colidiu
+    return 0; //nada colidiu
 }
 
 int ColisaoBarreiras3(Jogo *j){
     SnakeApontador aux = j->snake.Cabeca;
 
-    // Passa por TODOS os segmentos da cobra
+    //Passa por TODOS os segmentos da cobra
     while (aux != NULL){
-        for (int i = 0; i < 2; i++){    // suas 2 barreiras móveis
+        for (int i = 0; i < 2; i++){    //as 2 barreiras móveis
             if (CheckCollisionRecs(aux->body.pos, j->barreiras[i].pos)){
-                return 1;   // bateu → morre
+                return 1;   //bateu, morre
             }
         }
     aux = aux->Prox;
@@ -581,6 +573,8 @@ int ColisaoBarreiras3(Jogo *j){
     return 0; // Não colidiu
 }
 
+/*Explicando os portais: o ícone diferente de comidinha te leva
+a passar de mapa*/
 int ColisaoPorta1(Jogo *j){
     if (!j->snake.Cabeca) return 0;
 
@@ -619,13 +613,13 @@ void ColisaoBordas(Jogo *j) {
     int maxX = min + (colunas - 1) * TAMANHO_CELULA;
     int maxY = min + (linhas  - 1) * TAMANHO_CELULA;
 
-    // Eixo X
+    //no eixo x
     if (cab->body.pos.x < min)
         cab->body.pos.x = maxX;
     else if (cab->body.pos.x > maxX)
         cab->body.pos.x = min;
 
-    // Eixo Y
+    //no eixo y
     if (cab->body.pos.y < min)
         cab->body.pos.y = maxY;
     else if (cab->body.pos.y > maxY)
