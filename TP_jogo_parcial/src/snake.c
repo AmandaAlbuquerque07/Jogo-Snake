@@ -210,7 +210,10 @@ int main(){
                 SetMusicVolume(trilha3, 0.0f);
 
                     DesenhaFundo(&jogo, &fundo2);
-                    if(primeiro) IniciaBarreiras2(&jogo);
+                    if(primeiro){
+                        IniciaFood(&jogo);
+                        IniciaBarreiras2(&jogo);
+                    }
                     primeiro = 0;
                    // IniciaPorta2(&jogo);
                     if (gameOver) {
