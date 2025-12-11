@@ -58,7 +58,7 @@ static void RemoveCurva(Curva *tirar) {
     //caso contrário, faço um p temporário pra percorrer a lista,
     //quando acho, faço o nó que aponta pra ele apontar pro próximo depois dele e tiro ele;
     Curva *p = curvas;
-    while (p->prox && p->prox != tirar) p = p->prox;
+    while (p->prox && p->prox != tirar) p = p->prox;//PARO ANTES DO QUE É PRA TIRAR
     if (p->prox == tirar) {
         p->prox = tirar->prox;
         free(tirar);
@@ -76,9 +76,9 @@ void RegistrarCurvaSeDirecaoMudou(Jogo *j) {
     if (IsKeyDown(KEY_RIGHT) && dirAtual != ESQUERDA) nova = DIREITA;
 
     if (nova != dirAtual) {
-        int curveX = (((int)cab->body.pos.x) / STD_SIZE_X) * STD_SIZE_X;
-        int curveY = (((int)cab->body.pos.y) / STD_SIZE_Y) * STD_SIZE_Y;
-        AdicionaCurva(curveX, curveY, nova);
+        int curvaX = (((int)cab->body.pos.x) / STD_SIZE_X) * STD_SIZE_X;
+        int curvaY = (((int)cab->body.pos.y) / STD_SIZE_Y) * STD_SIZE_Y;
+        AdicionaCurva(curvaX, curvaY, nova);
         cab->body.direcao = nova;
     }
 }
@@ -95,10 +95,10 @@ void AplicarCurvasNosSegmentos(Jogo *j) {
 
             if (segX == c->x && segY == c->y) {
                 corpo->body.direcao = c->direcao;
-                if (corpo->Prox == NULL) { // rabo
+                if (corpo->Prox == NULL) {
                     RemoveCurva(c);
                 }
-                break; // sai do loop de curvas para este segmento
+                break;
             }
             //passo pra próxima curva da lista!
             c = c->prox;
@@ -119,7 +119,7 @@ void LimparCurvas(void) {
     curvas = NULL;
 }
 
-
+//estudar essa ou perguntar pras meninas:
 void DesenhaCobra(Jogo *j) {
     CelulaSnake *celula = j->snake.Cabeca;
 
