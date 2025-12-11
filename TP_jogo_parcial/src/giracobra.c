@@ -126,7 +126,7 @@ void DesenhaCobra(Jogo *j) {
     while (celula) {
         Rectangle pos = celula->body.pos;
         Rectangle src;
-        //src:dimensões da textura
+        //src:dimensões da textura (Rectangle source)
         //pos:onde e em que tamanho ela vai aparecer na tela do jogo
        
         Rectangle aux = {
@@ -155,3 +155,4 @@ void DesenhaCobra(Jogo *j) {
         celula = celula->Prox;
     }
 }
+
